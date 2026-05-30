@@ -1,0 +1,362 @@
+[
+  {
+    "text": "Which of the following elements has the atomic number 1?",
+    "options": ["Helium", "Hydrogen", "Lithium", "Oxygen"],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Hydrogen is the first element on the periodic table, with a single proton in its nucleus.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the capital of Australia?",
+    "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+    "correctIndex": 2,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "Canberra was chosen as the capital in 1908 as a compromise between rivals Sydney and Melbourne.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who painted the Mona Lisa?",
+    "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "easy",
+    "explanation": "The Mona Lisa was painted by the Italian Renaissance artist Leonardo da Vinci in the early 16th century.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which planet is known as the Red Planet?",
+    "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Mars is known as the Red Planet due to iron oxide (rust) on its surface.",
+    "imageUrl": null
+  },
+  {
+    "text": "In what year did World War II end?",
+    "options": ["1918", "1939", "1945", "1950"],
+    "correctIndex": 2,
+    "category": "History",
+    "difficulty": "easy",
+    "explanation": "World War II ended in 1945 with the formal surrender of Japan on September 2.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the primary ingredient in guacamole?",
+    "options": ["Tomato", "Avocado", "Cucumber", "Onion"],
+    "correctIndex": 1,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Guacamole is an avocado-based dip first developed by the Aztecs in Mexico.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does CPU stand for in computer science?",
+    "options": ["Central Process Unit", "Computer Processing Unit", "Central Processing Unit", "Control Program Unit"],
+    "correctIndex": 2,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "CPU stands for Central Processing Unit, often referred to as the brain of the computer.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many players are on the field for one team in a standard soccer match?",
+    "options": ["9", "10", "11", "12"],
+    "correctIndex": 2,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "A standard professional soccer match is played with 11 players on each team on the field, including the goalkeeper.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which company developed the Android operating system before Google acquired it?",
+    "options": ["Android Inc.", "Apple", "Nokia", "Motorola"],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "medium",
+    "explanation": "Android Inc. was founded in Palo Alto, California, in 2003 by Andy Rubin, Rich Miner, Nick Sears, and Chris White, and bought by Google in 2005.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who is the author of 'To Kill a Mockingbird'?",
+    "options": ["F. Scott Fitzgerald", "Harper Lee", "Ernest Hemingway", "Mark Twain"],
+    "correctIndex": 1,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "Harper Lee won the 1961 Pulitzer Prize for her bestselling novel 'To Kill a Mockingbird'.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the value of the mathematical constant Pi rounded to 2 decimal places?",
+    "options": ["3.12", "3.14", "3.16", "3.18"],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "Pi is approximately 3.14159, which rounds to 3.14.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which popular internet meme features a Shiba Inu with comic sans monologues?",
+    "options": ["Grumpy Cat", "Pepe the Frog", "Doge", "Nyan Cat"],
+    "correctIndex": 2,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "The Doge meme represents a cute Shiba Inu posing with expressions in colorful Comic Sans text showing inner dialogue.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the derivation of the word 'etymology'?",
+    "options": ["Study of insects", "Study of word origins", "Study of truth", "Study of maps"],
+    "correctIndex": 1,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Etymology comes from the Greek 'etymon' meaning 'true sense', and 'logia' meaning 'study of'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who is the Prime Minister of the United Kingdom who led during WWII?",
+    "options": ["Neville Chamberlain", "Clement Attlee", "Winston Churchill", "Anthony Eden"],
+    "correctIndex": 2,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "Winston Churchill served as Prime Minister of the United Kingdom from 1940 to 1945, leading Britain to victory.",
+    "imageUrl": null
+  },
+  {
+    "text": "In economics, what index measures inflation by calculating changes in prices of goods bought by typical households?",
+    "options": ["GDP Deflator", "Consumer Price Index (CPI)", "Producer Price Index (PPI)", "Big Mac Index"],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "The Consumer Price Index (CPI) measures the average change over time in prices paid by urban consumers for a market basket of goods and services.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which hormone regulates glucose levels in the human bloodstream?",
+    "options": ["Adrenaline", "Thyroxine", "Insulin", "Melatonin"],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "Insulin, produced by the pancreas, allows cells to absorb glucose from the blood for energy or storage.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Greek mythology, who is the god of the underworld?",
+    "options": ["Zeus", "Poseidon", "Hades", "Hermes"],
+    "correctIndex": 2,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Hades is the ancient Greek god of the underworld, the dead, and riches.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the only mammal capable of sustained flight?",
+    "options": ["Flying Squirrel", "Bat", "Sugar Glider", "Flying Lemur"],
+    "correctIndex": 1,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Bats are the only mammals that possess true, flapping flight capabilities.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which luxury French fashion house is known for its interlocking 'CC' monogram?",
+    "options": ["Christian Dior", "Hermès", "Chanel", "Yves Saint Laurent"],
+    "correctIndex": 2,
+    "category": "Fashion & Design",
+    "difficulty": "easy",
+    "explanation": "Chanel's interlocking 'CC' logo was designed by Coco Chanel herself in 1925.",
+    "imageUrl": null
+  },
+  {
+    "text": "In criminal law, what term describes the mental intent to commit a crime?",
+    "options": ["Actus Reus", "Mens Rea", "Habeas Corpus", "De Minimis"],
+    "correctIndex": 1,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "Mens Rea is Latin for 'guilty mind' and refers to the criminal intent/mindset required for a conviction.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who is known as the inventor of the World Wide Web?",
+    "options": ["Bill Gates", "Alan Turing", "Tim Berners-Lee", "Steve Jobs"],
+    "correctIndex": 2,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "Sir Tim Berners-Lee invented the World Wide Web in 1989 while working at CERN.",
+    "imageUrl": null
+  },
+  {
+    "text": "What temperature in Celsius does water boil at standard atmospheric pressure?",
+    "options": ["90°C", "100°C", "120°C", "212°C"],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Water boils at 100°C (212°F) under standard sea level pressure.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which treaty formally ended World War I in 1919?",
+    "options": ["Treaty of Ghent", "Treaty of Versailles", "Treaty of Utrecht", "Treaty of Portsmouth"],
+    "correctIndex": 1,
+    "category": "History",
+    "difficulty": "easy",
+    "explanation": "The Treaty of Versailles, signed on June 28, 1919, officially ended WWI.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which of these countries is landlocked?",
+    "options": ["Switzerland", "Italy", "Vietnam", "Brazil"],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "Switzerland is entirely surrounded by land (France, Germany, Austria, Liechtenstein, and Italy).",
+    "imageUrl": null
+  },
+  {
+    "text": "In tennis, what term describes a score of 40-40?",
+    "options": ["Deuce", "Love", "Advantage", "Break Point"],
+    "correctIndex": 0,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "Deuce is the tennis term for a tie score of 40-40, requiring a player to win two consecutive points to take the game.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which movie won the first Academy Award for Best Picture in 1929?",
+    "options": ["Metropolis", "Wings", "The Jazz Singer", "Sunrise"],
+    "correctIndex": 1,
+    "category": "Entertainment",
+    "difficulty": "hard",
+    "explanation": "Wings, a silent romantic action-drama about WWI fighter pilots, won the first-ever Academy Award for Outstanding Picture.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who wrote 'The Odyssey' and 'The Iliad' in ancient Greece?",
+    "options": ["Sophocles", "Socrates", "Homer", "Euripides"],
+    "correctIndex": 2,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "Homer is traditionally credited with the authorship of the two epic poems of ancient Greek literature.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which architectural style is characterized by pointed arches, ribbed vaults, and flying buttresses?",
+    "options": ["Romanesque", "Baroque", "Gothic", "Neoclassical"],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "Gothic architecture was a highly popular medieval European style, typified by Notre-Dame de Paris.",
+    "imageUrl": null
+  },
+  {
+    "text": "What spirit is distilled from fermented sugarcane juice or molasses?",
+    "options": ["Vodka", "Whiskey", "Rum", "Tequila"],
+    "correctIndex": 2,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Rum is distilled from sugarcane byproducts, most notably molasses, and is heavily linked to the Caribbean.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does SQL stand for in database management?",
+    "options": ["Structured Query Language", "System Query Language", "Simple Queue List", "Standard Query Layout"],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "SQL stands for Structured Query Language, the standard programming language for relational databases.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the next prime number after 7?",
+    "options": ["9", "11", "13", "15"],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "Prime numbers are only divisible by 1 and themselves. The prime numbers are 2, 3, 5, 7, 11...",
+    "imageUrl": null
+  },
+  {
+    "text": "Which internet challenge in 2014 raised over $115 million for ALS neurodegenerative research?",
+    "options": ["The Harlem Shake", "Mannequin Challenge", "Ice Bucket Challenge", "Planking"],
+    "correctIndex": 2,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "The ALS Ice Bucket Challenge went viral globally, dramatically increasing awareness and research funds.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which language family does English belong to?",
+    "options": ["Romance", "Celtic", "Germanic", "Slavic"],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "English is a West Germanic language that originated from Anglo-Frisian dialects brought to Britain.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who is the longest-serving President of the United States?",
+    "options": ["George Washington", "Abraham Lincoln", "Franklin D. Roosevelt", "Theodore Roosevelt"],
+    "correctIndex": 2,
+    "category": "Politics & World Leaders",
+    "difficulty": "medium",
+    "explanation": "Franklin D. Roosevelt was elected to four terms, serving from 1933 until his death in 1945, before the 22nd Amendment restricted presidents to two terms.",
+    "imageUrl": null
+  },
+  {
+    "text": "What index represents the share performance of the 30 largest publicly owned companies in the US?",
+    "options": ["Nasdaq Composite", "Dow Jones Industrial Average", "S&P 500", "Russell 2000"],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "The Dow Jones Industrial Average (DJIA) is a price-weighted stock market index of 30 prominent blue-chip companies.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the medical term for the windpipe?",
+    "options": ["Larynx", "Esophagus", "Trachea", "Pharynx"],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "The trachea, colloquially called the windpipe, is a cartilaginous tube that connects the larynx and pharynx to the lungs.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Roman mythology, who is the equivalent of the Greek god Poseidon?",
+    "options": ["Jupiter", "Neptune", "Mars", "Pluto"],
+    "correctIndex": 1,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Neptune is the Roman god of freshwater, the sea, and horses, equivalent to Poseidon.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the fastest land animal?",
+    "options": ["Pronghorn", "Cheetah", "Lion", "Falcon"],
+    "correctIndex": 1,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "The cheetah can run at speeds between 80 to 120 km/h, making it the fastest land animal.",
+    "imageUrl": null
+  },
+  {
+    "text": "What year did the infamous Titanic sink in the North Atlantic?",
+    "options": ["1905", "1912", "1923", "1931"],
+    "correctIndex": 1,
+    "category": "Geography",
+    "difficulty": "medium",
+    "explanation": "The RMS Titanic sank on April 15, 1912, during its maiden voyage from Southampton to New York City.",
+    "imageUrl": null
+  },
+  {
+    "text": "By what nickname was the serial killer Theodore Robert Bundy known?",
+    "options": ["The Night Stalker", "Ted Bundy", "The Zodiac Killer", "The BTK Killer"],
+    "correctIndex": 1,
+    "category": "True Crime & Law",
+    "difficulty": "easy",
+    "explanation": "Theodore Robert Bundy was known simply as Ted Bundy, active in the 1970s.",
+    "imageUrl": null
+  }
+]

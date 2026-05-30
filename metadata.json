@@ -1,0 +1,6 @@
+{
+  "name": "BrainBlitz",
+  "description": "An exquisite, fully-featured trivia and quiz app with daily challenges, progression system, XP shop, offline question bank, and detailed statistics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
