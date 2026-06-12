@@ -544,12 +544,12 @@ fun QuizPlayScreen(
                                                 }
                                             }
 
-                                            val isSingleFlagEmoji = currentQ.category.startsWith("Flags") && option.length <= 8 && !option.contains(" ")
+                                            val isSingleFlagEmoji = currentQ.category == "Flags: Country to Flag"
 
                                             Text(
                                                 text = option,
                                                 style = if (isSingleFlagEmoji) {
-                                                    androidx.compose.ui.text.TextStyle(fontSize = 32.sp)
+                                                    MaterialTheme.typography.bodyLarge.copy(fontSize = 32.sp)
                                                 } else {
                                                     MaterialTheme.typography.bodyLarge
                                                 },
@@ -558,32 +558,6 @@ fun QuizPlayScreen(
                                             )
                                         }
                                     }
-                                }
-                            }
-                        }
-
-                        // Explanation pop-up if revealed
-                        if (isRevealed) {
-                            Surface(
-                                shape = RoundedCornerShape(16.dp),
-                                color = MaterialTheme.colorScheme.surfaceVariant,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 8.dp)
-                            ) {
-                                Column(modifier = Modifier.padding(14.dp)) {
-                                    Text(
-                                        text = "⚡ Did You Know?",
-                                        style = MaterialTheme.typography.labelLarge,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = currentQ.explanation,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
                                 }
                             }
                         }
@@ -953,12 +927,12 @@ fun ReviewAnswersScreen(
                                             }
                                         }
 
-                                        val isSingleFlagEmoji = q.category.startsWith("Flags") && option.length <= 8 && !option.contains(" ")
+                                        val isSingleFlagEmoji = q.category == "Flags: Country to Flag"
 
                                         Text(
                                             text = option,
                                             style = if (isSingleFlagEmoji) {
-                                                androidx.compose.ui.text.TextStyle(fontSize = 20.sp)
+                                                MaterialTheme.typography.bodySmall.copy(fontSize = 20.sp)
                                             } else {
                                                 MaterialTheme.typography.bodySmall
                                             },
@@ -969,25 +943,27 @@ fun ReviewAnswersScreen(
                             }
                         }
 
-                        // Explanation Block
-                        Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = MaterialTheme.colorScheme.surfaceVariant,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(modifier = Modifier.padding(12.dp)) {
-                                Text(
-                                    text = "Explanation:",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Spacer(modifier = Modifier.height(2.dp))
-                                Text(
-                                    text = q.explanation,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
+                        // Explanation Block (if not Flags)
+                        if (!q.category.startsWith("Flags")) {
+                            Surface(
+                                shape = RoundedCornerShape(12.dp),
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(12.dp)) {
+                                    Text(
+                                        text = "Explanation:",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Text(
+                                        text = q.explanation,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
                             }
                         }
                     }

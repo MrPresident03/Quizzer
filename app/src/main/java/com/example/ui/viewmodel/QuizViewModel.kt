@@ -120,10 +120,10 @@ class QuizViewModel(
         }
     }
 
-    fun startFlagsQuiz(mode: String, count: Int) {
+    fun startFlagsQuiz(mode: String, difficulty: String, count: Int) {
         viewModelScope.launch {
             resetQuizState()
-            val questions = repository.getFlagQuiz(mode, count)
+            val questions = repository.getFlagQuiz(mode, difficulty, count)
             _activeQuestions.value = questions
             startQuestionTimer()
         }

@@ -47,10 +47,10 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
-                .padding(bottom = 90.dp),
+                .padding(bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Section A: Game configurations

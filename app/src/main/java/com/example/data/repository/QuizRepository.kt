@@ -300,11 +300,18 @@ class QuizRepository(
             "True/False" -> "boolean"
             else -> null
         }
-        val categoryId = if (categories.isNotEmpty() && !categories.contains("All Topics")) {
+        val categoryId = if (categories.isNotEmpty() && !categories.contains("All Topics") && !categories.contains("Capital Cities Challenge")) {
             getOpenTdbCategoryId(categories.random())
         } else {
             null
         }
+
+        // Dedicated Capital Cities Challenge topic
+        if (categories.contains("Capital Cities Challenge")) {
+            return@withContext CapitalCitiesProvider.generateCapitalQuiz(difficulty, qty)
+        }
+
+        var baseQuestions = emptyList<Question>()
 
         try {
             Log.d("QuizRepository", "Fetching $qty questions from OpenTDB... category=$categoryId difficulty=$tdbDiff type=$tdbType")
@@ -315,7 +322,7 @@ class QuizRepository(
                 type = tdbType
             )
             if (response.responseCode == 0 && response.results.isNotEmpty()) {
-                val questionsList = response.results.map { item ->
+                baseQuestions = response.results.map { item ->
                     val unescapedText = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.question)
                     val unescapedCorrectAnswer = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.correctAnswer)
                     val decodedOptions = if (item.type == "boolean") {
@@ -336,7 +343,6 @@ class QuizRepository(
                         explanation = "The correct answer is: $unescapedCorrectAnswer."
                     )
                 }
-                return@withContext questionsList
             } else {
                 Log.w("QuizRepository", "OpenTDB returned error code: ${response.responseCode}. Falling back to local questions.")
             }
@@ -344,38 +350,80 @@ class QuizRepository(
             Log.e("QuizRepository", "OpenTDB fetch exception: ${e.localizedMessage}. Falling back to offline seed.", e)
         }
 
-        val allQuestions = quizDao.getAllQuestions()
-        
-        // Filter by categories if selected
-        var filtered = if (categories.isEmpty() || categories.contains("All Topics")) {
-            allQuestions
-        } else {
-            allQuestions.filter { it.category in categories }
+        if (baseQuestions.isEmpty()) {
+            val allQuestions = quizDao.getAllQuestions()
+            
+            // Filter by categories if selected
+            var filtered = if (categories.isEmpty() || categories.contains("All Topics")) {
+                allQuestions
+            } else {
+                allQuestions.filter { it.category in categories }
+            }
+
+            // Filter by difficulty
+            if (difficulty != "Mixed") {
+                filtered = filtered.filter { it.difficulty.lowercase() == difficulty.lowercase() }
+            }
+
+            // Filter by format
+            filtered = when (format) {
+                "True/False" -> filtered.filter { it.optionsList.size == 2 || it.optionsList.any { o -> o.lowercase() == "true" } }
+                "Multiple Choice" -> filtered.filter { it.optionsList.size > 2 }
+                else -> filtered
+            }
+
+            // Weight towards unseen / rarely answered correctly (answeredCount ascending, correctRatio ascending)
+            val sorted = filtered.sortedWith(
+                compareBy<Question> { it.answeredCount }
+                    .thenBy { if (it.answeredCount == 0) 0f else (it.correctCount.toFloat() / it.answeredCount) }
+            )
+
+            baseQuestions = sorted.take(qty).shuffled()
         }
 
-        // Filter by difficulty
-        if (difficulty != "Mixed") {
-            filtered = filtered.filter { it.difficulty.lowercase() == difficulty.lowercase() }
+        val blendedList = baseQuestions.toMutableList()
+
+        // Inject flag and capital city questions into "Geography" or "All Topics" (mixed/random) sessions
+        val hasGeography = categories.contains("Geography")
+        val isAllTopics = categories.isEmpty() || categories.contains("All Topics")
+
+        val flagQty = when {
+            hasGeography -> (qty * 0.4).toInt().coerceAtLeast(1)
+            isAllTopics -> (qty * 0.15).toInt().coerceAtLeast(1)
+            else -> 0
         }
 
-        // Filter by format
-        filtered = when (format) {
-            "True/False" -> filtered.filter { it.optionsList.size == 2 || it.optionsList.any { o -> o.lowercase() == "true" } }
-            "Multiple Choice" -> filtered.filter { it.optionsList.size > 2 }
-            else -> filtered
+        val capitalQty = when {
+            hasGeography -> (qty * 0.4).toInt().coerceAtLeast(1)
+            isAllTopics -> (qty * 0.15).toInt().coerceAtLeast(1)
+            else -> 0
         }
 
-        // Weight towards unseen / rarely answered correctly (answeredCount ascending, correctRatio ascending)
-        val sorted = filtered.sortedWith(
-            compareBy<Question> { it.answeredCount }
-                .thenBy { if (it.answeredCount == 0) 0f else (it.correctCount.toFloat() / it.answeredCount) }
-        )
+        if (flagQty > 0) {
+            val flags = FlagQuestionsProvider.generateFlagQuiz("Mixed", difficulty, flagQty)
+            for (f in flags) {
+                if (blendedList.isNotEmpty()) {
+                    blendedList.removeAt(blendedList.size - 1)
+                }
+                blendedList.add(f)
+            }
+        }
 
-        val finalCount = if (count == 999) 50 else count
-        return@withContext sorted.take(finalCount).shuffled()
+        if (capitalQty > 0) {
+            val capitals = CapitalCitiesProvider.generateCapitalQuiz(difficulty, capitalQty)
+            for (c in capitals) {
+                if (blendedList.isNotEmpty()) {
+                    blendedList.removeAt(blendedList.size - 1)
+                }
+                blendedList.add(c)
+            }
+        }
+
+        return@withContext blendedList.shuffled()
     }
 
     suspend fun getDailyChallengeQuiz(): List<Question> = withContext(Dispatchers.IO) {
+        var baseQuestions = emptyList<Question>()
         try {
             Log.d("QuizRepository", "Fetching 10 Daily Challenge questions from OpenTDB...")
             val response = com.example.data.api.OpenTdbApiClient.service.getQuestions(
@@ -385,7 +433,7 @@ class QuizRepository(
                 type = null
             )
             if (response.responseCode == 0 && response.results.isNotEmpty()) {
-                val questionsList = response.results.map { item ->
+                baseQuestions = response.results.map { item ->
                     val unescapedText = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.question)
                     val unescapedCorrectAnswer = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.correctAnswer)
                     val decodedOptions = if (item.type == "boolean") {
@@ -406,27 +454,46 @@ class QuizRepository(
                         explanation = "The correct answer is: $unescapedCorrectAnswer."
                     )
                 }
-                return@withContext questionsList
             }
         } catch (e: Exception) {
             Log.e("QuizRepository", "Daily Challenge OpenTDB fetch exception: ${e.localizedMessage}. Falling back to offline seed.", e)
         }
 
-        // Daily Challenge gets exactly 10 questions randomly seeded based on the daily date hash
-        val sdf = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-        val dateHash = sdf.format(Date()).hashCode()
-        val rand = Random(dateHash)
-        
-        val all = quizDao.getAllQuestions()
-        if (all.isEmpty()) return@withContext emptyList<Question>()
-        
-        // Select 10 questions across diverse categories using custom Daily randomness seed
-        val shuffledWithSeed = all.shuffled(rand)
-        return@withContext shuffledWithSeed.take(10)
+        if (baseQuestions.isEmpty()) {
+            val sdf = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val dateHash = sdf.format(Date()).hashCode()
+            val rand = Random(dateHash)
+            
+            val all = quizDao.getAllQuestions()
+            if (all.isNotEmpty()) {
+                baseQuestions = all.shuffled(rand).take(10)
+            }
+        }
+
+        // Guarantee fallback is not empty
+        if (baseQuestions.isEmpty()) return@withContext emptyList<Question>()
+
+        // Crop to 6, then add 2 flag challenge and 2 capital city challenge questions
+        val dailyQuestions = baseQuestions.toMutableList()
+        while (dailyQuestions.size > 6) {
+            dailyQuestions.removeAt(dailyQuestions.size - 1)
+        }
+
+        val flags = FlagQuestionsProvider.generateFlagQuiz("Mixed", "Mixed", 2)
+        dailyQuestions.addAll(flags)
+
+        val capitals = CapitalCitiesProvider.generateCapitalQuiz("Mixed", 2)
+        dailyQuestions.addAll(capitals)
+
+        return@withContext dailyQuestions.shuffled()
     }
 
-    suspend fun getFlagQuiz(mode: String, count: Int): List<Question> = withContext(Dispatchers.IO) {
-        return@withContext FlagQuestionsProvider.generateFlagQuiz(mode, count)
+    suspend fun getFlagQuiz(mode: String, difficulty: String, count: Int): List<Question> = withContext(Dispatchers.IO) {
+        return@withContext FlagQuestionsProvider.generateFlagQuiz(mode, difficulty, count)
+    }
+
+    suspend fun getCapitalQuiz(difficulty: String, count: Int): List<Question> = withContext(Dispatchers.IO) {
+        return@withContext CapitalCitiesProvider.generateCapitalQuiz(difficulty, count)
     }
 
     // --- PROGRESSION & GAMIFICATION STATS UPDATE ---

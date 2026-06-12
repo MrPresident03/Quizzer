@@ -58,7 +58,7 @@ fun StatsAndAchievementsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(top = innerPadding.calculateTopPadding()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Sliding Tab Panel

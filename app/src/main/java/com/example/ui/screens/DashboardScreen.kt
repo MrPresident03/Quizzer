@@ -41,12 +41,13 @@ fun DashboardScreen(
     onNavigateToPracticeSelection: () -> Unit,
     onStartTopicOfTheDay: (String) -> Unit,
     onNavigateToProfile: () -> Unit,
-    onStartFlagQuiz: (mode: String, count: Int) -> Unit
+    onStartFlagQuiz: (mode: String, difficulty: String, count: Int) -> Unit
 ) {
     // Midnight countdown timer
     var timeUntilMidnight by remember { mutableStateOf("") }
     var activeFlagMode by remember { mutableStateOf("Mixed") }
     var flagQuestionCount by remember { mutableStateOf(10) }
+    var flagDifficulty by remember { mutableStateOf("Mixed") }
     LaunchedEffect(key1 = true) {
         while (true) {
             val now = Calendar.getInstance()
@@ -162,10 +163,10 @@ fun DashboardScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(bottom = 90.dp)
+            contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             // Level progress bar
             item {
@@ -552,7 +553,7 @@ fun DashboardScreen(
                             Spacer(modifier = Modifier.height(6.dp))
 
                             Text(
-                                text = "Identify the national flags of 50+ sovereign states with giant sharp high-contrast emoji renderings. Level up your geographical intuition!",
+                                text = "Identify the national flags of almost every sovereign country on the planet! Filter by difficulty to test your knowledge on rare and obscure flags.",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                                     lineHeight = 20.sp
@@ -606,7 +607,48 @@ fun DashboardScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            // Configuration Row 2: Question Count
+                            // Configuration Row 2: Difficulty Selection
+                            Text(
+                                text = "SELECT DIFFICULTY LEVEL",
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                )
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                val diffs = listOf("Easy", "Medium", "Hard", "Mixed")
+                                diffs.forEach { diffVal ->
+                                    val isSelected = flagDifficulty == diffVal
+                                    Surface(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .clickable { flagDifficulty = diffVal },
+                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                        shape = RoundedCornerShape(12.dp)
+                                    ) {
+                                        Text(
+                                            text = diffVal,
+                                            style = MaterialTheme.typography.bodySmall.copy(
+                                                fontWeight = FontWeight.Bold,
+                                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                                            ),
+                                            textAlign = TextAlign.Center,
+                                            modifier = Modifier.padding(vertical = 10.dp)
+                                        )
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // Configuration Row 3: Question Count
                             Text(
                                 text = "NUMBER OF QUESTIONS",
                                 style = MaterialTheme.typography.labelSmall.copy(
@@ -649,7 +691,7 @@ fun DashboardScreen(
 
                             // Start Button
                             Button(
-                                onClick = { onStartFlagQuiz(activeFlagMode, flagQuestionCount) },
+                                onClick = { onStartFlagQuiz(activeFlagMode, flagDifficulty, flagQuestionCount) },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Color(0xFF2563EB),
                                     contentColor = Color.White

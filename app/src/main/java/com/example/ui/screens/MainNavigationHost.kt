@@ -53,11 +53,12 @@ fun MainNavigationHost() {
         )
 
         Scaffold(
+            containerColor = MaterialTheme.colorScheme.background,
             bottomBar = {
                 if (showBottomBar) {
                     NavigationBar(
                         containerColor = MaterialTheme.colorScheme.surface,
-                        tonalElevation = 8.dp,
+                        tonalElevation = 0.dp,
                         modifier = Modifier.testTag("app_bottom_nav_bar")
                     ) {
                         // Tab 1: Home Dashboard
@@ -253,8 +254,8 @@ fun MainNavigationHost() {
                         onNavigateToProfile = {
                             navController.navigate("profile_shop")
                         },
-                        onStartFlagQuiz = { mode, count ->
-                            mainViewModel.startFlagsQuiz(mode, count)
+                        onStartFlagQuiz = { mode, difficulty, count ->
+                            mainViewModel.startFlagsQuiz(mode, difficulty, count)
                             navController.navigate("practice_quiz")
                         }
                     )

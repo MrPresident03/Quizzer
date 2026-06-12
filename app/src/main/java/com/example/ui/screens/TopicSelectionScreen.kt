@@ -57,9 +57,9 @@ fun TopicSelectionScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 90.dp),
+                .padding(bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             // Header Description
@@ -74,6 +74,67 @@ fun TopicSelectionScreen(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
+            }
+
+            // Featured Capital Cities Challenge Card
+            Card(
+                onClick = {
+                    onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat)
+                },
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f)
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .testTag("featured_capital_cities_card")
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocationCity,
+                            contentDescription = "Capital Cities Only",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Capital Cities Only Challenge",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                        Text(
+                            text = "Test your knowledge exclusively on capitals of sovereign countries across all continents!",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat)
+                        },
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = "Start capitals only challenge",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             }
 
             // Topic selection Grid
@@ -301,6 +362,7 @@ data class QuizTopicItem(
 
 fun getTopicsList(): List<QuizTopicItem> {
     return listOf(
+        QuizTopicItem("Capital Cities Challenge", Icons.Default.LocationCity, Color(0xFF00C853)),
         QuizTopicItem("General Knowledge", Icons.Default.MenuBook, Color(0xFFF57C00)),
         QuizTopicItem("Science & Nature", Icons.Default.Science, Color(0xFF388E3C)),
         QuizTopicItem("History", Icons.Default.History, Color(0xFF8D6E63)),
