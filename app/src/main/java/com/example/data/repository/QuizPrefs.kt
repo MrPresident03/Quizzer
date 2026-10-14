@@ -54,9 +54,17 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         get() = prefs.getString(KEY_DAILY_DATE, null)
         set(value) = prefs.edit().putString(KEY_DAILY_DATE, value).apply()
 
+    // --- Opt-in daily reminder notification ---
+
+    var dailyReminderEnabled: Boolean
+        get() = prefs.getBoolean(KEY_REMINDER, false)
+        set(value) = prefs.edit().putBoolean(KEY_REMINDER, value).apply()
+
     // --- Achievement counters ---
 
     fun categoryCorrect(category: String): Int = prefs.getInt(KEY_CATEGORY_PREFIX + category, 0)
+
+    fun categoryAnswered(category: String): Int = prefs.getInt(KEY_CATEGORY_ANSWERED_PREFIX + category, 0)
 
     fun addCategoryCorrect(counts: Map<String, Int>) {
         if (counts.isEmpty()) return
@@ -66,6 +74,32 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         }
         editor.apply()
     }
+
+    fun addCategoryAnswered(counts: Map<String, Int>) {
+        if (counts.isEmpty()) return
+        val editor = prefs.edit()
+        counts.forEach { (category, n) ->
+            editor.putInt(KEY_CATEGORY_ANSWERED_PREFIX + category, categoryAnswered(category) + n)
+        }
+        editor.apply()
+    }
+
+    /** Every topic with at least one answered question (from the per-topic counters). */
+    fun answeredTopics(): Set<String> = prefs.all.keys
+        .filter { it.startsWith(KEY_CATEGORY_ANSWERED_PREFIX) }
+        .mapTo(HashSet()) { it.removePrefix(KEY_CATEGORY_ANSWERED_PREFIX) }
+
+    // --- Mistakes to review (JSON list of MistakeEntry) ---
+
+    var mistakesJson: String?
+        get() = prefs.getString(KEY_MISTAKES, null)
+        set(value) = prefs.edit().putString(KEY_MISTAKES, value).apply()
+
+    // --- Today's daily challenge result (see DailyResult.serialize) ---
+
+    var dailyResult: String?
+        get() = prefs.getString(KEY_DAILY_RESULT, null)
+        set(value) = prefs.edit().putString(KEY_DAILY_RESULT, value).apply()
 
     val lifelinesUsedTotal: Int get() = prefs.getInt(KEY_LIFELINES_USED, 0)
 
@@ -82,10 +116,12 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         seenLog = null
         val editor = prefs.edit()
         prefs.all.keys
-            .filter { it.startsWith(KEY_CATEGORY_PREFIX) }
+            .filter { it.startsWith(KEY_CATEGORY_PREFIX) || it.startsWith(KEY_CATEGORY_ANSWERED_PREFIX) }
             .forEach { editor.remove(it) }
         editor.remove(KEY_SEEN)
             .remove(KEY_DAILY_DATE)
+            .remove(KEY_DAILY_RESULT)
+            .remove(KEY_MISTAKES)
             .remove(KEY_LIFELINES_USED)
             .remove(KEY_SHOP_PURCHASES)
             .apply()
@@ -98,6 +134,10 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         const val KEY_SEED_VERSION = "bundled_seed_version"
         const val KEY_DAILY_DATE = "daily_played_date"
         const val KEY_CATEGORY_PREFIX = "category_correct_"
+        const val KEY_CATEGORY_ANSWERED_PREFIX = "category_answered_"
+        const val KEY_MISTAKES = "mistakes_json"
+        const val KEY_DAILY_RESULT = "daily_result"
+        const val KEY_REMINDER = "daily_reminder_enabled"
         const val KEY_LIFELINES_USED = "lifelines_used_total"
         const val KEY_SHOP_PURCHASES = "shop_purchases"
     }

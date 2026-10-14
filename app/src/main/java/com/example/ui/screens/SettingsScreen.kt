@@ -1,5 +1,9 @@
 package com.example.ui.screens
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -20,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.UserStats
+import com.example.notifications.DailyReminder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,8 +32,16 @@ fun SettingsScreen(
     userStats: UserStats,
     onUpdateToggles: (sound: Boolean, haptic: Boolean, textLarge: Boolean) -> Unit,
     onResetProgress: () -> Unit,
-    onClearQuestionHistory: () -> Unit
+    onClearQuestionHistory: () -> Unit,
+    reminderEnabled: Boolean = false,
+    onReminderChange: (Boolean) -> Unit = {}
 ) {
+    var reminderDenied by remember { mutableStateOf(false) }
+    // Android 13+ asks for notification permission the first time the reminder is switched on.
+    val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        reminderDenied = !granted
+        if (granted) onReminderChange(true)
+    }
     var soundEnabled by remember(userStats.isSoundEffectsEnabled) { mutableStateOf(userStats.isSoundEffectsEnabled) }
     var hapticEnabled by remember(userStats.isHapticFeedbackEnabled) { mutableStateOf(userStats.isHapticFeedbackEnabled) }
     var fontLargeEnabled by remember(userStats.fontSizePreference) { mutableStateOf(userStats.fontSizePreference == "large") }
@@ -93,6 +106,24 @@ fun SettingsScreen(
                     onUpdateToggles(soundEnabled, hapticEnabled, it)
                 },
                 tag = "font_toggle"
+            )
+
+            // 4. Daily Challenge reminder
+            PreferenceToggle(
+                title = "Daily Reminder",
+                description = if (reminderDenied) "Notifications are blocked — allow them for BrainBlitz in system settings"
+                else "A nudge at ${DailyReminder.REMINDER_HOUR - 12} pm if you haven't played the Daily Challenge",
+                icon = Icons.Default.NotificationsActive,
+                checked = reminderEnabled,
+                onCheckedChange = { enable ->
+                    if (enable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    } else {
+                        reminderDenied = false
+                        onReminderChange(enable)
+                    }
+                },
+                tag = "reminder_toggle"
             )
 
             Divider(modifier = Modifier.padding(vertical = 4.dp))

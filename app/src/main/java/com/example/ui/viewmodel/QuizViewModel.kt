@@ -11,16 +11,21 @@ import com.example.data.model.Question
 import com.example.data.model.QuizHistory
 import com.example.data.model.UserStats
 import com.example.data.repository.Categories
+import com.example.data.repository.DailyChallenge
+import com.example.data.repository.DailyResult
 import com.example.data.repository.QuestionPicker
 import com.example.data.repository.QuizRepository
 import com.example.data.repository.Scoring
 import com.example.data.repository.SessionSummary
 import com.example.data.repository.SessionType
+import com.example.data.repository.TopicStat
+import com.example.notifications.DailyReminder
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import kotlin.random.Random
 
 class QuizViewModel(
@@ -95,6 +100,19 @@ class QuizViewModel(
     private val _dailyPlayedToday = MutableStateFlow(false)
     val dailyPlayedToday: StateFlow<Boolean> = _dailyPlayedToday.asStateFlow()
 
+    private val _todayDailyResult = MutableStateFlow<DailyResult?>(null)
+    /** Today's daily score, for the lobby and the share button. */
+    val todayDailyResult: StateFlow<DailyResult?> = _todayDailyResult.asStateFlow()
+
+    /** Questions waiting in "Review mistakes". */
+    val mistakeCount: StateFlow<Int> = repository.mistakeCount
+
+    private val _topicStats = MutableStateFlow<List<TopicStat>>(emptyList())
+    val topicStats: StateFlow<List<TopicStat>> = _topicStats.asStateFlow()
+
+    private val _dailyReminderEnabled = MutableStateFlow(repository.isDailyReminderEnabled)
+    val dailyReminderEnabled: StateFlow<Boolean> = _dailyReminderEnabled.asStateFlow()
+
     // Session bookkeeping. Every new/quit session bumps sessionId, and every delayed coroutine checks
     // it before touching state, so a stale "advance in 2.5 s" can't leak into the next quiz.
     private var sessionId = 0
@@ -112,12 +130,28 @@ class QuizViewModel(
 
     init {
         checkDailyPlayedStatus()
+        refreshTopicStats()
     }
 
     /** Re-check on every dashboard visit so the lock clears after midnight while the app is open. */
     fun checkDailyPlayedStatus() {
         _dailyPlayedToday.value = repository.isDailyPlayed()
+        _todayDailyResult.value = repository.todayDailyResult()
     }
+
+    fun refreshTopicStats() {
+        viewModelScope.launch {
+            _topicStats.value = try {
+                repository.topicStats()
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+    }
+
+    /** Wordle-style share text for today's daily result, or null if it hasn't been played. */
+    fun dailyShareText(): String? =
+        repository.todayDailyResult()?.let { DailyChallenge.shareText(LocalDate.now(), it) }
 
     // --- QUIZ GAME ENGINE ACTIONS ---
 
@@ -141,6 +175,12 @@ class QuizViewModel(
     fun startFlagsQuiz(mode: String, difficulty: String, count: Int) {
         val id = beginSession(SessionType.FLAGS, difficulty, timed = true)
         load(id) { repository.getFlagQuiz(mode, difficulty, count) }
+    }
+
+    /** Replays questions you previously got wrong; answering correctly clears them. */
+    fun startMistakeReview() {
+        val id = beginSession(SessionType.REVIEW, "Mixed", timed = false)
+        load(id) { repository.getMistakeReviewQuiz() }
     }
 
     /** Called when the player leaves the quiz screen early. Returns true if a results screen will follow. */
@@ -262,7 +302,7 @@ class QuizViewModel(
         _isAnswerRevealed.value = true
         logAnswer(question, null, correct = false)
         speedStreak = 0
-        scheduleAdvance(id, REVEAL_TIMEOUT_MS)
+        scheduleAdvance(id, REVEAL_WRONG_MS)
     }
 
     fun selectOption(optionIndex: Int) {
@@ -283,15 +323,22 @@ class QuizViewModel(
         speedStreak = if (isCorrect && _isTimed.value && timeSpent <= SPEED_SECONDS) speedStreak + 1 else 0
         bestSpeedStreak = maxOf(bestSpeedStreak, speedStreak)
 
-        scheduleAdvance(id, REVEAL_ANSWER_MS)
+        // Wrong answers stay up longer so there's time to read the explanation; "Next" skips the wait.
+        scheduleAdvance(id, if (isCorrect) REVEAL_CORRECT_MS else REVEAL_WRONG_MS)
     }
 
-    private fun logAnswer(question: Question, selected: Int?, correct: Boolean) {
+    /** "Next" button on the answer reveal: move on without waiting for the auto-advance. */
+    fun continueToNext() {
+        if (!_isAnswerRevealed.value || _quizFinished.value || finishing) return
+        scheduleAdvance(sessionId, 0)
+    }
+
+    private fun logAnswer(question: Question, selected: Int?, correct: Boolean, countAsMistake: Boolean = true) {
         answers.add(correct)
         selections.add(selected)
         viewModelScope.launch {
             try {
-                repository.recordAnswer(question, correct)
+                repository.recordAnswer(question, correct, countAsMistake)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -388,7 +435,9 @@ class QuizViewModel(
 
         if (summary.type == SessionType.DAILY) {
             repository.markDailyPlayed()
+            repository.saveDailyResult(playedAnswers, summary.durationSeconds)
             _dailyPlayedToday.value = true
+            _todayDailyResult.value = repository.todayDailyResult()
         }
         try {
             _lastSessionXp.value = repository.recordQuizSession(summary)
@@ -397,11 +446,13 @@ class QuizViewModel(
         } catch (e: Exception) {
             Log.e(TAG, "Couldn't save session", e)
         }
+        refreshTopicStats()
     }
 
     private fun sessionLabel(played: List<Question>): String = when (_sessionType.value) {
         SessionType.DAILY -> "Daily Challenge"
         SessionType.FLAGS -> "Flags"
+        SessionType.REVIEW -> "Mistake Review"
         else -> played.map { it.category }.distinct().singleOrNull() ?: "Mixed Practice"
     }
 
@@ -445,8 +496,8 @@ class QuizViewModel(
         runLifeline("skip") { q ->
             stopTimer()
             val id = sessionId
-            // A skip counts as not-correct but isn't shown as a wrong answer in the review.
-            logAnswer(q, null, correct = false)
+            // A skip counts as not-correct but isn't shown as a wrong answer, or added to mistakes.
+            logAnswer(q, null, correct = false, countAsMistake = false)
             speedStreak = 0
             scheduleAdvance(id, 0)
         }
@@ -535,7 +586,18 @@ class QuizViewModel(
         viewModelScope.launch {
             repository.resetAllProgress()
             _dailyPlayedToday.value = false
+            _todayDailyResult.value = null
+            _topicStats.value = emptyList()
         }
+    }
+
+    /** Turn the evening Daily Challenge reminder on or off (permission is requested by the UI). */
+    fun setDailyReminder(enabled: Boolean) {
+        val context = getApplication<Application>()
+        val on = enabled && DailyReminder.canNotify(context)
+        repository.isDailyReminderEnabled = on
+        _dailyReminderEnabled.value = on
+        if (on) DailyReminder.schedule(context) else DailyReminder.cancel(context)
     }
 
     fun clearHistoryAndRepeats() {
@@ -549,8 +611,8 @@ class QuizViewModel(
         const val MAX_QUESTION_SECONDS = 60
         const val EXTRA_TIME_SECONDS = 15
         const val SPEED_SECONDS = 10
-        const val REVEAL_ANSWER_MS = 2500L
-        const val REVEAL_TIMEOUT_MS = 3000L
+        const val REVEAL_CORRECT_MS = 2500L
+        const val REVEAL_WRONG_MS = 6000L
         const val ENDLESS_REFILL_THRESHOLD = 5
     }
 }

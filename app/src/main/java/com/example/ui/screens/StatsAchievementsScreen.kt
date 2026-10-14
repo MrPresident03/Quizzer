@@ -34,7 +34,11 @@ import androidx.compose.ui.unit.sp
 import com.example.data.model.Achievement
 import com.example.data.model.QuizHistory
 import com.example.data.model.UserStats
+import com.example.data.repository.TopicStat
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -43,7 +47,9 @@ import kotlin.math.roundToInt
 fun StatsAndAchievementsScreen(
     userStats: UserStats,
     historyList: List<QuizHistory>,
-    achievementList: List<Achievement>
+    achievementList: List<Achievement>,
+    topicStats: List<TopicStat> = emptyList(),
+    onPracticeTopic: (String) -> Unit = {}
 ) {
     var activeTab by remember { mutableStateOf(0) } // 0 = Stats/History, 1 = Achievements
 
@@ -100,7 +106,7 @@ fun StatsAndAchievementsScreen(
                     .fillMaxWidth()
             ) { targetTab ->
                 when (targetTab) {
-                    0 -> PerformanceStatsTab(userStats, historyList)
+                    0 -> PerformanceStatsTab(userStats, historyList, topicStats, onPracticeTopic)
                     1 -> BadgesAchievementsTab(achievementList)
                 }
             }
@@ -110,7 +116,12 @@ fun StatsAndAchievementsScreen(
 
 // --- TAB A: PERFORMANCE STATS & HISTORY ---
 @Composable
-fun PerformanceStatsTab(userStats: UserStats, historyList: List<QuizHistory>) {
+fun PerformanceStatsTab(
+    userStats: UserStats,
+    historyList: List<QuizHistory>,
+    topicStats: List<TopicStat> = emptyList(),
+    onPracticeTopic: (String) -> Unit = {}
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -212,9 +223,16 @@ fun PerformanceStatsTab(userStats: UserStats, historyList: List<QuizHistory>) {
                 }
             }
 
-            // B. Activity Heatmap Board
+            // Topic mastery: accuracy per topic, and a one-tap drill on the weakest one
+            if (topicStats.isNotEmpty()) {
+                item {
+                    TopicMasteryCard(topicStats = topicStats, onPracticeTopic = onPracticeTopic)
+                }
+            }
+
+            // B. Activity Heatmap Board (questions answered per day, last 3 weeks)
             item {
-                val calendarCells = remember { generateHeatmapActivity() }
+                val calendarCells = remember(historyList) { activityByDay(historyList) }
                 Card(
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -331,10 +349,84 @@ fun PerformanceStatsTab(userStats: UserStats, historyList: List<QuizHistory>) {
 }
 
 // Generate simple mock score list to shade the heatmap blocks
-fun generateHeatmapActivity(): List<Int> {
-    return listOf(
-        0, 8, 0, 12, 18, 0, 5, 0, 0, 7, 10, 0, 16, 2, 0, 0, 5, 12, 0, 24, 0
-    )
+/** Questions answered on each of the last [days] days (oldest first), from real quiz history. */
+fun activityByDay(history: List<QuizHistory>, days: Int = 21, today: LocalDate = LocalDate.now()): List<Int> {
+    val zone = ZoneId.systemDefault()
+    val perDay = history.groupBy { Instant.ofEpochMilli(it.timestamp).atZone(zone).toLocalDate() }
+        .mapValues { (_, sessions) -> sessions.sumOf { it.totalQuestions } }
+    return (days - 1 downTo 0).map { perDay[today.minusDays(it.toLong())] ?: 0 }
+}
+
+/** Minimum answers before a topic counts as "weakest", so one unlucky question doesn't decide it. */
+private const val MIN_ANSWERS_FOR_WEAKEST = 5
+
+@Composable
+private fun TopicMasteryCard(topicStats: List<TopicStat>, onPracticeTopic: (String) -> Unit) {
+    val weakest = topicStats
+        .filter { it.answered >= MIN_ANSWERS_FOR_WEAKEST }
+        .minByOrNull { it.accuracy }
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(1.dp),
+        modifier = Modifier.testTag("topic_mastery_card")
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(text = "Topic Mastery", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
+            topicStats.take(8).forEach { stat ->
+                val percent = (stat.accuracy * 100).roundToInt()
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(
+                            text = stat.topic,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "$percent% · ${stat.correct}/${stat.answered}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        )
+                    }
+                    LinearProgressIndicator(
+                        progress = { stat.accuracy },
+                        color = when {
+                            percent >= 80 -> Color(0xFF2E7D32)
+                            percent >= 50 -> MaterialTheme.colorScheme.primary
+                            else -> Color(0xFFC62828)
+                        },
+                        trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                        strokeCap = StrokeCap.Round,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(6.dp)
+                    )
+                }
+            }
+            if (weakest != null && weakest.accuracy < 0.9f) {
+                Spacer(modifier = Modifier.height(2.dp))
+                Button(
+                    onClick = { onPracticeTopic(weakest.topic) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("practice_weakest_topic_button"),
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.FitnessCenter, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Practice your weakest: ${weakest.topic}",
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
 }
 
 // --- TAB B: BADGES & ACHIEVEMENTS GRID ---

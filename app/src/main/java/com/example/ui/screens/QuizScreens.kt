@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -30,6 +32,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.math.roundToInt
 import com.example.data.model.Question
 import com.example.data.model.UserStats
+import com.example.data.repository.DailyResult
+import com.example.ui.SoundEffects
 import com.example.ui.theme.CorrectGreen
 import com.example.ui.theme.GoldYellow
 import com.example.ui.theme.WrongRed
@@ -40,24 +44,16 @@ import com.example.ui.theme.WrongRed
 fun DailyChallengeLobbyScreen(
     userStats: UserStats,
     dailyPlayed: Boolean,
+    challengeNumber: Long,
+    todayResult: DailyResult?,
     onNavigateBack: () -> Unit,
-    onStartDailyQuiz: () -> Unit
+    onStartDailyQuiz: () -> Unit,
+    onShare: () -> Unit
 ) {
-    // Generate simple mock daily leaderboard ranked based on fixed accuracy and duration
-    val mockLeaderboard = remember {
-        listOf(
-            Triple("AuroQuiz", "10/10", "42s"),
-            Triple("MindMaster", "10/10", "51s"),
-            Triple("BrainyBeast", "9/10", "38s"),
-            Triple("TriviaQueen", "9/10", "46s"),
-            Triple("ChallengerX", "8/10", "53s")
-        )
-    }
-
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Daily Challenge Lobby", fontWeight = FontWeight.ExtraBold) },
+                title = { Text("Daily Challenge #$challengeNumber", fontWeight = FontWeight.ExtraBold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
@@ -71,6 +67,7 @@ fun DailyChallengeLobbyScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
@@ -79,7 +76,9 @@ fun DailyChallengeLobbyScreen(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -92,39 +91,69 @@ fun DailyChallengeLobbyScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.EmojiEvents,
-                            contentDescription = "Badges",
+                            contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(36.dp)
                         )
                     }
 
-                    Text(
-                        text = "Today's Trivia Special",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.ExtraBold
-                    )
-
-                    Text(
-                        text = "Every day at midnight local time, a brand new set of 10 mixed trivia questions goes live. You get exactly 1 attempt to score high and earn the Daily Champion badge!",
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    if (dailyPlayed) {
-                        Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = CorrectGreen.copy(alpha = 0.15f)
+                    if (dailyPlayed && todayResult != null) {
+                        Text(
+                            text = "Today's score",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "${todayResult.correct} / ${todayResult.answers.size}",
+                            style = MaterialTheme.typography.displaySmall,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        // The same grid that gets shared, so players know what friends will see.
+                        Text(
+                            text = todayResult.answers.joinToString("") { if (it) "🟩" else "🟥" },
+                            fontSize = 22.sp,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = "Finished in ${todayResult.seconds / 60}m ${todayResult.seconds % 60}s · Streak: ${userStats.currentStreak} day${if (userStats.currentStreak == 1) "" else "s"}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
+                        Button(
+                            onClick = onShare,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(52.dp)
+                                .testTag("share_daily_button"),
+                            shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text(
-                                text = "✓ Attempt Completed Today",
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
-                                style = MaterialTheme.typography.labelLarge.copy(color = CorrectGreen, fontWeight = FontWeight.Bold)
-                            )
+                            Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Share with friends", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                         }
+                    } else if (dailyPlayed) {
+                        Text(
+                            text = "✓ Attempt used today",
+                            style = MaterialTheme.typography.titleMedium.copy(color = CorrectGreen, fontWeight = FontWeight.Bold)
+                        )
+                        Text(
+                            text = "A new challenge unlocks at midnight.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
                     } else {
+                        Text(
+                            text = "Today's Trivia Special",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                        Text(
+                            text = "10 questions, easy to hard. Everyone gets the same set today, so you can compare scores with friends.",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
                         Button(
                             onClick = onStartDailyQuiz,
                             modifier = Modifier
@@ -139,67 +168,34 @@ fun DailyChallengeLobbyScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            // Lobby Leaderboard
             Text(
-                text = "🏆 Today's Leaderboard",
+                text = "How it works",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.primary
             )
-
             Card(
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(1.dp)
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    itemsIndexed(mockLeaderboard) { index, entry ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "#${index + 1}",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = if (index == 0) GoldYellow else MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.width(36.dp)
-                            )
-                            Text(
-                                text = entry.first,
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                Text(
-                                    text = entry.second,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = CorrectGreen
-                                )
-                                Text(
-                                    text = entry.third,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                                )
-                            }
-                        }
-                        if (index < mockLeaderboard.lastIndex) {
-                            Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        }
-                    }
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    LobbyRule(Icons.Default.Groups, "Same questions for every player, every day — works offline too.")
+                    LobbyRule(Icons.Default.TrendingUp, "6 trivia questions, 2 flags and 2 capitals, ramping from easy to hard.")
+                    LobbyRule(Icons.Default.LockClock, "One attempt. Leaving after you've started uses it up.")
+                    LobbyRule(Icons.Default.Share, "Share your 🟩🟥 grid without spoiling the answers.")
+                    LobbyRule(Icons.Default.EmojiEvents, "A perfect score earns the Daily Champion badge.")
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LobbyRule(icon: ImageVector, text: String) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(20.dp))
+        Text(text = text, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -223,7 +219,8 @@ fun QuizPlayScreen(
     isLoading: Boolean = false,
     loadError: String? = null,
     isTimed: Boolean = true,
-    isEndless: Boolean = false
+    isEndless: Boolean = false,
+    onNext: () -> Unit = {}
 ) {
     val haptic = LocalHapticFeedback.current
     var showQuitDialog by remember { mutableStateOf(false) }
@@ -263,6 +260,13 @@ fun QuizPlayScreen(
     if (currentQ == null) {
         QuizLoadingOrError(isLoading = isLoading || loadError == null, loadError = loadError, onBack = onQuitQuiz)
         return
+    }
+
+    // Correct / wrong tone when the answer is revealed ("Sound Effects" setting).
+    LaunchedEffect(isRevealed, currentIndex) {
+        if (isRevealed && userStats.isSoundEffectsEnabled) {
+            if (selectedOption == currentQ.correctIndex) SoundEffects.correct() else SoundEffects.wrong()
+        }
     }
 
     // Visual Timer bar depleting color logic (Green -> Yellow -> Red)
@@ -349,7 +353,9 @@ fun QuizPlayScreen(
                     val hiddenOptions = if (isActiveSlide) hiddenOptions else emptySet()
                     val audiencePoll = if (isActiveSlide) audiencePoll else null
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         // Category Label
@@ -606,58 +612,81 @@ fun QuizPlayScreen(
                                 }
                             }
                         }
+
+                        // Learn something from every answer: show why, right away.
+                        if (isRevealed && currentQ.explanation.isNotBlank()) {
+                            AnswerExplanation(question = currentQ, selectedOption = selectedOption)
+                        }
                     }
                 }
             }
 
-            // Bottom Floating Lifelines Bar
+            // Bottom bar: lifelines while answering, "Next" once the answer is revealed
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Divider()
-                Text(
-                    text = "LIFELINES",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    LifelineButton(
-                        label = "50/50",
-                        count = userStats.lifelineFiftyFiftyCount,
-                        icon = Icons.Default.FilterAlt, // standard representation
-                        isActive = !isRevealed && hiddenOptions.isEmpty() && currentQ.optionsList.size >= 4,
-                        onClick = onUse5050,
-                        tag = "fifty_fifty_lifeline"
+                if (isRevealed) {
+                    Button(
+                        onClick = onNext,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp)
+                            .testTag("next_question_button"),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(
+                            text = if (!isEndless && currentIndex + 1 >= questions.size) "See results" else "Next question",
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(18.dp))
+                    }
+                } else {
+                    Text(
+                        text = "LIFELINES",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
                     )
-                    LifelineButton(
-                        label = "Skip",
-                        count = userStats.lifelineSkipCount,
-                        icon = Icons.Default.SkipNext,
-                        isActive = !isRevealed,
-                        onClick = onUseSkip,
-                        tag = "skip_lifeline"
-                    )
-                    LifelineButton(
-                        label = "+15s",
-                        count = userStats.lifelineExtraTimeCount,
-                        icon = Icons.Default.Timer,
-                        isActive = !isRevealed && isTimed,
-                        onClick = onUseExtraTime,
-                        tag = "extra_time_lifeline"
-                    )
-                    LifelineButton(
-                        label = "Audience",
-                        count = userStats.lifelineAskAudienceCount,
-                        icon = Icons.Default.Poll,
-                        isActive = !isRevealed && audiencePoll == null,
-                        onClick = onUseAskAudience,
-                        tag = "ask_audience_lifeline"
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        LifelineButton(
+                            label = "50/50",
+                            count = userStats.lifelineFiftyFiftyCount,
+                            icon = Icons.Default.FilterAlt, // standard representation
+                            isActive = !isRevealed && hiddenOptions.isEmpty() && currentQ.optionsList.size >= 4,
+                            onClick = onUse5050,
+                            tag = "fifty_fifty_lifeline"
+                        )
+                        LifelineButton(
+                            label = "Skip",
+                            count = userStats.lifelineSkipCount,
+                            icon = Icons.Default.SkipNext,
+                            isActive = !isRevealed,
+                            onClick = onUseSkip,
+                            tag = "skip_lifeline"
+                        )
+                        LifelineButton(
+                            label = "+15s",
+                            count = userStats.lifelineExtraTimeCount,
+                            icon = Icons.Default.Timer,
+                            isActive = !isRevealed && isTimed,
+                            onClick = onUseExtraTime,
+                            tag = "extra_time_lifeline"
+                        )
+                        LifelineButton(
+                            label = "Audience",
+                            count = userStats.lifelineAskAudienceCount,
+                            icon = Icons.Default.Poll,
+                            isActive = !isRevealed && audiencePoll == null,
+                            onClick = onUseAskAudience,
+                            tag = "ask_audience_lifeline"
+                        )
+                    }
                 }
             }
         }
@@ -730,6 +759,37 @@ fun LifelineButton(
     }
 }
 
+@Composable
+private fun AnswerExplanation(question: Question, selectedOption: Int?) {
+    val gotItRight = selectedOption == question.correctIndex
+    val accent = if (gotItRight) CorrectGreen else WrongRed
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = accent.copy(alpha = 0.10f),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("answer_explanation")
+    ) {
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(
+                text = when {
+                    gotItRight -> "✓ Correct!"
+                    selectedOption == null -> "⏱ Time's up"
+                    else -> "✗ Not quite — the answer is ${question.optionsList.getOrNull(question.correctIndex).orEmpty()}"
+                },
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                color = accent
+            )
+            Text(
+                text = question.explanation,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
 /** "A", "B", "C", ... without crashing if a question ever has more than four options. */
 internal fun optionLabel(index: Int): String = ('A' + index).toString()
 
@@ -782,7 +842,8 @@ fun QuizResultsScreen(
     xpEarned: Int,
     isDaily: Boolean,
     onReviewClick: () -> Unit,
-    onDashboardFinish: () -> Unit
+    onDashboardFinish: () -> Unit,
+    onShare: (() -> Unit)? = null
 ) {
     val correctCount = answers.count { it }
     val totalCount = questions.size
@@ -865,6 +926,21 @@ fun QuizResultsScreen(
             }
 
             Spacer(modifier = Modifier.height(14.dp))
+
+            if (onShare != null) {
+                Button(
+                    onClick = onShare,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp)
+                        .testTag("share_result_button"),
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Share your score", fontWeight = FontWeight.Bold)
+                }
+            }
 
             // Options
             Button(

@@ -30,10 +30,26 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: |
+          set -o pipefail
+          ./gradlew assembleDebug --stacktrace 2>&1 | tee build-output.txt
 
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest --stacktrace
+        run: |
+          set -o pipefail
+          ./gradlew testDebugUnitTest --stacktrace 2>&1 | tee test-output.txt
+
+      # Put the key Gradle error lines on the run summary / PR checks, so failures can be
+      # diagnosed without digging through the full log.
+      - name: Summarise failure
+        if: failure()
+        run: |
+          details=$(cat build-output.txt test-output.txt 2>/dev/null \
+            | grep -E "FAILED|What went wrong|^e: |Execution failed|Caused by|Exception:|at com\.example|> Task :app:[a-zA-Z]+ FAILED|tests completed" \
+            | grep -v "^\s*at org\.gradle" | head -60)
+          details="${details//'%'/'%25'}"
+          details="${details//$'\n'/'%0A'}"
+          echo "::error title=Gradle failure::${details}"
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v7

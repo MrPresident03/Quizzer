@@ -13,6 +13,9 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -37,6 +40,14 @@ class QuizRepository(
     private val initMutex = Mutex()
     @Volatile private var initialized = false
 
+    private val mistakesLock = Any()
+    private var mistakeBook: MistakeBook? = null
+    private val _mistakeCount = MutableStateFlow(0)
+    /** How many questions are waiting in "Review mistakes". */
+    val mistakeCount: StateFlow<Int> = _mistakeCount.asStateFlow()
+
+    @Volatile private var bundledCache: List<Question>? = null
+
     // --- SEEDING & INITIALIZATION ---
 
     /**
@@ -53,6 +64,7 @@ class QuizRepository(
             }
             // IGNORE (not REPLACE) so adding a new achievement in an update doesn't re-lock earned ones.
             quizDao.insertMissingAchievements(defaultAchievements())
+            _mistakeCount.value = mistakes().size
             initialized = true
         }
     }
@@ -184,17 +196,60 @@ class QuizRepository(
         finalizeQuiz(core + flags + capitals, excludeKeys, random)
     }
 
-    suspend fun getDailyChallengeQuiz(): List<Question> = withContext(Dispatchers.IO) {
+    /**
+     * Same 10 questions for every player on a given day (see [DailyChallenge]), built offline from
+     * the bundled bank so results can be compared and shared.
+     */
+    suspend fun getDailyChallengeQuiz(date: LocalDate = LocalDate.now()): List<Question> = withContext(Dispatchers.IO) {
         initializeAppIfNeeded()
+        val bundled = bundledQuestions()
+        if (bundled.size >= DailyChallenge.TRIVIA_PER_DAY) {
+            return@withContext DailyChallenge.build(bundled, date)
+        }
+        // Bundled bank unreadable: fall back to a normal mixed quiz rather than nothing.
         val random = Random.Default
         val seen = prefs.seenSnapshot()
-        val lastSeen: (String) -> Long? = { key -> seen[key] }
+        val core = buildCore(emptyList(), null, null, DAILY_CORE_SIZE, { seen[it] }, emptySet(), random)
+        finalizeQuiz(core, emptySet(), random)
+    }
 
-        // 6 mixed trivia + 2 flag + 2 capital questions.
-        val core = buildCore(emptyList(), null, null, DAILY_CORE_SIZE, lastSeen, emptySet(), random)
-        val flags = FlagQuestionsProvider.generateFlagQuiz("Mixed", "Mixed", 2, lastSeen, random)
-        val capitals = CapitalCitiesProvider.generateCapitalQuiz("Mixed", 2, lastSeen, random)
-        finalizeQuiz(core + flags + capitals, emptySet(), random)
+    fun todayDailyResult(today: LocalDate = LocalDate.now()): DailyResult? =
+        DailyResult.parse(prefs.dailyResult)?.takeIf { it.date == today.toString() }
+
+    fun saveDailyResult(answers: List<Boolean>, seconds: Int, today: LocalDate = LocalDate.now()) {
+        prefs.dailyResult = DailyResult(today.toString(), answers, seconds).serialize()
+    }
+
+    private fun bundledQuestions(): List<Question> =
+        bundledCache ?: (loadBundledQuestions() ?: emptyList()).also { if (it.isNotEmpty()) bundledCache = it }
+
+    // --- MISTAKE REVIEW ---
+
+    private fun mistakes(): MistakeBook = synchronized(mistakesLock) {
+        mistakeBook ?: MistakeBook(parseMistakes(prefs.mistakesJson)).also { mistakeBook = it }
+    }
+
+    private fun parseMistakes(json: String?): List<MistakeEntry> {
+        if (json.isNullOrBlank()) return emptyList()
+        return runCatching { mistakesAdapter().fromJson(json) }.getOrNull().orEmpty()
+    }
+
+    private fun mistakesAdapter() =
+        moshi.adapter<List<MistakeEntry>>(Types.newParameterizedType(List::class.java, MistakeEntry::class.java))
+
+    private fun updateMistakes(change: (MistakeBook) -> Boolean) = synchronized(mistakesLock) {
+        val book = mistakes()
+        if (change(book)) {
+            prefs.mistakesJson = mistakesAdapter().toJson(book.entries())
+            _mistakeCount.value = book.size
+        }
+    }
+
+    /** Up to [count] questions you previously got wrong, oldest misses first. */
+    suspend fun getMistakeReviewQuiz(count: Int = REVIEW_SIZE): List<Question> = withContext(Dispatchers.IO) {
+        initializeAppIfNeeded()
+        val random = Random.Default
+        mistakes().reviewSet(count).map { QuestionPicker.shuffleOptions(it, random) }
     }
 
     suspend fun getFlagQuiz(mode: String, difficulty: String, count: Int): List<Question> = withContext(Dispatchers.IO) {
@@ -292,11 +347,31 @@ class QuizRepository(
 
     // --- PER-ANSWER TRACKING ---
 
-    /** Remembers the question as seen (so it's deprioritised next time) and updates its counters. */
-    suspend fun recordAnswer(question: Question, isCorrect: Boolean) = withContext(Dispatchers.IO) {
+    /**
+     * Remembers the question as seen (so it's deprioritised next time), updates its counters, and
+     * adds it to / clears it from the mistakes list. Skips pass [countAsMistake] = false.
+     */
+    suspend fun recordAnswer(question: Question, isCorrect: Boolean, countAsMistake: Boolean = true) = withContext(Dispatchers.IO) {
         prefs.markSeen(listOf(QuestionPicker.keyOf(question)))
         quizDao.incrementAnswerStats(question.text, if (isCorrect) 1 else 0)
+        when {
+            isCorrect -> updateMistakes { it.recordRight(question) }
+            countAsMistake -> updateMistakes { it.recordWrong(question, System.currentTimeMillis()); true }
+        }
     }
+
+    /** Per-topic answered/correct totals, most-played first. */
+    fun topicStats(): List<TopicStat> = prefs.answeredTopics()
+        .map { topic ->
+            val answered = prefs.categoryAnswered(topic)
+            TopicStat(topic, answered, prefs.categoryCorrect(topic).coerceAtMost(answered))
+        }
+        .filter { it.answered > 0 }
+        .sortedByDescending { it.answered }
+
+    var isDailyReminderEnabled: Boolean
+        get() = prefs.dailyReminderEnabled
+        set(value) { prefs.dailyReminderEnabled = value }
 
     fun isDailyPlayed(today: LocalDate = LocalDate.now()): Boolean = prefs.dailyPlayedDate == today.toString()
 
@@ -345,12 +420,17 @@ class QuizRepository(
         )
         quizDao.insertOrUpdateUserStats(updatedStats)
 
-        // Counters for achievements that need more than the stats table tracks.
+        // Per-topic counters (topic mastery panel + category achievements).
         val correctByCategory = summary.questions
             .filterIndexed { index, _ -> summary.answers.getOrNull(index) == true }
-            .groupingBy { it.category }
+            .groupingBy { statsTopicFor(it.category) }
+            .eachCount()
+        val answeredByCategory = summary.questions
+            .take(summary.answers.size)
+            .groupingBy { statsTopicFor(it.category) }
             .eachCount()
         prefs.addCategoryCorrect(correctByCategory)
+        prefs.addCategoryAnswered(answeredByCategory)
         prefs.addLifelinesUsed(summary.lifelinesUsed)
         if (summary.type == SessionType.DAILY) markDailyPlayed(today)
 
@@ -470,6 +550,8 @@ class QuizRepository(
         quizDao.resetAchievements()
         quizDao.insertOrUpdateUserStats(UserStats())
         prefs.resetProgress()
+        synchronized(mistakesLock) { mistakeBook = MistakeBook() }
+        _mistakeCount.value = 0
     }
 
     /** "Recycle seen questions": forget what's been shown so older questions can come back. */
@@ -483,11 +565,12 @@ class QuizRepository(
         private const val TAG = "QuizRepository"
 
         /** Bump when assets/questions.json changes so existing installs pick up the new questions. */
-        const val BUNDLED_SEED_VERSION = 2
+        const val BUNDLED_SEED_VERSION = 3
 
         const val ENDLESS_COUNT = 999
         const val ENDLESS_BATCH_SIZE = 20
         private const val DAILY_CORE_SIZE = 6
+        const val REVIEW_SIZE = 10
         private const val MAX_NAME_LENGTH = 24
         private const val NO_REMOTE = "\u0000no-remote"
         private val DIFFICULTIES = setOf("easy", "medium", "hard")

@@ -26,7 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.UserStats
+import com.example.data.repository.Scoring
 import com.example.ui.theme.GoldYellow
+import java.time.LocalDate
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +43,11 @@ fun DashboardScreen(
     onNavigateToPracticeSelection: () -> Unit,
     onStartTopicOfTheDay: (String) -> Unit,
     onNavigateToProfile: () -> Unit,
-    onStartFlagQuiz: (mode: String, difficulty: String, count: Int) -> Unit
+    onStartFlagQuiz: (mode: String, difficulty: String, count: Int) -> Unit,
+    lifetimeXp: Int = userStats.xpPoints,
+    playedDays: Set<LocalDate> = emptySet(),
+    mistakeCount: Int = 0,
+    onStartMistakeReview: () -> Unit = {}
 ) {
     // Midnight countdown timer
     var timeUntilMidnight by remember { mutableStateOf("") }
@@ -170,7 +176,10 @@ fun DashboardScreen(
         ) {
             // Level progress bar
             item {
-                val progressPercent = (userStats.xpPoints % 350) / 350f
+                // Progress toward the next level comes from lifetime XP, not the spendable balance.
+                val progressPercent = if (userStats.currentLevel >= Scoring.MAX_LEVEL) 1f
+                else (lifetimeXp % Scoring.XP_PER_LEVEL) / Scoring.XP_PER_LEVEL.toFloat()
+                val xpToNext = Scoring.XP_PER_LEVEL - (lifetimeXp % Scoring.XP_PER_LEVEL)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -222,7 +231,7 @@ fun DashboardScreen(
                             }
                             Column(horizontalAlignment = Alignment.End) {
                                 Text(
-                                    text = "TOTAL XP",
+                                    text = "XP COINS",
                                     style = MaterialTheme.typography.labelSmall.copy(
                                         color = Color.White.copy(alpha = 0.7f),
                                         fontWeight = FontWeight.Bold,
@@ -248,6 +257,13 @@ fun DashboardScreen(
                                 .fillMaxWidth()
                                 .height(8.dp)
                         )
+                        if (userStats.currentLevel < Scoring.MAX_LEVEL) {
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = "$xpToNext XP to level ${userStats.currentLevel + 1}",
+                                style = MaterialTheme.typography.labelSmall.copy(color = Color.White.copy(alpha = 0.8f))
+                            )
+                        }
                     }
                 }
             }
@@ -289,23 +305,13 @@ fun DashboardScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            val sdf = SimpleDateFormat("E", Locale.getDefault())
-                            val calendar = Calendar.getInstance()
-                            
-                            // Let's print the last 7 weekdays
-                            val list = mutableListOf<String>()
-                            val activeFlags = mutableListOf<Boolean>()
-                            
-                            for (i in 0..6) {
-                                list.add(sdf.format(calendar.time).first().toString().uppercase())
-                                // Just a visual mock of active streak
-                                val isActive = i == 6 || (userStats.currentStreak > i)
-                                activeFlags.add(isActive)
-                                calendar.add(Calendar.DAY_OF_YEAR, -1)
+                            // The last 7 days, oldest first, ticked on days you actually played.
+                            val today = LocalDate.now()
+                            val days = (6 downTo 0).map { today.minusDays(it.toLong()) }
+                            val list = days.map {
+                                it.dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, Locale.getDefault())
                             }
-                            
-                            list.reverse()
-                            activeFlags.reverse()
+                            val activeFlags = days.map { it in playedDays }
 
                             for (i in 0..6) {
                                 Column(
@@ -363,6 +369,51 @@ fun DashboardScreen(
                         color = Color(0xFF2196F3),
                         modifier = Modifier.weight(1f)
                     )
+                }
+            }
+
+            // Review mistakes: questions you got wrong come back until you get them right
+            if (mistakeCount > 0) {
+                item {
+                    Card(
+                        onClick = onStartMistakeReview,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("review_mistakes_card"),
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(18.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Replay,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Review your mistakes",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                                )
+                                Text(
+                                    text = "$mistakeCount question${if (mistakeCount == 1) "" else "s"} to master · they clear when you get them right",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)
+                                )
+                            }
+                            Icon(
+                                imageVector = Icons.Default.ArrowForward,
+                                contentDescription = "Start review",
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
+                    }
                 }
             }
 
@@ -443,8 +494,8 @@ fun DashboardScreen(
                             Spacer(modifier = Modifier.height(6.dp))
 
                             Text(
-                                text = if (dailyPlayed) "You have successfully conquered today's board. Next reset is at midnight."
-                                else "10 Mixed Topics • Easy to Hard • One attempt per day. Win a \"Champion\" badge today!",
+                                text = if (dailyPlayed) "Done for today! Share your score grid and come back after midnight."
+                                else "Same 10 questions for everyone today • Easy to hard • One attempt. Compare scores with friends!",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                                     lineHeight = 20.sp
@@ -468,7 +519,7 @@ fun DashboardScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
-                                        text = if (dailyPlayed) "REVIEW LEADERBOARD" else "PLAY NOW",
+                                        text = if (dailyPlayed) "VIEW & SHARE RESULT" else "PLAY NOW",
                                         fontWeight = FontWeight.ExtraBold,
                                         letterSpacing = 0.5.sp
                                     )

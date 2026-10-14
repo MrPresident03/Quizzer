@@ -4932,5 +4932,565 @@
     "difficulty": "medium",
     "explanation": "Alec Jeffreys' DNA fingerprinting was first used in a UK murder investigation in 1986-87.",
     "imageUrl": null
+  },
+  {
+    "text": "Which letter does not appear in the name of any US state?",
+    "options": [
+      "Q",
+      "X",
+      "J",
+      "Z"
+    ],
+    "correctIndex": 0,
+    "category": "General Knowledge",
+    "difficulty": "hard",
+    "explanation": "Every other letter appears somewhere, e.g. J in New Jersey, Z in Arizona, X in Texas.",
+    "imageUrl": null
+  },
+  {
+    "text": "Chess developed from 'chaturanga', a game from which country?",
+    "options": [
+      "Egypt",
+      "China",
+      "India",
+      "Persia"
+    ],
+    "correctIndex": 2,
+    "category": "General Knowledge",
+    "difficulty": "hard",
+    "explanation": "Chaturanga was played in India around the 6th century AD and spread via Persia to Europe.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which element has the chemical symbol 'W'?",
+    "options": [
+      "Tin",
+      "Vanadium",
+      "Titanium",
+      "Tungsten"
+    ],
+    "correctIndex": 3,
+    "category": "Science & Nature",
+    "difficulty": "hard",
+    "explanation": "W comes from 'wolfram', the element's other name.",
+    "imageUrl": null
+  },
+  {
+    "text": "Roughly how old is the universe?",
+    "options": [
+      "25 billion years",
+      "13.8 billion years",
+      "1 billion years",
+      "4.6 billion years"
+    ],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "hard",
+    "explanation": "The universe is about 13.8 billion years old; Earth is about 4.5 billion.",
+    "imageUrl": null
+  },
+  {
+    "text": "Mansa Musa, often called one of the richest people in history, ruled which empire?",
+    "options": [
+      "Ghana Empire",
+      "Ethiopian Empire",
+      "Songhai Empire",
+      "Mali Empire"
+    ],
+    "correctIndex": 3,
+    "category": "History",
+    "difficulty": "hard",
+    "explanation": "Mansa Musa ruled the Mali Empire in the 14th century; his 1324 pilgrimage to Mecca became legendary.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which year did Constantinople fall to the Ottoman Empire?",
+    "options": [
+      "1453",
+      "1571",
+      "1204",
+      "1492"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "hard",
+    "explanation": "Sultan Mehmed II captured Constantinople in 1453, ending the Byzantine Empire.",
+    "imageUrl": null
+  },
+  {
+    "text": "Counting overseas territories, which country spans the most time zones?",
+    "options": [
+      "United Kingdom",
+      "United States",
+      "Russia",
+      "France"
+    ],
+    "correctIndex": 3,
+    "category": "Geography",
+    "difficulty": "hard",
+    "explanation": "Thanks to its overseas territories, France spans 12 time zones.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the longest continental mountain range in the world?",
+    "options": [
+      "Ural Mountains",
+      "Himalayas",
+      "Rocky Mountains",
+      "Andes"
+    ],
+    "correctIndex": 3,
+    "category": "Geography",
+    "difficulty": "hard",
+    "explanation": "The Andes run about 7,000 km along western South America.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which year did women first compete at the modern Olympic Games?",
+    "options": [
+      "1896",
+      "1920",
+      "1900",
+      "1928"
+    ],
+    "correctIndex": 2,
+    "category": "Sports & Recreation",
+    "difficulty": "hard",
+    "explanation": "Women first competed at the 1900 Paris Olympics, in events including tennis and golf.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many players per side are on the field in Australian rules football?",
+    "options": [
+      "18",
+      "13",
+      "15",
+      "11"
+    ],
+    "correctIndex": 0,
+    "category": "Sports & Recreation",
+    "difficulty": "hard",
+    "explanation": "Each Australian rules team fields 18 players.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which 1941 Orson Welles film is often ranked among the greatest ever made?",
+    "options": [
+      "Rebecca",
+      "Casablanca",
+      "The Third Man",
+      "Citizen Kane"
+    ],
+    "correctIndex": 3,
+    "category": "Entertainment",
+    "difficulty": "hard",
+    "explanation": "Welles co-wrote, directed and starred in Citizen Kane.",
+    "imageUrl": null
+  },
+  {
+    "text": "What was the first feature-length film made entirely with computer animation?",
+    "options": [
+      "Antz",
+      "Toy Story",
+      "Shrek",
+      "A Bug's Life"
+    ],
+    "correctIndex": 1,
+    "category": "Entertainment",
+    "difficulty": "hard",
+    "explanation": "Pixar's Toy Story was released in 1995.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who wrote 'The Brothers Karamazov'?",
+    "options": [
+      "Leo Tolstoy",
+      "Fyodor Dostoevsky",
+      "Nikolai Gogol",
+      "Ivan Turgenev"
+    ],
+    "correctIndex": 1,
+    "category": "Literature & Books",
+    "difficulty": "hard",
+    "explanation": "It was Dostoevsky's final novel, published in 1880.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Dante's 'Divine Comedy', who guides Dante through Hell?",
+    "options": [
+      "Virgil",
+      "Beatrice",
+      "Homer",
+      "Ovid"
+    ],
+    "correctIndex": 0,
+    "category": "Literature & Books",
+    "difficulty": "hard",
+    "explanation": "The Roman poet Virgil guides him through Hell and Purgatory; Beatrice guides him in Paradise.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Dutch artist painted 'The Night Watch'?",
+    "options": [
+      "Pieter Bruegel",
+      "Johannes Vermeer",
+      "Rembrandt",
+      "Frans Hals"
+    ],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "hard",
+    "explanation": "Rembrandt completed The Night Watch in 1642.",
+    "imageUrl": null
+  },
+  {
+    "text": "Marcel Duchamp's 'Fountain' (1917), a signed urinal, is associated with which movement?",
+    "options": [
+      "Futurism",
+      "Dada",
+      "Cubism",
+      "Surrealism"
+    ],
+    "correctIndex": 1,
+    "category": "Art & Architecture",
+    "difficulty": "hard",
+    "explanation": "Fountain is a landmark 'readymade' of the Dada movement.",
+    "imageUrl": null
+  },
+  {
+    "text": "Roquefort cheese comes from which country?",
+    "options": [
+      "Italy",
+      "Switzerland",
+      "Spain",
+      "France"
+    ],
+    "correctIndex": 3,
+    "category": "Food & Drink",
+    "difficulty": "hard",
+    "explanation": "Roquefort is a sheep's milk blue cheese aged in caves at Roquefort-sur-Soulzon in southern France.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which thin pastry is layered to make baklava?",
+    "options": [
+      "Filo",
+      "Choux",
+      "Puff",
+      "Shortcrust"
+    ],
+    "correctIndex": 0,
+    "category": "Food & Drink",
+    "difficulty": "hard",
+    "explanation": "Baklava layers filo pastry with chopped nuts and syrup or honey.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which company released the first commercial microprocessor, the 4004, in 1971?",
+    "options": [
+      "Intel",
+      "Texas Instruments",
+      "Motorola",
+      "IBM"
+    ],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "hard",
+    "explanation": "The Intel 4004 was a 4-bit processor originally designed for a calculator.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'DNS' stand for?",
+    "options": [
+      "Domain Name System",
+      "Digital Network Service",
+      "Data Node Server",
+      "Dynamic Name Switch"
+    ],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "hard",
+    "explanation": "DNS translates names like example.com into IP addresses.",
+    "imageUrl": null
+  },
+  {
+    "text": "What do the interior angles of a hexagon add up to?",
+    "options": [
+      "1,080 degrees",
+      "720 degrees",
+      "540 degrees",
+      "360 degrees"
+    ],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "hard",
+    "explanation": "(6 − 2) × 180 = 720 degrees.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is 12! (12 factorial) divided by 11!?",
+    "options": [
+      "11",
+      "1",
+      "12",
+      "132"
+    ],
+    "correctIndex": 2,
+    "category": "Mathematics & Logic",
+    "difficulty": "hard",
+    "explanation": "12! = 12 × 11!, so the result is 12.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which video game franchise stars the character Master Chief?",
+    "options": [
+      "Gears of War",
+      "Halo",
+      "Mass Effect",
+      "Destiny"
+    ],
+    "correctIndex": 1,
+    "category": "Pop Culture & Memes",
+    "difficulty": "hard",
+    "explanation": "Master Chief is the hero of Halo, first released in 2001.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which year was the first iPhone released?",
+    "options": [
+      "2009",
+      "2005",
+      "2010",
+      "2007"
+    ],
+    "correctIndex": 3,
+    "category": "Pop Culture & Memes",
+    "difficulty": "hard",
+    "explanation": "Steve Jobs unveiled it in January 2007, and it went on sale that June.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a word made from initial letters and pronounced as a word, like 'NASA', called?",
+    "options": [
+      "Initialism",
+      "Contraction",
+      "Acronym",
+      "Abbreviation"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "hard",
+    "explanation": "An acronym is spoken as a word; an initialism like 'FBI' is spoken letter by letter.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the Welsh name for the Welsh language?",
+    "options": [
+      "Gaeilge",
+      "Cymraeg",
+      "Gàidhlig",
+      "Kernewek"
+    ],
+    "correctIndex": 1,
+    "category": "Language & Linguistics",
+    "difficulty": "hard",
+    "explanation": "Cymraeg is Welsh; Gaeilge is Irish, Gàidhlig is Scottish Gaelic and Kernewek is Cornish.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which country has the largest national legislature by number of members?",
+    "options": [
+      "India",
+      "China",
+      "United Kingdom",
+      "United States"
+    ],
+    "correctIndex": 1,
+    "category": "Politics & World Leaders",
+    "difficulty": "hard",
+    "explanation": "China's National People's Congress has nearly 3,000 deputies.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who was the first Secretary-General of the United Nations?",
+    "options": [
+      "Dag Hammarskjöld",
+      "Kofi Annan",
+      "U Thant",
+      "Trygve Lie"
+    ],
+    "correctIndex": 3,
+    "category": "Politics & World Leaders",
+    "difficulty": "hard",
+    "explanation": "Trygve Lie of Norway served from 1946 to 1952.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'ROI' stand for?",
+    "options": [
+      "Revenue over income",
+      "Rate of inflation",
+      "Risk of insolvency",
+      "Return on investment"
+    ],
+    "correctIndex": 3,
+    "category": "Business & Economics",
+    "difficulty": "hard",
+    "explanation": "ROI compares the gain from an investment with its cost.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Amsterdam Stock Exchange, often called the world's oldest, began trading shares of which company in 1602?",
+    "options": [
+      "Dutch East India Company",
+      "Hudson's Bay Company",
+      "Royal Dutch Shell",
+      "British East India Company"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "hard",
+    "explanation": "The Dutch East India Company (VOC) was the first company to issue publicly traded shares.",
+    "imageUrl": null
+  },
+  {
+    "text": "The islets of Langerhans, which produce insulin, are found in which organ?",
+    "options": [
+      "Spleen",
+      "Kidney",
+      "Pancreas",
+      "Liver"
+    ],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "hard",
+    "explanation": "These clusters of cells in the pancreas release insulin and glucagon.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the longest bone in the human body?",
+    "options": [
+      "Humerus",
+      "Tibia",
+      "Fibula",
+      "Femur"
+    ],
+    "correctIndex": 3,
+    "category": "Health & Medicine",
+    "difficulty": "hard",
+    "explanation": "The femur, or thigh bone, is the longest and strongest bone.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Greek goddess sprang fully grown from the head of Zeus?",
+    "options": [
+      "Athena",
+      "Hera",
+      "Aphrodite",
+      "Artemis"
+    ],
+    "correctIndex": 0,
+    "category": "Religion & Mythology",
+    "difficulty": "hard",
+    "explanation": "Athena, goddess of wisdom, emerged fully armed from Zeus's head.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Hinduism, which elephant-headed god is known as the remover of obstacles?",
+    "options": [
+      "Hanuman",
+      "Vishnu",
+      "Ganesha",
+      "Shiva"
+    ],
+    "correctIndex": 2,
+    "category": "Religion & Mythology",
+    "difficulty": "hard",
+    "explanation": "Ganesha is honoured at the start of new ventures.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which bird can fly backwards?",
+    "options": [
+      "Hummingbird",
+      "Swallow",
+      "Kingfisher",
+      "Kestrel"
+    ],
+    "correctIndex": 0,
+    "category": "Animals & Wildlife",
+    "difficulty": "hard",
+    "explanation": "Hummingbirds can hover and fly backwards thanks to their unique wing rotation.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many compartments does a cow's stomach have?",
+    "options": [
+      "3",
+      "4",
+      "6",
+      "2"
+    ],
+    "correctIndex": 1,
+    "category": "Animals & Wildlife",
+    "difficulty": "hard",
+    "explanation": "The rumen, reticulum, omasum and abomasum.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which designer introduced 'Le Smoking', a tuxedo suit for women, in 1966?",
+    "options": [
+      "Coco Chanel",
+      "Yves Saint Laurent",
+      "Christian Dior",
+      "Hubert de Givenchy"
+    ],
+    "correctIndex": 1,
+    "category": "Fashion & Design",
+    "difficulty": "hard",
+    "explanation": "Le Smoking became one of Yves Saint Laurent's signature designs.",
+    "imageUrl": null
+  },
+  {
+    "text": "Panama hats were originally made in which country?",
+    "options": [
+      "Ecuador",
+      "Peru",
+      "Panama",
+      "Colombia"
+    ],
+    "correctIndex": 0,
+    "category": "Fashion & Design",
+    "difficulty": "hard",
+    "explanation": "They are woven in Ecuador; the name comes from their sale and shipment through Panama.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Babylonian king issued one of the earliest known written law codes?",
+    "options": [
+      "Gilgamesh",
+      "Sargon of Akkad",
+      "Nebuchadnezzar II",
+      "Hammurabi"
+    ],
+    "correctIndex": 3,
+    "category": "True Crime & Law",
+    "difficulty": "hard",
+    "explanation": "The Code of Hammurabi dates from about 1750 BC.",
+    "imageUrl": null
+  },
+  {
+    "text": "The international police organisation Interpol has its headquarters in which city?",
+    "options": [
+      "Lyon",
+      "The Hague",
+      "Geneva",
+      "Brussels"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "hard",
+    "explanation": "Interpol's General Secretariat is in Lyon, France.",
+    "imageUrl": null
   }
 ]
