@@ -83,7 +83,7 @@ fun StatsAndAchievementsScreen(
                 Tab(
                     selected = activeTab == 1,
                     onClick = { activeTab = 1 },
-                    text = { Text("Badges (${achievementList.count { it.isUnlocked }}/20)", fontWeight = FontWeight.Bold) },
+                    text = { Text("Badges (${achievementList.count { it.isUnlocked }}/${achievementList.size})", fontWeight = FontWeight.Bold) },
                     icon = { Icon(imageVector = Icons.Default.Grade, contentDescription = "Achievements") },
                     modifier = Modifier.testTag("achievements_tab_button")
                 )

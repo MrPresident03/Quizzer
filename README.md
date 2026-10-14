@@ -11,8 +11,9 @@ A trivia app for Android built with Kotlin, Jetpack Compose and Room.
 - **Review your mistakes.** Every question you miss is saved and comes back in a review session until you get it right.
 - **Shared Daily Challenge.** Everyone gets the same 10 questions each day (easy → hard, works offline). Share your score as a 🟩🟥 grid without spoiling the answers.
 - **Topic mastery.** See your accuracy per topic and drill your weakest one in a tap.
-- **Progression.** XP, levels, streaks with streak freezes, 20 achievements, lifelines (50/50, skip, +15 s, ask the audience) and unlockable themes.
-- **Practice your way.** Pick any mix of topics, difficulty, length (including Endless), multiple choice or true/false, timed or untimed.
+- **Quick Play.** One tap on the home screen starts a quiz with your last practice settings.
+- **Progression.** XP, levels, daily streaks (play 7 days in a row to earn a streak freeze), 20 achievements and four themes. No shop or currency: lifelines (50/50, skip, +15 s, ask the audience) are free, once each per quiz.
+- **Practice your way.** Pick any mix of topics, difficulty, length (including Endless), multiple choice or true/false, timed (20 s per question) or untimed. Flag quizzes live on the Practice tab.
 - **Accessibility & comfort.** Larger text option, sound effects, haptics, and an opt-in evening reminder for the Daily Challenge.
 
 ## Build
@@ -28,7 +29,7 @@ Locally:
 
 Or open the project in Android Studio and press Run. Use JDK 21 (Robolectric needs it to run the Android 16 / SDK 36 tests).
 
-Optional: put a shared `debug.keystore` in the project root to sign debug builds with a fixed key; otherwise the default Android debug key is used.
+Debug builds are signed with the committed `debug.keystore`, so every APK (from CI or a local build) installs as an update over the previous one and keeps your progress. CI builds are numbered by run (`versionCode` = run number), shown in Settings. This key is for testing only; a Play Store release needs its own private key kept out of git.
 
 ## Project layout
 

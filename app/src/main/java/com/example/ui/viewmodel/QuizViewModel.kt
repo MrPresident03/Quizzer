@@ -13,6 +13,7 @@ import com.example.data.model.UserStats
 import com.example.data.repository.Categories
 import com.example.data.repository.DailyChallenge
 import com.example.data.repository.DailyResult
+import com.example.data.repository.PracticeSettings
 import com.example.data.repository.QuestionPicker
 import com.example.data.repository.QuizRepository
 import com.example.data.repository.Scoring
@@ -96,6 +97,14 @@ class QuizViewModel(
     private val _audiencePoll = MutableStateFlow<List<Int>?>(null)
     val audiencePoll: StateFlow<List<Int>?> = _audiencePoll.asStateFlow()
 
+    /** Lifelines are free: each one ("5050", "skip", "time", "audience") can be used once per quiz. */
+    private val _usedLifelines = MutableStateFlow<Set<String>>(emptySet())
+    val usedLifelines: StateFlow<Set<String>> = _usedLifelines.asStateFlow()
+
+    private val _quickPlaySettings = MutableStateFlow(repository.lastPracticeSettings())
+    /** Settings Quick Play will use: the last quiz started from the Practice tab. */
+    val quickPlaySettings: StateFlow<PracticeSettings> = _quickPlaySettings.asStateFlow()
+
     // Daily Challenge Locker
     private val _dailyPlayedToday = MutableStateFlow(false)
     val dailyPlayedToday: StateFlow<Boolean> = _dailyPlayedToday.asStateFlow()
@@ -155,7 +164,25 @@ class QuizViewModel(
 
     // --- QUIZ GAME ENGINE ACTIONS ---
 
-    fun startPracticeQuiz(categories: List<String>, difficulty: String, count: Int, format: String, timed: Boolean = true) {
+    /** One tap from the home screen: a quiz with the last Practice-tab settings. */
+    fun startQuickPlay() {
+        val settings = _quickPlaySettings.value
+        startPracticeQuiz(settings.categories, settings.difficulty, settings.count, settings.format, settings.timed)
+    }
+
+    fun startPracticeQuiz(
+        categories: List<String>,
+        difficulty: String,
+        count: Int,
+        format: String,
+        timed: Boolean = true,
+        rememberForQuickPlay: Boolean = false
+    ) {
+        if (rememberForQuickPlay) {
+            val settings = PracticeSettings(categories, difficulty, count, format, timed)
+            repository.saveLastPracticeSettings(settings)
+            _quickPlaySettings.value = settings
+        }
         val endless = count == QuizRepository.ENDLESS_COUNT
         val id = beginSession(if (endless) SessionType.ENDLESS else SessionType.PRACTICE, difficulty, timed)
         practiceRequest = PracticeRequest(categories, difficulty, format)
@@ -231,6 +258,7 @@ class QuizViewModel(
         bestSpeedStreak = 0
         lifelinesUsedThisSession = 0
         lifelineBusy = false
+        _usedLifelines.value = emptySet()
         advancing = false
         finishing = false
         return sessionId
@@ -463,26 +491,22 @@ class QuizViewModel(
 
     // --- LIFELINES ACTIONS ---
 
-    /** Runs a lifeline once, even if the button is double-tapped while the DB write is in flight. */
+    /** Uses a lifeline if it hasn't been used yet this quiz. */
     private fun runLifeline(type: String, onSuccess: (Question) -> Unit) {
-        if (lifelineBusy || !canInteract()) return
-        val id = sessionId
+        if (lifelineBusy || !canInteract() || type in _usedLifelines.value) return
+        val question = currentQuestion() ?: return
         lifelineBusy = true
-        viewModelScope.launch {
-            try {
-                val question = currentQuestion() ?: return@launch
-                if (repository.useLifeline(type) && id == sessionId && canInteract() && currentQuestion() == question) {
-                    lifelinesUsedThisSession += 1
-                    onSuccess(question)
-                }
-            } finally {
-                lifelineBusy = false
-            }
+        try {
+            _usedLifelines.value = _usedLifelines.value + type
+            lifelinesUsedThisSession += 1
+            onSuccess(question)
+        } finally {
+            lifelineBusy = false
         }
     }
 
     fun useLifeline5050() {
-        if (_hiddenOptions.value.isNotEmpty() || userStats.value.lifelineFiftyFiftyCount <= 0) return
+        if (_hiddenOptions.value.isNotEmpty()) return
         val question = currentQuestion() ?: return
         if (question.optionsList.size < 4) return // pointless on True/False
         runLifeline("5050") { q ->
@@ -492,7 +516,6 @@ class QuizViewModel(
     }
 
     fun useLifelineSkip() {
-        if (userStats.value.lifelineSkipCount <= 0) return
         runLifeline("skip") { q ->
             stopTimer()
             val id = sessionId
@@ -504,14 +527,14 @@ class QuizViewModel(
     }
 
     fun useLifelineExtraTime() {
-        if (!_isTimed.value || userStats.value.lifelineExtraTimeCount <= 0) return
+        if (!_isTimed.value) return
         runLifeline("time") {
             _timeLeft.value += EXTRA_TIME_SECONDS
         }
     }
 
     fun useLifelineAskAudience() {
-        if (_audiencePoll.value != null || userStats.value.lifelineAskAudienceCount <= 0) return
+        if (_audiencePoll.value != null) return
         runLifeline("audience") { q ->
             _audiencePoll.value = buildAudiencePoll(q, _hiddenOptions.value)
         }
@@ -534,19 +557,7 @@ class QuizViewModel(
         return poll
     }
 
-    // --- XP SHOP & CUSTOMIZATION ---
-
-    fun buyLifelineItem(type: String, cost: Int) {
-        viewModelScope.launch {
-            repository.buyLifeline(type, cost)
-        }
-    }
-
-    fun buyOrUnlockTheme(themeId: String, cost: Int) {
-        viewModelScope.launch {
-            repository.unlockTheme(themeId, cost)
-        }
-    }
+    // --- CUSTOMIZATION ---
 
     fun selectActiveTheme(themeId: String) {
         viewModelScope.launch {
@@ -588,6 +599,7 @@ class QuizViewModel(
             _dailyPlayedToday.value = false
             _todayDailyResult.value = null
             _topicStats.value = emptyList()
+            _quickPlaySettings.value = PracticeSettings()
         }
     }
 
@@ -608,7 +620,7 @@ class QuizViewModel(
 
     private companion object {
         const val TAG = "QuizViewModel"
-        const val MAX_QUESTION_SECONDS = 60
+        const val MAX_QUESTION_SECONDS = PracticeSettings.QUESTION_SECONDS
         const val EXTRA_TIME_SECONDS = 15
         const val SPEED_SECONDS = 10
         const val REVEAL_CORRECT_MS = 2500L

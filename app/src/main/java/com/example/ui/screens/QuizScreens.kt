@@ -33,6 +33,7 @@ import kotlin.math.roundToInt
 import com.example.data.model.Question
 import com.example.data.model.UserStats
 import com.example.data.repository.DailyResult
+import com.example.data.repository.PracticeSettings
 import com.example.ui.SoundEffects
 import com.example.ui.theme.CorrectGreen
 import com.example.ui.theme.GoldYellow
@@ -220,7 +221,9 @@ fun QuizPlayScreen(
     loadError: String? = null,
     isTimed: Boolean = true,
     isEndless: Boolean = false,
-    onNext: () -> Unit = {}
+    onNext: () -> Unit = {},
+    usedLifelines: Set<String> = emptySet(),
+    timerSeconds: Int = PracticeSettings.QUESTION_SECONDS
 ) {
     val haptic = LocalHapticFeedback.current
     var showQuitDialog by remember { mutableStateOf(false) }
@@ -270,12 +273,13 @@ fun QuizPlayScreen(
     }
 
     // Visual Timer bar depleting color logic (Green -> Yellow -> Red)
+    val timerFraction = timeLeft / timerSeconds.toFloat()
     val timerColor = when {
-        timeLeft > 35 -> CorrectGreen
-        timeLeft > 15 -> GoldYellow
+        timerFraction > 0.5f -> CorrectGreen
+        timerFraction > 0.25f -> GoldYellow
         else -> WrongRed
     }
-    val timerProgress = (timeLeft / 60f).coerceIn(0f, 1f) // +15s lifeline can push past 60
+    val timerProgress = timerFraction.coerceIn(0f, 1f) // +15s lifeline can push past the full bar
 
     Scaffold { innerPadding ->
         Column(
@@ -642,7 +646,7 @@ fun QuizPlayScreen(
                     }
                 } else {
                     Text(
-                        text = "LIFELINES",
+                        text = "LIFELINES · ONE USE EACH PER QUIZ",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
@@ -656,7 +660,7 @@ fun QuizPlayScreen(
                     ) {
                         LifelineButton(
                             label = "50/50",
-                            count = userStats.lifelineFiftyFiftyCount,
+                            count = if ("5050" in usedLifelines) 0 else 1,
                             icon = Icons.Default.FilterAlt, // standard representation
                             isActive = !isRevealed && hiddenOptions.isEmpty() && currentQ.optionsList.size >= 4,
                             onClick = onUse5050,
@@ -664,7 +668,7 @@ fun QuizPlayScreen(
                         )
                         LifelineButton(
                             label = "Skip",
-                            count = userStats.lifelineSkipCount,
+                            count = if ("skip" in usedLifelines) 0 else 1,
                             icon = Icons.Default.SkipNext,
                             isActive = !isRevealed,
                             onClick = onUseSkip,
@@ -672,7 +676,7 @@ fun QuizPlayScreen(
                         )
                         LifelineButton(
                             label = "+15s",
-                            count = userStats.lifelineExtraTimeCount,
+                            count = if ("time" in usedLifelines) 0 else 1,
                             icon = Icons.Default.Timer,
                             isActive = !isRevealed && isTimed,
                             onClick = onUseExtraTime,
@@ -680,7 +684,7 @@ fun QuizPlayScreen(
                         )
                         LifelineButton(
                             label = "Audience",
-                            count = userStats.lifelineAskAudienceCount,
+                            count = if ("audience" in usedLifelines) 0 else 1,
                             icon = Icons.Default.Poll,
                             isActive = !isRevealed && audiencePoll == null,
                             onClick = onUseAskAudience,
@@ -921,7 +925,7 @@ fun QuizResultsScreen(
                 ) {
                     ResultRow("Correct Answers", "$correctCount / $totalCount", CorrectGreen)
                     ResultRow("Accuracy Rate", "${accuracy.roundToInt()}%", MaterialTheme.colorScheme.primary)
-                    ResultRow("XP Coins Earned", "+$xpEarned XP", GoldYellow)
+                    ResultRow("XP Earned", "+$xpEarned XP", GoldYellow)
                 }
             }
 

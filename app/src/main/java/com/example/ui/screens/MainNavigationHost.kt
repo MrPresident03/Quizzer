@@ -47,6 +47,7 @@ fun MainNavigationHost() {
     val mistakeCount by mainViewModel.mistakeCount.collectAsState()
     val topicStats by mainViewModel.topicStats.collectAsState()
     val reminderEnabled by mainViewModel.dailyReminderEnabled.collectAsState()
+    val quickPlay by mainViewModel.quickPlaySettings.collectAsState()
     val activityContext = LocalContext.current
 
     // Derived from real history: lifetime XP (level progress) and the days you actually played.
@@ -69,7 +70,6 @@ fun MainNavigationHost() {
             "dashboard",
             "practice_config",
             "analytics_milestones",
-            "profile_shop",
             "settings_config"
         )
 
@@ -148,7 +148,7 @@ fun MainNavigationHost() {
                             },
                             label = {
                                 Text(
-                                    text = "Milestones",
+                                    text = "Progress",
                                     maxLines = 1,
                                     softWrap = false,
                                     overflow = TextOverflow.Clip,
@@ -166,35 +166,7 @@ fun MainNavigationHost() {
                             modifier = Modifier.testTag("nav_tab_analytics")
                         )
 
-                        // Tab 4: Profile customizers and XP shop
-                        NavigationBarItem(
-                            icon = {
-                                Icon(
-                                    imageVector = if (currentRoute == "profile_shop") Icons.Default.Person else Icons.Outlined.Person,
-                                    contentDescription = "Shop"
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = "Shop",
-                                    maxLines = 1,
-                                    softWrap = false,
-                                    overflow = TextOverflow.Clip,
-                                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp)
-                                )
-                            },
-                            selected = currentRoute == "profile_shop",
-                            onClick = {
-                                navController.navigate("profile_shop") {
-                                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            modifier = Modifier.testTag("nav_tab_shop")
-                        )
-
-                        // Tab 5: General Preferences App configs
+                        // Tab 4: Profile, theme and preferences
                         NavigationBarItem(
                             icon = {
                                 Icon(
@@ -204,7 +176,7 @@ fun MainNavigationHost() {
                             },
                             label = {
                                 Text(
-                                    text = "System",
+                                    text = "Settings",
                                     maxLines = 1,
                                     softWrap = false,
                                     overflow = TextOverflow.Clip,
@@ -275,10 +247,11 @@ fun MainNavigationHost() {
                             navController.navigate("practice_quiz")
                         },
                         onNavigateToProfile = {
-                            navController.navigate("profile_shop")
+                            navController.navigate("settings_config")
                         },
-                        onStartFlagQuiz = { mode, difficulty, count ->
-                            mainViewModel.startFlagsQuiz(mode, difficulty, count)
+                        quickPlaySummary = quickPlay.summary(),
+                        onQuickPlay = {
+                            mainViewModel.startQuickPlay()
                             navController.navigate("practice_quiz")
                         },
                         lifetimeXp = lifetimeXp,
@@ -300,7 +273,12 @@ fun MainNavigationHost() {
                             }
                         },
                         onStartQuiz = { categories, difficulty, count, format, timed ->
-                            mainViewModel.startPracticeQuiz(categories, difficulty, count, format, timed)
+                            mainViewModel.startPracticeQuiz(categories, difficulty, count, format, timed, rememberForQuickPlay = true)
+                            navController.navigate("practice_quiz")
+                        },
+                        initial = quickPlay,
+                        onStartFlagQuiz = { mode, difficulty, count ->
+                            mainViewModel.startFlagsQuiz(mode, difficulty, count)
                             navController.navigate("practice_quiz")
                         }
                     )
@@ -325,25 +303,6 @@ fun MainNavigationHost() {
                     )
                 }
 
-                // Route F: Profile customized and Shop Tab 4
-                composable("profile_shop") {
-                    ProfileAndShopScreen(
-                        userStats = stats,
-                        onUpdateProfile = { name, avatarId ->
-                            mainViewModel.updateProfile(name, avatarId)
-                        },
-                        onBuyLifeline = { type, cost ->
-                            mainViewModel.buyLifelineItem(type, cost)
-                        },
-                        onBuyTheme = { id, cost ->
-                            mainViewModel.buyOrUnlockTheme(id, cost)
-                        },
-                        onSelectTheme = { themeId ->
-                            mainViewModel.selectActiveTheme(themeId)
-                        }
-                    )
-                }
-
                 // Route G: App Preferences Toggles Tab 5
                 composable("settings_config") {
                     SettingsScreen(
@@ -361,7 +320,9 @@ fun MainNavigationHost() {
                             mainViewModel.clearHistoryAndRepeats()
                         },
                         reminderEnabled = reminderEnabled,
-                        onReminderChange = { mainViewModel.setDailyReminder(it) }
+                        onReminderChange = { mainViewModel.setDailyReminder(it) },
+                        onUpdateProfile = { name, avatarId -> mainViewModel.updateProfile(name, avatarId) },
+                        onSelectTheme = { mainViewModel.selectActiveTheme(it) }
                     )
                 }
 
@@ -395,6 +356,7 @@ fun MainNavigationHost() {
                     val error by mainViewModel.loadError.collectAsState()
                     val timed by mainViewModel.isTimed.collectAsState()
                     val type by mainViewModel.sessionType.collectAsState()
+                    val usedLifelines by mainViewModel.usedLifelines.collectAsState()
 
                     LaunchedEffect(quizEnded) {
                         if (quizEnded) {
@@ -430,7 +392,8 @@ fun MainNavigationHost() {
                         loadError = error,
                         isTimed = timed,
                         isEndless = type == SessionType.ENDLESS,
-                        onNext = { mainViewModel.continueToNext() }
+                        onNext = { mainViewModel.continueToNext() },
+                        usedLifelines = usedLifelines
                     )
                 }
 
@@ -448,6 +411,7 @@ fun MainNavigationHost() {
                     val error by mainViewModel.loadError.collectAsState()
                     val timed by mainViewModel.isTimed.collectAsState()
                     val type by mainViewModel.sessionType.collectAsState()
+                    val usedLifelines by mainViewModel.usedLifelines.collectAsState()
 
                     LaunchedEffect(quizEnded) {
                         if (quizEnded) {
@@ -483,7 +447,8 @@ fun MainNavigationHost() {
                         loadError = error,
                         isTimed = timed,
                         isEndless = type == SessionType.ENDLESS,
-                        onNext = { mainViewModel.continueToNext() }
+                        onNext = { mainViewModel.continueToNext() },
+                        usedLifelines = usedLifelines
                     )
                 }
 

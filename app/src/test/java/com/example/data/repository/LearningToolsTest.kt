@@ -97,4 +97,14 @@ class LearningToolsTest {
         assertEquals("History", statsTopicFor("History"))
         assertEquals(0.5f, TopicStat("History", 4, 2).accuracy, 0.001f)
     }
+
+    @Test
+    fun practiceSettingsRoundTripAndDescribeThemselves() {
+        val settings = PracticeSettings(listOf("History", "Food & Drink"), "hard", 20, "True/False", timed = false)
+        assertEquals(settings, PracticeSettings.parse(settings.serialize()))
+        assertEquals("20 questions · 2 topics · Hard · True/False · Untimed", settings.summary())
+        assertEquals("10 questions · All topics · Mixed difficulty", PracticeSettings().summary())
+        assertEquals("Endless · History · Mixed difficulty", PracticeSettings(listOf("History"), count = 999).summary())
+        assertNull(PracticeSettings.parse("not|valid"))
+    }
 }
