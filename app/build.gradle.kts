@@ -62,9 +62,9 @@ android {
   testOptions { unitTests { isIncludeAndroidResources = true } }
 }
 
-// KSP2 crashes ("ApplicationManager.getApplication() is null") when it processes the unit-test and
-// instrumented-test source sets with AGP 9's built-in Kotlin. Tests don't use Room/Moshi
-// annotations, so code generation is only needed for the app itself.
+// KSP (Room/Moshi code generation) is only needed for the app's own sources; tests don't use those
+// annotations, so skip it for test source sets. Note: KSP2 may log a harmless
+// "ApplicationManager.getApplication() is null" NullPointerException from a background thread.
 tasks.configureEach {
   if (name.startsWith("ksp") && (name.endsWith("UnitTestKotlin") || name.endsWith("AndroidTestKotlin"))) {
     enabled = false
