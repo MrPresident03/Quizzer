@@ -63,6 +63,7 @@ class QuizRepository(
                 quizDao.insertOrUpdateUserStats(UserStats())
             }
             // IGNORE (not REPLACE) so adding a new achievement in an update doesn't re-lock earned ones.
+            quizDao.deleteAchievement("shop_spree") // the XP shop was removed
             quizDao.insertMissingAchievements(defaultAchievements())
             _mistakeCount.value = mistakes().size
             initialized = true
@@ -122,7 +123,7 @@ class QuizRepository(
         Achievement("tech_master", "Technophile", "Answer 50 technology questions correctly!", "ic_badge_9"),
         Achievement("speed_demon", "Speed Demon", "Answer 10 questions in a row in under 10 seconds each!", "ic_badge_10"),
         Achievement("lifeline_lover", "Lifeline Lover", "Use 15 total lifelines during quizzes!", "ic_badge_11"),
-        Achievement("shop_spree", "Shopaholic", "Purchase 5 lifelines or themes from the XP Shop!", "ic_badge_12"),
+        Achievement("flag_master", "Flag Expert", "Answer 50 flag questions correctly!", "ic_badge_12"),
         Achievement("hard_conqueror", "Hard Core", "Complete any quiz on Hard difficulty!", "ic_badge_13"),
         Achievement("endless_survivor", "Endless Survivor", "Score 30 points or more in Endless Practice Mode!", "ic_badge_14"),
         Achievement("rich_student", "XP Magnet", "Accumulate over 1,000 total XP points!", "ic_badge_15"),
@@ -409,9 +410,14 @@ class QuizRepository(
         val lifetimeXp = quizDao.getLifetimeXp()
         val newLevel = Scoring.levelForLifetimeXp(lifetimeXp)
 
+        // Every 7 days in a row earns a streak freeze (up to MAX_STREAK_FREEZES), replacing the old shop item.
+        val earnedFreeze = streak.streak > stats.currentStreak && streak.streak % FREEZE_EVERY_DAYS == 0
+        val freezes = (stats.hasStreakFreeze - streak.freezesUsed + if (earnedFreeze) 1 else 0)
+            .coerceIn(0, MAX_STREAK_FREEZES)
+
         val updatedStats = stats.copy(
             currentStreak = streak.streak,
-            hasStreakFreeze = (stats.hasStreakFreeze - streak.freezesUsed).coerceAtLeast(0),
+            hasStreakFreeze = freezes,
             totalQuestionsAnswered = stats.totalQuestionsAnswered + summary.totalCount,
             correctAnswersCount = stats.correctAnswersCount + summary.correctCount,
             xpPoints = stats.xpPoints + xpEarned, // spendable balance
@@ -445,6 +451,7 @@ class QuizRepository(
             if (prefs.categoryCorrect("History") >= 50) add("history_master")
             if (prefs.categoryCorrect("Sports & Recreation") >= 50) add("sports_master")
             if (prefs.categoryCorrect("Technology & Computing") >= 50) add("tech_master")
+            if (prefs.categoryCorrect("Flags") >= 50) add("flag_master")
             if (summary.bestSpeedStreak >= 10) add("speed_demon")
             if (prefs.lifelinesUsedTotal >= 15) add("lifeline_lover")
             if (summary.selectedDifficulty.equals("hard", ignoreCase = true)) add("hard_conqueror")
@@ -466,69 +473,17 @@ class QuizRepository(
         }
     }
 
-    // --- SHOP & LIFELINES ---
-
-    suspend fun buyLifeline(lifelineType: String, cost: Int): Boolean = withContext(Dispatchers.IO) {
-        val stats = quizDao.getUserStats() ?: return@withContext false
-        if (cost < 0 || stats.xpPoints < cost) return@withContext false
-        val paid = stats.copy(xpPoints = stats.xpPoints - cost)
-        val updated = when (lifelineType) {
-            "5050" -> paid.copy(lifelineFiftyFiftyCount = stats.lifelineFiftyFiftyCount + 1)
-            "skip" -> paid.copy(lifelineSkipCount = stats.lifelineSkipCount + 1)
-            "time" -> paid.copy(lifelineExtraTimeCount = stats.lifelineExtraTimeCount + 1)
-            "audience" -> paid.copy(lifelineAskAudienceCount = stats.lifelineAskAudienceCount + 1)
-            "freeze" -> paid.copy(hasStreakFreeze = stats.hasStreakFreeze + 1)
-            else -> return@withContext false // unknown item: don't take the XP
-        }
-        quizDao.insertOrUpdateUserStats(updated)
-        recordShopPurchase()
-        true
-    }
-
-    suspend fun unlockTheme(themeId: String, cost: Int): Boolean = withContext(Dispatchers.IO) {
-        val stats = quizDao.getUserStats() ?: return@withContext false
-        val adapter = moshi.adapter<List<String>>(Types.newParameterizedType(List::class.java, String::class.java))
-        val currentUnlocked = runCatching { adapter.fromJson(stats.unlockedThemesJson) }.getOrNull()
-            ?: listOf("midnight_blue", "classic")
-
-        if (themeId in currentUnlocked) return@withContext true
-        if (stats.xpPoints < cost) return@withContext false
-
-        val updated = stats.copy(
-            xpPoints = stats.xpPoints - cost,
-            unlockedThemesJson = adapter.toJson((currentUnlocked + themeId).distinct()),
-            activeThemeId = themeId
-        )
-        quizDao.insertOrUpdateUserStats(updated)
-        recordShopPurchase()
-        true
-    }
-
-    private suspend fun recordShopPurchase() {
-        prefs.addShopPurchase()
-        if (prefs.shopPurchases >= 5) unlockAchievement("shop_spree")
-    }
+    // --- THEMES & QUICK PLAY ---
 
     suspend fun selectTheme(themeId: String) = withContext(Dispatchers.IO) {
         val stats = quizDao.getUserStats() ?: return@withContext
         quizDao.insertOrUpdateUserStats(stats.copy(activeThemeId = themeId))
     }
 
-    suspend fun useLifeline(lifelineType: String): Boolean = withContext(Dispatchers.IO) {
-        val stats = quizDao.getUserStats() ?: return@withContext false
-        val updated = when (lifelineType) {
-            "5050" -> stats.takeIf { it.lifelineFiftyFiftyCount > 0 }
-                ?.copy(lifelineFiftyFiftyCount = stats.lifelineFiftyFiftyCount - 1)
-            "skip" -> stats.takeIf { it.lifelineSkipCount > 0 }
-                ?.copy(lifelineSkipCount = stats.lifelineSkipCount - 1)
-            "time" -> stats.takeIf { it.lifelineExtraTimeCount > 0 }
-                ?.copy(lifelineExtraTimeCount = stats.lifelineExtraTimeCount - 1)
-            "audience" -> stats.takeIf { it.lifelineAskAudienceCount > 0 }
-                ?.copy(lifelineAskAudienceCount = stats.lifelineAskAudienceCount - 1)
-            else -> null
-        } ?: return@withContext false
-        quizDao.insertOrUpdateUserStats(updated)
-        true
+    fun lastPracticeSettings(): PracticeSettings = PracticeSettings.parse(prefs.lastPractice) ?: PracticeSettings()
+
+    fun saveLastPracticeSettings(settings: PracticeSettings) {
+        prefs.lastPractice = settings.serialize()
     }
 
     // --- SETTINGS ---
@@ -571,6 +526,8 @@ class QuizRepository(
         const val ENDLESS_BATCH_SIZE = 20
         private const val DAILY_CORE_SIZE = 6
         const val REVIEW_SIZE = 10
+        private const val FREEZE_EVERY_DAYS = 7
+        private const val MAX_STREAK_FREEZES = 2
         private const val MAX_NAME_LENGTH = 24
         private const val NO_REMOTE = "\u0000no-remote"
         private val DIFFICULTIES = setOf("easy", "medium", "hard")

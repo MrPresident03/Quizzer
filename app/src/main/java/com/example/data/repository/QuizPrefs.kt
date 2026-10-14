@@ -54,6 +54,12 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         get() = prefs.getString(KEY_DAILY_DATE, null)
         set(value) = prefs.edit().putString(KEY_DAILY_DATE, value).apply()
 
+    // --- Last practice settings (Quick Play) ---
+
+    var lastPractice: String?
+        get() = prefs.getString(KEY_LAST_PRACTICE, null)
+        set(value) = prefs.edit().putString(KEY_LAST_PRACTICE, value).apply()
+
     // --- Opt-in daily reminder notification ---
 
     var dailyReminderEnabled: Boolean
@@ -107,9 +113,6 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         if (n > 0) prefs.edit().putInt(KEY_LIFELINES_USED, lifelinesUsedTotal + n).apply()
     }
 
-    val shopPurchases: Int get() = prefs.getInt(KEY_SHOP_PURCHASES, 0)
-
-    fun addShopPurchase() = prefs.edit().putInt(KEY_SHOP_PURCHASES, shopPurchases + 1).apply()
 
     /** Wipes player progress but keeps technical state (token, seed version). */
     fun resetProgress() = synchronized(lock) {
@@ -123,7 +126,7 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
             .remove(KEY_DAILY_RESULT)
             .remove(KEY_MISTAKES)
             .remove(KEY_LIFELINES_USED)
-            .remove(KEY_SHOP_PURCHASES)
+            .remove(KEY_LAST_PRACTICE)
             .apply()
     }
 
@@ -139,6 +142,6 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         const val KEY_DAILY_RESULT = "daily_result"
         const val KEY_REMINDER = "daily_reminder_enabled"
         const val KEY_LIFELINES_USED = "lifelines_used_total"
-        const val KEY_SHOP_PURCHASES = "shop_purchases"
+        const val KEY_LAST_PRACTICE = "last_practice_settings"
     }
 }

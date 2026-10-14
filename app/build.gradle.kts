@@ -14,8 +14,10 @@ android {
     applicationId = "com.aistudio.brainblitz.qyzwxu"
     minSdk = 26
     targetSdk = 36
-    versionCode = 1
-    versionName = "1.0"
+    // CI builds are numbered by the workflow run, so each new APK installs as an update.
+    val ciBuildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()
+    versionCode = ciBuildNumber ?: 1
+    versionName = if (ciBuildNumber != null) "1.1.$ciBuildNumber" else "1.1-dev"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -44,8 +46,9 @@ android {
       signingConfig = signingConfigs.getByName("release")
     }
     debug {
-      // Only use the shared debug keystore when it's present (it's gitignored), so CI and fresh
-      // clones can build with the default Android debug key instead of failing.
+      // A fixed debug key is committed (debug.keystore) so every build - CI or local - is signed
+      // the same way and new APKs install over the old one without losing progress. It is only a
+      // debug key: use a private release key (kept out of git) for Play Store builds.
       if (file("${rootDir}/debug.keystore").exists()) {
         signingConfig = signingConfigs.getByName("debugConfig")
       }

@@ -26,20 +26,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.data.repository.PracticeSettings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopicSelectionScreen(
     onNavigateBack: () -> Unit,
-    onStartQuiz: (categories: List<String>, difficulty: String, count: Int, format: String, timed: Boolean) -> Unit
+    onStartQuiz: (categories: List<String>, difficulty: String, count: Int, format: String, timed: Boolean) -> Unit,
+    initial: PracticeSettings = PracticeSettings(),
+    onStartFlagQuiz: (mode: String, difficulty: String, count: Int) -> Unit = { _, _, _ -> }
 ) {
     val topics = remember { getTopicsList() }
-    val selectedTopics = remember { mutableStateListOf<String>() }
+    // Start from the last settings you played with (the same ones Quick Play uses).
+    val selectedTopics = remember { mutableStateListOf<String>().apply { addAll(initial.categories) } }
 
-    var selectedDifficulty by remember { mutableStateOf("Mixed") }
-    var selectedCount by remember { mutableStateOf(10) }
-    var selectedFormat by remember { mutableStateOf("Mixed") }
-    var isTimedEnabled by remember { mutableStateOf(true) }
+    var selectedDifficulty by remember { mutableStateOf(initial.difficulty) }
+    var selectedCount by remember { mutableStateOf(initial.count) }
+    var selectedFormat by remember { mutableStateOf(initial.format) }
+    var isTimedEnabled by remember { mutableStateOf(initial.timed) }
 
     Scaffold(
         topBar = {
@@ -135,6 +139,11 @@ fun TopicSelectionScreen(
                         )
                     }
                 }
+            }
+
+            // Flag quiz (moved here from the home screen)
+            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                FlagQuizCard(onStartFlagQuiz = onStartFlagQuiz)
             }
 
             // Topic selection Grid
@@ -318,7 +327,7 @@ fun TopicSelectionScreen(
                             Icon(imageVector = Icons.Default.HourglassEmpty, contentDescription = "Timer Settings")
                             Column {
                                 Text("Timed Questions Enabled", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
-                                Text("60 seconds response limit per prompt", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                                Text("${PracticeSettings.QUESTION_SECONDS} seconds per question", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
                             }
                         }
                         Switch(

@@ -161,3 +161,50 @@ object DailyChallenge {
         else -> 2
     }
 }
+
+/** The settings of the last practice quiz, reused by Quick Play and to pre-fill the Practice tab. */
+data class PracticeSettings(
+    val categories: List<String> = emptyList(),
+    val difficulty: String = "Mixed",
+    val count: Int = 10,
+    val format: String = "Mixed",
+    val timed: Boolean = true
+) {
+    fun serialize(): String =
+        listOf(categories.joinToString(";"), difficulty, count.toString(), format, timed.toString()).joinToString("|")
+
+    /** e.g. "10 questions · All topics · Mixed difficulty" */
+    fun summary(): String {
+        val length = if (count == ENDLESS) "Endless" else "$count questions"
+        val topics = when (categories.size) {
+            0 -> "All topics"
+            1 -> categories.single()
+            else -> "${categories.size} topics"
+        }
+        val level = if (difficulty == "Mixed") "Mixed difficulty" else difficulty.replaceFirstChar { it.uppercase() }
+        return buildList {
+            add(length)
+            add(topics)
+            add(level)
+            if (format == "True/False") add("True/False")
+            if (!timed) add("Untimed")
+        }.joinToString(" · ")
+    }
+
+    companion object {
+        const val QUESTION_SECONDS = 20
+        private const val ENDLESS = 999
+
+        fun parse(value: String?): PracticeSettings? {
+            val parts = value?.split('|') ?: return null
+            if (parts.size != 5) return null
+            return PracticeSettings(
+                categories = parts[0].split(';').filter { it.isNotBlank() },
+                difficulty = parts[1],
+                count = parts[2].toIntOrNull() ?: return null,
+                format = parts[3],
+                timed = parts[4].toBooleanStrictOrNull() ?: true
+            )
+        }
+    }
+}

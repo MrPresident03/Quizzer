@@ -50,7 +50,7 @@ fun SplashScreen(
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(2200)
+        delay(900)
         onFinish()
     }
 
@@ -135,19 +135,19 @@ fun OnboardingScreen(
     val slides = listOf(
         OnboardingSlide(
             title = "Master Every Topic",
-            description = "Test your trivia skills across 20 diverse topics—from World History and Astro-Physics to Pop Culture and Mathematics.",
+            description = "20 topics, from history and science to pop culture, plus flags and capital cities.",
             icon = Icons.Default.School,
             gradientColor = MaterialTheme.colorScheme.primary
         ),
         OnboardingSlide(
-            title = "The 24h Daily Challenge",
-            description = "Compete once a day against a randomized mix of 10 timed questions. Earn badges, gain massive XP, and top the leaderboard!",
+            title = "The Daily Challenge",
+            description = "Everyone gets the same 10 questions each day. Play once, then share your score with friends.",
             icon = Icons.Default.FlashOn,
             gradientColor = MaterialTheme.colorScheme.secondary
         ),
         OnboardingSlide(
-            title = "Unlock Your Potential",
-            description = "Earn XP to complete 20+ custom badges, level up to Grand Master, purchase amazing Lifelines, or unlock new color themes in the XP Shop.",
+            title = "Learn as You Play",
+            description = "See why every answer is right, review the ones you miss, earn XP and badges, and keep your streak alive.",
             icon = Icons.Default.Star,
             gradientColor = MaterialTheme.colorScheme.tertiary
         )

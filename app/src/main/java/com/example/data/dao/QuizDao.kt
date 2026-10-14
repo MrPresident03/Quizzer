@@ -102,6 +102,9 @@ interface QuizDao {
     @Query("UPDATE achievements SET isUnlocked = 1, unlockedAt = :timestamp WHERE id = :id AND isUnlocked = 0")
     suspend fun unlockAchievement(id: String, timestamp: Long): Int
 
+    @Query("DELETE FROM achievements WHERE id = :id")
+    suspend fun deleteAchievement(id: String)
+
     @Query("UPDATE achievements SET isUnlocked = 0, unlockedAt = NULL")
     suspend fun resetAchievements()
 }

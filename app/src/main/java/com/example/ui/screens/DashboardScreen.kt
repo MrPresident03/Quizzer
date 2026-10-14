@@ -43,7 +43,8 @@ fun DashboardScreen(
     onNavigateToPracticeSelection: () -> Unit,
     onStartTopicOfTheDay: (String) -> Unit,
     onNavigateToProfile: () -> Unit,
-    onStartFlagQuiz: (mode: String, difficulty: String, count: Int) -> Unit,
+    quickPlaySummary: String = "10 questions · All topics · Mixed difficulty",
+    onQuickPlay: () -> Unit = {},
     lifetimeXp: Int = userStats.xpPoints,
     playedDays: Set<LocalDate> = emptySet(),
     mistakeCount: Int = 0,
@@ -51,9 +52,6 @@ fun DashboardScreen(
 ) {
     // Midnight countdown timer
     var timeUntilMidnight by remember { mutableStateOf("") }
-    var activeFlagMode by remember { mutableStateOf("Mixed") }
-    var flagQuestionCount by remember { mutableStateOf(10) }
-    var flagDifficulty by remember { mutableStateOf("Mixed") }
     LaunchedEffect(key1 = true) {
         while (true) {
             val now = Calendar.getInstance()
@@ -174,244 +172,60 @@ fun DashboardScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
-            // Level progress bar
-            item {
-                // Progress toward the next level comes from lifetime XP, not the spendable balance.
-                val progressPercent = if (userStats.currentLevel >= Scoring.MAX_LEVEL) 1f
-                else (lifetimeXp % Scoring.XP_PER_LEVEL) / Scoring.XP_PER_LEVEL.toFloat()
-                val xpToNext = Scoring.XP_PER_LEVEL - (lifetimeXp % Scoring.XP_PER_LEVEL)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    MaterialTheme.colorScheme.primary,
-                                    MaterialTheme.colorScheme.secondary
-                                )
-                            )
-                        )
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column {
-                                Text(
-                                    text = "GLOBAL LEVEL",
-                                    style = MaterialTheme.typography.labelSmall.copy(
-                                        color = Color.White.copy(alpha = 0.7f),
-                                        fontWeight = FontWeight.Bold,
-                                        letterSpacing = 1.sp
-                                    )
-                                )
-                                Row(
-                                    verticalAlignment = Alignment.Bottom,
-                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                                ) {
-                                    Text(
-                                        text = "${userStats.currentLevel}",
-                                        style = MaterialTheme.typography.headlineLarge.copy(
-                                            color = Color.White,
-                                            fontWeight = FontWeight.Black
-                                        )
-                                    )
-                                    Text(
-                                        text = userTitle,
-                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                            color = Color.White.copy(alpha = 0.9f),
-                                            fontWeight = FontWeight.Bold
-                                        ),
-                                        modifier = Modifier.padding(bottom = 4.dp)
-                                    )
-                                }
-                            }
-                            Column(horizontalAlignment = Alignment.End) {
-                                Text(
-                                    text = "XP COINS",
-                                    style = MaterialTheme.typography.labelSmall.copy(
-                                        color = Color.White.copy(alpha = 0.7f),
-                                        fontWeight = FontWeight.Bold,
-                                        letterSpacing = 1.sp
-                                    )
-                                )
-                                Text(
-                                    text = "${userStats.xpPoints} XP",
-                                    style = MaterialTheme.typography.titleLarge.copy(
-                                        color = Color.White,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(14.dp))
-                        LinearProgressIndicator(
-                            progress = { progressPercent },
-                            trackColor = Color.White.copy(alpha = 0.2f),
-                            color = Color.White,
-                            strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                        )
-                        if (userStats.currentLevel < Scoring.MAX_LEVEL) {
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text(
-                                text = "$xpToNext XP to level ${userStats.currentLevel + 1}",
-                                style = MaterialTheme.typography.labelSmall.copy(color = Color.White.copy(alpha = 0.8f))
-                            )
-                        }
-                    }
-                }
-            }
-
-            // Streak card + Visual Streak Calendar
+            // Quick Play: one tap into a quiz with your last practice settings
             item {
                 Card(
-                    shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("quick_play_card"),
+                    shape = RoundedCornerShape(28.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Column(modifier = Modifier.padding(18.dp)) {
+                    Column(modifier = Modifier.padding(22.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(
+                            text = "Quick Play",
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.ExtraBold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        )
+                        Text(
+                            text = quickPlaySummary,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.LocalFireDepartment,
-                                contentDescription = "Streak",
-                                tint = Color(0xFFE65100),
-                                modifier = Modifier.size(32.dp)
-                            )
-                            Column {
+                            Button(
+                                onClick = onQuickPlay,
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                                    contentColor = MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(52.dp)
+                                    .testTag("quick_play_button")
+                            ) {
+                                Icon(imageVector = Icons.Default.PlayArrow, contentDescription = null)
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("PLAY", fontWeight = FontWeight.ExtraBold, letterSpacing = 0.5.sp)
+                            }
+                            TextButton(
+                                onClick = onNavigateToPracticeSelection,
+                                modifier = Modifier.testTag("quick_play_settings_button")
+                            ) {
                                 Text(
-                                    text = "${userStats.currentStreak}-Day Active Blitz!",
-                                    style = MaterialTheme.typography.titleMedium,
+                                    text = "Change",
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Text(
-                                    text = if (userStats.hasStreakFreeze > 0) "Streak Freeze Equipped! (x${userStats.hasStreakFreeze})" else "Equip 'Streak Freeze' in the shop to protect progress",
-                                    style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
-                                )
                             }
-                        }
-
-                        Spacer(modifier = Modifier.height(14.dp))
-
-                        // Streak Calendar Layout representing the past 7 days
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            // The last 7 days, oldest first, ticked on days you actually played.
-                            val today = LocalDate.now()
-                            val days = (6 downTo 0).map { today.minusDays(it.toLong()) }
-                            val list = days.map {
-                                it.dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, Locale.getDefault())
-                            }
-                            val activeFlags = days.map { it in playedDays }
-
-                            for (i in 0..6) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                                ) {
-                                    Text(
-                                        text = list[i],
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Box(
-                                        modifier = Modifier
-                                            .size(28.dp)
-                                            .clip(CircleShape)
-                                            .background(
-                                                if (activeFlags[i]) Color(0xFFE65100)
-                                                else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
-                                            ),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        if (activeFlags[i]) {
-                                            Icon(
-                                                imageVector = Icons.Default.Check,
-                                                contentDescription = "Active",
-                                                tint = Color.White,
-                                                modifier = Modifier.size(16.dp)
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Quick Stats panel
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    StatBox(
-                        title = "Accuracy",
-                        value = "${userStats.accuracyPercentage.roundToInt()}%",
-                        icon = Icons.Default.Percent,
-                        color = Color(0xFF4CAF50),
-                        modifier = Modifier.weight(1f)
-                    )
-                    StatBox(
-                        title = "Solved",
-                        value = "${userStats.correctAnswersCount}",
-                        icon = Icons.Default.QuestionAnswer,
-                        color = Color(0xFF2196F3),
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-
-            // Review mistakes: questions you got wrong come back until you get them right
-            if (mistakeCount > 0) {
-                item {
-                    Card(
-                        onClick = onStartMistakeReview,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("review_mistakes_card"),
-                        shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(18.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(14.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Replay,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onTertiaryContainer,
-                                modifier = Modifier.size(32.dp)
-                            )
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "Review your mistakes",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                                Text(
-                                    text = "$mistakeCount question${if (mistakeCount == 1) "" else "s"} to master · they clear when you get them right",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)
-                                )
-                            }
-                            Icon(
-                                imageVector = Icons.Default.ArrowForward,
-                                contentDescription = "Start review",
-                                tint = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
                         }
                     }
                 }
@@ -536,237 +350,219 @@ fun DashboardScreen(
                 }
             }
 
-            // Visually stunning Country Flag Section card
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                            shape = RoundedCornerShape(28.dp)
-                        ),
-                    shape = RoundedCornerShape(28.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Box(
+            // Review mistakes: questions you got wrong come back until you get them right
+            if (mistakeCount > 0) {
+                item {
+                    Card(
+                        onClick = onStartMistakeReview,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(
-                                Brush.linearGradient(
-                                    colors = listOf(
-                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
-                                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.02f)
-                                    )
-                                )
-                            )
-                            .padding(24.dp)
+                            .testTag("review_mistakes_card"),
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
                     ) {
-                        Column {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Surface(
-                                    shape = RoundedCornerShape(100.dp),
-                                    color = Color(0xFF3B82F6).copy(alpha = 0.12f)
-                                ) {
-                                    Text(
-                                        text = "GEOGRAPHY BLITZ",
-                                        style = MaterialTheme.typography.labelSmall.copy(
-                                            fontWeight = FontWeight.ExtraBold,
-                                            color = Color(0xFF2563EB),
-                                            letterSpacing = 0.5.sp
-                                        ),
-                                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-                                    )
-                                }
+                        Row(
+                            modifier = Modifier.padding(18.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Replay,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "🏳️‍🌈 🇺🇸 🇯🇵 🗺️",
-                                    fontSize = 18.sp
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(14.dp))
-
-                            Text(
-                                text = "Country Flags Challenge",
-                                style = MaterialTheme.typography.headlineSmall.copy(
-                                    fontWeight = FontWeight.ExtraBold,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.height(6.dp))
-
-                            Text(
-                                text = "Identify the national flags of almost every sovereign country on the planet! Filter by difficulty to test your knowledge on rare and obscure flags.",
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                                    lineHeight = 20.sp
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.height(18.dp))
-
-                            // Configuration Row 1: Mode Select
-                            Text(
-                                text = "CHOOSE GAMEPLAY FORMAT",
-                                style = MaterialTheme.typography.labelSmall.copy(
+                                    text = "Review your mistakes",
+                                    style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                                )
+                                Text(
+                                    text = "$mistakeCount question${if (mistakeCount == 1) "" else "s"} to master · they clear when you get them right",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)
+                                )
+                            }
+                            Icon(
+                                imageVector = Icons.Default.ArrowForward,
+                                contentDescription = "Start review",
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Level progress bar
+            item {
+                // Progress toward the next level comes from lifetime XP, not the spendable balance.
+                val progressPercent = if (userStats.currentLevel >= Scoring.MAX_LEVEL) 1f
+                else (lifetimeXp % Scoring.XP_PER_LEVEL) / Scoring.XP_PER_LEVEL.toFloat()
+                val xpToNext = Scoring.XP_PER_LEVEL - (lifetimeXp % Scoring.XP_PER_LEVEL)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.primary,
+                                    MaterialTheme.colorScheme.secondary
                                 )
                             )
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                val modes = listOf(
-                                    "flag_to_country" to "Flag ➔ Name",
-                                    "country_to_flag" to "Name ➔ Flag",
-                                    "Mixed" to "Mixed Blitz"
+                        )
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column {
+                                Text(
+                                    text = "GLOBAL LEVEL",
+                                    style = MaterialTheme.typography.labelSmall.copy(
+                                        color = Color.White.copy(alpha = 0.7f),
+                                        fontWeight = FontWeight.Bold,
+                                        letterSpacing = 1.sp
+                                    )
                                 )
-                                modes.forEach { (modeVal, modeLabel) ->
-                                    val isSelected = activeFlagMode == modeVal
-                                    Surface(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .clip(RoundedCornerShape(12.dp))
-                                            .clickable { activeFlagMode = modeVal },
-                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                        shape = RoundedCornerShape(12.dp)
-                                    ) {
-                                        Text(
-                                            text = modeLabel,
-                                            style = MaterialTheme.typography.bodySmall.copy(
-                                                fontWeight = FontWeight.Bold,
-                                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                                            ),
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.padding(vertical = 10.dp)
-                                        )
-                                    }
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            // Configuration Row 2: Difficulty Selection
-                            Text(
-                                text = "SELECT DIFFICULTY LEVEL",
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                val diffs = listOf("Easy", "Medium", "Hard", "Mixed")
-                                diffs.forEach { diffVal ->
-                                    val isSelected = flagDifficulty == diffVal
-                                    Surface(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .clip(RoundedCornerShape(12.dp))
-                                            .clickable { flagDifficulty = diffVal },
-                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                        shape = RoundedCornerShape(12.dp)
-                                    ) {
-                                        Text(
-                                            text = diffVal,
-                                            style = MaterialTheme.typography.bodySmall.copy(
-                                                fontWeight = FontWeight.Bold,
-                                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                                            ),
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.padding(vertical = 10.dp)
-                                        )
-                                    }
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            // Configuration Row 3: Question Count
-                            Text(
-                                text = "NUMBER OF QUESTIONS",
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                val counts = listOf(10, 20, 40)
-                                counts.forEach { countVal ->
-                                    val isSelected = flagQuestionCount == countVal
-                                    Surface(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .clip(RoundedCornerShape(12.dp))
-                                            .clickable { flagQuestionCount = countVal },
-                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                        shape = RoundedCornerShape(12.dp)
-                                    ) {
-                                        Text(
-                                            text = "$countVal Qs",
-                                            style = MaterialTheme.typography.bodySmall.copy(
-                                                fontWeight = FontWeight.Bold,
-                                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                                            ),
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.padding(vertical = 10.dp)
-                                        )
-                                    }
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(24.dp))
-
-                            // Start Button
-                            Button(
-                                onClick = { onStartFlagQuiz(activeFlagMode, flagDifficulty, flagQuestionCount) },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFF2563EB),
-                                    contentColor = Color.White
-                                ),
-                                shape = RoundedCornerShape(16.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(52.dp)
-                            ) {
                                 Row(
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.Bottom,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                                 ) {
                                     Text(
-                                        text = "START GEOGRAPHY QUIZ",
-                                        fontWeight = FontWeight.ExtraBold,
-                                        letterSpacing = 0.5.sp
+                                        text = "${userStats.currentLevel}",
+                                        style = MaterialTheme.typography.headlineLarge.copy(
+                                            color = Color.White,
+                                            fontWeight = FontWeight.Black
+                                        )
                                     )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Icon(
-                                        imageVector = Icons.Default.Public,
-                                        contentDescription = "Public",
-                                        modifier = Modifier.size(18.dp)
+                                    Text(
+                                        text = userTitle,
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            color = Color.White.copy(alpha = 0.9f),
+                                            fontWeight = FontWeight.Bold
+                                        ),
+                                        modifier = Modifier.padding(bottom = 4.dp)
                                     )
+                                }
+                            }
+                            Column(horizontalAlignment = Alignment.End) {
+                                Text(
+                                    text = "TOTAL XP",
+                                    style = MaterialTheme.typography.labelSmall.copy(
+                                        color = Color.White.copy(alpha = 0.7f),
+                                        fontWeight = FontWeight.Bold,
+                                        letterSpacing = 1.sp
+                                    )
+                                )
+                                Text(
+                                    text = "$lifetimeXp XP",
+                                    style = MaterialTheme.typography.titleLarge.copy(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(14.dp))
+                        LinearProgressIndicator(
+                            progress = { progressPercent },
+                            trackColor = Color.White.copy(alpha = 0.2f),
+                            color = Color.White,
+                            strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                        )
+                        if (userStats.currentLevel < Scoring.MAX_LEVEL) {
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = "$xpToNext XP to level ${userStats.currentLevel + 1}",
+                                style = MaterialTheme.typography.labelSmall.copy(color = Color.White.copy(alpha = 0.8f))
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Streak card + Visual Streak Calendar
+            item {
+                Card(
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                ) {
+                    Column(modifier = Modifier.padding(18.dp)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.LocalFireDepartment,
+                                contentDescription = "Streak",
+                                tint = Color(0xFFE65100),
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Column {
+                                Text(
+                                    text = "${userStats.currentStreak}-Day Active Blitz!",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = if (userStats.hasStreakFreeze > 0) "🧊 ${userStats.hasStreakFreeze} streak freeze${if (userStats.hasStreakFreeze == 1) "" else "s"} ready: covers a missed day" else "Play 7 days in a row to earn a streak freeze",
+                                    style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(14.dp))
+
+                        // Streak Calendar Layout representing the past 7 days
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            // The last 7 days, oldest first, ticked on days you actually played.
+                            val today = LocalDate.now()
+                            val days = (6 downTo 0).map { today.minusDays(it.toLong()) }
+                            val list = days.map {
+                                it.dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, Locale.getDefault())
+                            }
+                            val activeFlags = days.map { it in playedDays }
+
+                            for (i in 0..6) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Text(
+                                        text = list[i],
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Box(
+                                        modifier = Modifier
+                                            .size(28.dp)
+                                            .clip(CircleShape)
+                                            .background(
+                                                if (activeFlags[i]) Color(0xFFE65100)
+                                                else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        if (activeFlags[i]) {
+                                            Icon(
+                                                imageVector = Icons.Default.Check,
+                                                contentDescription = "Active",
+                                                tint = Color.White,
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -819,7 +615,7 @@ fun DashboardScreen(
                                 maxLines = 1
                             )
                             Text(
-                                text = "Solve custom $topicOfTheDay questions to earn dynamic XP multipliers!",
+                                text = "A fresh 10-question quiz on today's featured topic",
                                 style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
                             )
                         }
@@ -831,28 +627,6 @@ fun DashboardScreen(
                             modifier = Modifier.size(24.dp)
                         )
                     }
-                }
-            }
-
-            // General Practice Shortcut
-            item {
-                Button(
-                    onClick = onNavigateToPracticeSelection,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .testTag("practice_mode_shortcut"),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayForWork,
-                        contentDescription = "Practice Mode"
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Customize Practice Session",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                    )
                 }
             }
         }
