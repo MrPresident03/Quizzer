@@ -1,0 +1,103 @@
+name: Release
+
+# Builds the signed Play Store bundle (.aab) and an installable APK, then publishes a GitHub
+# Release. Run it by pushing a tag like v1.0.0, or from the Actions tab ("Run workflow").
+#
+# Needs two repository secrets (Settings > Secrets and variables > Actions):
+#   QUIZZER_UPLOAD_KEYSTORE_BASE64   - the upload keystore (.jks), base64-encoded
+#   QUIZZER_UPLOAD_KEYSTORE_PASSWORD - its password (also the key password, alias "upload")
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version name, e.g. 1.0.0'
+        required: true
+        default: '1.0.0'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Signed release
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle (with caching)
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Restore upload key from secrets
+        env:
+          KEYSTORE_BASE64: ${{ secrets.QUIZZER_UPLOAD_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.QUIZZER_UPLOAD_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "::error title=Missing signing secrets::Add QUIZZER_UPLOAD_KEYSTORE_BASE64 and QUIZZER_UPLOAD_KEYSTORE_PASSWORD under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | tr -d ' \n\r' | base64 --decode > "$RUNNER_TEMP/upload.jks"
+          echo "QUIZZER_UPLOAD_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+
+      - name: Work out version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then version="${GITHUB_REF_NAME#v}"; else version="$INPUT_VERSION"; fi
+          if ! echo "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error title=Bad version::Use a version like 1.0.0 (got '$version')."
+            exit 1
+          fi
+          echo "QUIZZER_VERSION_NAME=$version" >> "$GITHUB_ENV"
+
+      - name: Build signed bundle and APK
+        env:
+          QUIZZER_UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.QUIZZER_UPLOAD_KEYSTORE_PASSWORD }}
+        run: ./gradlew bundleRelease assembleRelease --stacktrace
+
+      - name: Collect outputs
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/bundle/release/app-release.aab "dist/Quizzer-$QUIZZER_VERSION_NAME.aab"
+          cp app/build/outputs/apk/release/app-release.apk "dist/Quizzer-$QUIZZER_VERSION_NAME.apk"
+          cp app/build/outputs/mapping/release/mapping.txt "mapping-$QUIZZER_VERSION_NAME.txt"
+
+      # The .aab is what you upload to Play Console; mapping.txt goes alongside it (App bundle
+      # explorer > Downloads > ReTrace mapping file) so crash reports are readable.
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: Quizzer-${{ env.QUIZZER_VERSION_NAME }}-release
+          path: |
+            dist/
+            mapping-*.txt
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v$QUIZZER_VERSION_NAME" dist/* \
+            --title "Quizzer $QUIZZER_VERSION_NAME" \
+            --target "$GITHUB_SHA" \
+            --generate-notes
+
+      - name: Remove upload key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/upload.jks"

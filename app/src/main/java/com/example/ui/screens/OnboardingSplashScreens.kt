@@ -90,7 +90,7 @@ fun SplashScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.FlashOn,
-                    contentDescription = "BrainBlitz Logo",
+                    contentDescription = "Quizzer logo",
                     tint = Color.White,
                     modifier = Modifier.size(64.dp)
                 )
@@ -99,7 +99,7 @@ fun SplashScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "BrainBlitz",
+                text = "Quizzer",
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = 2.sp,

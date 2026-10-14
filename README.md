@@ -1,4 +1,4 @@
-# BrainBlitz
+# Quizzer
 
 [![Android CI](https://github.com/MrPresident03/Quizzer/actions/workflows/android.yml/badge.svg)](https://github.com/MrPresident03/Quizzer/actions/workflows/android.yml)
 
@@ -18,7 +18,7 @@ A trivia app for Android built with Kotlin, Jetpack Compose and Room.
 
 ## Build
 
-Every push to `main` and every pull request is built by GitHub Actions: it compiles a debug APK and runs the unit tests. Download the APK from the run's **Artifacts** section.
+Every push to `main` and every pull request is built by GitHub Actions: it compiles a debug APK and runs the unit tests. Download the dev APK ("Quizzer Dev") from the run's **Artifacts** section. Signed Play Store builds come from the **Release** workflow; see [PLAY_STORE.md](PLAY_STORE.md).
 
 Locally:
 
@@ -29,7 +29,9 @@ Locally:
 
 Or open the project in Android Studio and press Run. Use JDK 21 (Robolectric needs it to run the Android 16 / SDK 36 tests).
 
-Debug builds are signed with the committed `debug.keystore`, so every APK (from CI or a local build) installs as an update over the previous one and keeps your progress. CI builds are numbered by run (`versionCode` = run number), shown in Settings. This key is for testing only; a Play Store release needs its own private key kept out of git.
+Dev builds (`nz.durbs.quizzer.debug`) are signed with the committed `debug.keystore`, so every dev APK installs over the previous one and keeps your progress, alongside the store version. Release builds (`nz.durbs.quizzer`) are shrunk with R8 and signed with a private upload key kept in GitHub secrets. Builds are numbered by workflow run, shown in Settings.
+
+Privacy policy: [PRIVACY.md](PRIVACY.md).
 
 ## Project layout
 

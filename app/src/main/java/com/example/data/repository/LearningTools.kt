@@ -116,7 +116,7 @@ object DailyChallenge {
     private const val FLAGS_PER_DAY = 2
     private const val CAPITALS_PER_DAY = 2
 
-    /** Challenge number shown when sharing, e.g. "Daily #287". */
+    /** Challenge number shown when sharing, e.g. "Quizzer Daily #287". */
     fun number(date: LocalDate): Long = ChronoUnit.DAYS.between(FIRST_DAY, date) + 1
 
     fun build(bundled: List<Question>, date: LocalDate): List<Question> {
@@ -148,7 +148,7 @@ object DailyChallenge {
         val seconds = result.seconds % 60
         val squares = result.answers.joinToString("") { if (it) "🟩" else "🟥" }
         return buildString {
-            append("🧠 BrainBlitz Daily #").append(number(date)).append('\n')
+            append("🧠 Quizzer Daily #").append(number(date)).append('\n')
             append(result.correct).append('/').append(result.answers.size)
             append("  ⏱ ").append(minutes).append(':').append(seconds.toString().padStart(2, '0')).append('\n')
             append(squares)

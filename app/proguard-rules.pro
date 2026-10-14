@@ -1,21 +1,15 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Quizzer release (R8) rules. Most libraries (Room, Moshi codegen, Retrofit, OkHttp, WorkManager,
+# Compose) ship their own consumer rules; only app-specific additions go here.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Readable stack traces in Play Console crash reports (upload mapping.txt with each release).
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Moshi uses KSP-generated adapters for every JSON class. KotlinJsonAdapterFactory is only a
+# reflective fallback; keep Kotlin metadata so it still works if a type without an adapter appears.
+-keep class kotlin.Metadata { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# JSON model classes (bundled questions, mistakes list, Open Trivia DB responses).
+-keep class com.example.data.api.** { *; }
+-keep class com.example.data.repository.BundledQuestionJson { *; }
+-keep class com.example.data.repository.MistakeEntry { *; }
