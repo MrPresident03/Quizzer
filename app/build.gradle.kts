@@ -44,7 +44,11 @@ android {
       signingConfig = signingConfigs.getByName("release")
     }
     debug {
-      signingConfig = signingConfigs.getByName("debugConfig")
+      // Only use the shared debug keystore when it's present (it's gitignored), so CI and fresh
+      // clones can build with the default Android debug key instead of failing.
+      if (file("${rootDir}/debug.keystore").exists()) {
+        signingConfig = signingConfigs.getByName("debugConfig")
+      }
     }
   }
   compileOptions {
