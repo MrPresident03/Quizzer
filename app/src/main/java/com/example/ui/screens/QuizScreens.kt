@@ -1,5 +1,6 @@
 package com.example.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -218,10 +219,51 @@ fun QuizPlayScreen(
     onUseSkip: () -> Unit,
     onUseExtraTime: () -> Unit,
     onUseAskAudience: () -> Unit,
-    onQuitQuiz: () -> Unit
+    onQuitQuiz: () -> Unit,
+    isLoading: Boolean = false,
+    loadError: String? = null,
+    isTimed: Boolean = true,
+    isEndless: Boolean = false
 ) {
     val haptic = LocalHapticFeedback.current
-    val currentQ = questions.getOrNull(currentIndex) ?: return
+    var showQuitDialog by remember { mutableStateOf(false) }
+    val currentQ = questions.getOrNull(currentIndex)
+
+    // System back goes through the same path as the X button, so the quiz is properly stopped
+    // instead of running on (and being recorded as a failed session) in the background.
+    BackHandler {
+        if (currentQ == null) onQuitQuiz() else showQuitDialog = true
+    }
+
+    if (showQuitDialog) {
+        AlertDialog(
+            onDismissRequest = { showQuitDialog = false },
+            title = { Text(if (isEndless) "End this run?" else "Quit quiz?") },
+            text = {
+                Text(
+                    if (isEndless) "Your endless run will end here and your score will be saved."
+                    else "Your progress in this quiz won't be saved."
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showQuitDialog = false
+                        onQuitQuiz()
+                    },
+                    modifier = Modifier.testTag("confirm_quit_quiz")
+                ) { Text(if (isEndless) "End run" else "Quit", fontWeight = FontWeight.Bold) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showQuitDialog = false }) { Text("Keep playing") }
+            }
+        )
+    }
+
+    if (currentQ == null) {
+        QuizLoadingOrError(isLoading = isLoading || loadError == null, loadError = loadError, onBack = onQuitQuiz)
+        return
+    }
 
     // Visual Timer bar depleting color logic (Green -> Yellow -> Red)
     val timerColor = when {
@@ -229,13 +271,7 @@ fun QuizPlayScreen(
         timeLeft > 15 -> GoldYellow
         else -> WrongRed
     }
-    val timerProgress = timeLeft / 60f
-
-    // Entrance slide animation trigger when currentIndex updates
-    var animSlideKey by remember { mutableStateOf(currentIndex) }
-    LaunchedEffect(currentIndex) {
-        animSlideKey = currentIndex
-    }
+    val timerProgress = (timeLeft / 60f).coerceIn(0f, 1f) // +15s lifeline can push past 60
 
     Scaffold { innerPadding ->
         Column(
@@ -254,13 +290,13 @@ fun QuizPlayScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(
-                        onClick = onQuitQuiz,
+                        onClick = { showQuitDialog = true },
                         modifier = Modifier.testTag("quit_quiz_button")
                     ) {
                         Icon(imageVector = Icons.Default.Close, contentDescription = "Quit")
                     }
                     Text(
-                        text = "Question ${currentIndex + 1} of ${questions.size}",
+                        text = if (isEndless) "Question ${currentIndex + 1}" else "Question ${currentIndex + 1} of ${questions.size}",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.ExtraBold
                     )
@@ -273,17 +309,19 @@ fun QuizPlayScreen(
                     }
                 }
 
-                // Dynamic Progress Bar
-                LinearProgressIndicator(
-                    progress = { timerProgress },
-                    color = timerColor,
-                    trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                    strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(8.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                )
+                // Dynamic Progress Bar (hidden when "Timed Questions" is switched off)
+                if (isTimed) {
+                    LinearProgressIndicator(
+                        progress = { timerProgress },
+                        color = timerColor,
+                        trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                        strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                    )
+                }
             }
 
             // Central Dynamic Quiz Card
@@ -296,13 +334,20 @@ fun QuizPlayScreen(
             ) {
                 // Animated Visibility with keyframe transition for sliding in from the right!
                 AnimatedContent(
-                    targetState = animSlideKey,
+                    targetState = currentIndex,
                     transitionSpec = {
                         slideInHorizontally { width -> width } + fadeIn() togetherWith
                                 slideOutHorizontally { width -> -width } + fadeOut()
                     },
                     label = "QuestionSlide"
-                ) { targetKey ->
+                ) { slideIndex ->
+                    // Each slide renders its own question, so the outgoing slide doesn't show the new one.
+                    val currentQ = questions.getOrNull(slideIndex) ?: return@AnimatedContent
+                    val isActiveSlide = slideIndex == currentIndex
+                    val isRevealed = isRevealed && isActiveSlide
+                    val selectedOption = if (isActiveSlide) selectedOption else null
+                    val hiddenOptions = if (isActiveSlide) hiddenOptions else emptySet()
+                    val audiencePoll = if (isActiveSlide) audiencePoll else null
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -439,7 +484,7 @@ fun QuizPlayScreen(
                                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                                             ) {
                                                 Text(
-                                                    text = "${"ABCD"[idx]}:",
+                                                    text = "${optionLabel(idx)}:",
                                                     fontWeight = FontWeight.Bold,
                                                     style = MaterialTheme.typography.bodySmall,
                                                     modifier = Modifier.width(20.dp)
@@ -491,7 +536,7 @@ fun QuizPlayScreen(
 
                                     Card(
                                         onClick = {
-                                            if (!isRevealed) {
+                                            if (!isRevealed && isActiveSlide) {
                                                 // Short tactile vibrations on choosing an answer
                                                 if (userStats.isHapticFeedbackEnabled) {
                                                     haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
@@ -503,7 +548,7 @@ fun QuizPlayScreen(
                                         colors = CardDefaults.cardColors(containerColor = cardBg),
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .testTag("quiz_option_${"abcd"[index]}")
+                                            .testTag("quiz_option_${optionLabel(index).lowercase()}")
                                     ) {
                                         Row(
                                             modifier = Modifier
@@ -537,7 +582,7 @@ fun QuizPlayScreen(
                                                     Icon(imageVector = Icons.Default.Close, contentDescription = "Wrong", tint = Color.White)
                                                 } else {
                                                     Text(
-                                                        text = "ABCD"[index].toString(),
+                                                        text = optionLabel(index),
                                                         fontWeight = FontWeight.Bold,
                                                         color = MaterialTheme.colorScheme.onSurface
                                                     )
@@ -585,7 +630,7 @@ fun QuizPlayScreen(
                         label = "50/50",
                         count = userStats.lifelineFiftyFiftyCount,
                         icon = Icons.Default.FilterAlt, // standard representation
-                        isActive = !isRevealed && hiddenOptions.isEmpty(),
+                        isActive = !isRevealed && hiddenOptions.isEmpty() && currentQ.optionsList.size >= 4,
                         onClick = onUse5050,
                         tag = "fifty_fifty_lifeline"
                     )
@@ -601,7 +646,7 @@ fun QuizPlayScreen(
                         label = "+15s",
                         count = userStats.lifelineExtraTimeCount,
                         icon = Icons.Default.Timer,
-                        isActive = !isRevealed,
+                        isActive = !isRevealed && isTimed,
                         onClick = onUseExtraTime,
                         tag = "extra_time_lifeline"
                     )
@@ -685,19 +730,64 @@ fun LifelineButton(
     }
 }
 
+/** "A", "B", "C", ... without crashing if a question ever has more than four options. */
+internal fun optionLabel(index: Int): String = ('A' + index).toString()
+
+@Composable
+private fun QuizLoadingOrError(isLoading: Boolean, loadError: String?, onBack: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (loadError != null) {
+                Icon(
+                    imageVector = Icons.Default.CloudOff,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    modifier = Modifier.size(48.dp)
+                )
+                Text(
+                    text = loadError,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+                Button(onClick = onBack, modifier = Modifier.testTag("quiz_error_back_button")) {
+                    Text("Back", fontWeight = FontWeight.Bold)
+                }
+            } else if (isLoading) {
+                CircularProgressIndicator()
+                Text(
+                    text = "Finding fresh questions…",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                )
+                TextButton(onClick = onBack) { Text("Cancel") }
+            }
+        }
+    }
+}
+
 // --- 3. RESULTS SCREEN ---
 @Composable
 fun QuizResultsScreen(
     questions: List<Question>,
     answers: List<Boolean>,
+    xpEarned: Int,
+    isDaily: Boolean,
     onReviewClick: () -> Unit,
     onDashboardFinish: () -> Unit
 ) {
     val correctCount = answers.count { it }
     val totalCount = questions.size
     val accuracy = if (totalCount == 0) 0f else (correctCount.toFloat() / totalCount * 100)
-    
-    val calculatedXP = correctCount * 10 + (if (correctCount == totalCount) 50 else 0)
+    val isPerfect = totalCount > 0 && correctCount == totalCount
 
     Box(
         modifier = Modifier
@@ -717,27 +807,27 @@ fun QuizResultsScreen(
                     .size(100.dp)
                     .clip(CircleShape)
                     .background(
-                        if (correctCount == totalCount) GoldYellow.copy(alpha = 0.2f)
+                        if (isPerfect) GoldYellow.copy(alpha = 0.2f)
                         else MaterialTheme.colorScheme.primaryContainer
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = if (correctCount == totalCount) Icons.Default.EmojiEvents else Icons.Default.CheckCircle,
+                    imageVector = if (isPerfect) Icons.Default.EmojiEvents else Icons.Default.CheckCircle,
                     contentDescription = "Success",
-                    tint = if (correctCount == totalCount) GoldYellow else MaterialTheme.colorScheme.primary,
+                    tint = if (isPerfect) GoldYellow else MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(56.dp)
                 )
             }
 
             Text(
-                text = if (correctCount == totalCount) "Blitz Perfect!" else "Session Complete!",
+                text = if (isPerfect) "Blitz Perfect!" else "Session Complete!",
                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
                 textAlign = TextAlign.Center
             )
 
-            // Special badge if perfect score
-            if (correctCount == totalCount) {
+            // Special badge if perfect score (the Daily Champion badge only exists for the Daily Challenge)
+            if (isPerfect) {
                 Surface(
                     shape = RoundedCornerShape(12.dp),
                     color = GoldYellow.copy(alpha = 0.2f)
@@ -748,7 +838,7 @@ fun QuizResultsScreen(
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Text(
-                            text = "👑 Unlocked 'Daily Champion' Badge!",
+                            text = if (isDaily) "👑 Daily Champion!" else "🎯 Perfect score: +${com.example.data.repository.Scoring.PERFECT_BONUS} XP bonus",
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFE65100)
@@ -770,7 +860,7 @@ fun QuizResultsScreen(
                 ) {
                     ResultRow("Correct Answers", "$correctCount / $totalCount", CorrectGreen)
                     ResultRow("Accuracy Rate", "${accuracy.roundToInt()}%", MaterialTheme.colorScheme.primary)
-                    ResultRow("XP Coins Earned", "+$calculatedXP XP", GoldYellow)
+                    ResultRow("XP Coins Earned", "+$xpEarned XP", GoldYellow)
                 }
             }
 
@@ -867,11 +957,20 @@ fun ReviewAnswersScreen(
                                 color = MaterialTheme.colorScheme.primary
                             )
                             val wasCorrect = correctAnswers.getOrNull(idx) ?: false
+                            val noAnswer = !wasCorrect && selectedIndices.getOrNull(idx) == null
                             Text(
-                                text = if (wasCorrect) "✓ Correct" else "✗ Incorrect",
+                                text = when {
+                                    wasCorrect -> "✓ Correct"
+                                    noAnswer -> "⏭ Skipped / timed out"
+                                    else -> "✗ Incorrect"
+                                },
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = if (wasCorrect) CorrectGreen else WrongRed
+                                color = when {
+                                    wasCorrect -> CorrectGreen
+                                    noAnswer -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                    else -> WrongRed
+                                }
                             )
                         }
 
@@ -923,7 +1022,7 @@ fun ReviewAnswersScreen(
                                             } else if (isMySelection) {
                                                 Icon(imageVector = Icons.Default.Close, contentDescription = "Wrong", tint = Color.White, modifier = Modifier.size(14.dp))
                                             } else {
-                                                Text("ABCD"[optIdx].toString(), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                                Text(optionLabel(optIdx), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                                             }
                                         }
 

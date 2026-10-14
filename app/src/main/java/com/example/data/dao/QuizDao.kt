@@ -17,6 +17,9 @@ interface QuizDao {
     @Query("SELECT * FROM questions")
     suspend fun getAllQuestions(): List<Question>
 
+    @Query("SELECT text FROM questions")
+    suspend fun getAllQuestionTexts(): List<String>
+
     @Query("SELECT COUNT(*) FROM questions")
     suspend fun getQuestionsCount(): Int
 
@@ -25,6 +28,32 @@ interface QuizDao {
 
     @Update
     suspend fun updateQuestion(question: Question)
+
+    /** Single UPDATE instead of loading the whole table to change one row. */
+    @Query("UPDATE questions SET answeredCount = answeredCount + 1, correctCount = correctCount + :correctIncrement WHERE text = :text")
+    suspend fun incrementAnswerStats(text: String, correctIncrement: Int)
+
+    @Query("UPDATE questions SET answeredCount = 0, correctCount = 0")
+    suspend fun resetAnswerStats()
+
+    /**
+     * Removes the placeholder questions the old seeder generated ("What is 87 times 2?" filed under
+     * Fashion, the same 4 History facts copied 6 times, etc.). Each pattern is paired with the old
+     * generator's explanation wording so real questions can't match by accident.
+     */
+    @Query(
+        """
+        DELETE FROM questions WHERE
+            (text LIKE 'What is the correct sum of % plus %?' AND explanation LIKE '% equals exactly %.')
+         OR (text LIKE 'What is the correct periodic table chemical symbol for %?' AND explanation LIKE 'The chemical symbol for % is indeed %.')
+         OR (text LIKE 'What is the official capital city of %?' AND explanation LIKE 'The capital of % is %.' AND explanation NOT LIKE '%. %')
+         OR (text LIKE 'Who historical figure is celebrated as the %?')
+         OR (text LIKE 'How many players are on the field/court for a single team in %?')
+         OR (text LIKE 'What is the correct collective noun used for a grouping of %?')
+         OR (text LIKE 'Question #% under category %: What is the mathematically solved result of % times 2?')
+        """
+    )
+    suspend fun deleteLegacyGeneratedQuestions(): Int
 
     @Query("DELETE FROM questions")
     suspend fun clearQuestions()
@@ -43,6 +72,13 @@ interface QuizDao {
     @Query("SELECT * FROM quiz_history ORDER BY timestamp DESC")
     fun getAllHistoryFlow(): Flow<List<QuizHistory>>
 
+    @Query("SELECT COUNT(*) FROM quiz_history")
+    suspend fun getHistoryCount(): Int
+
+    /** Lifetime XP earned (independent of XP spent in the shop). */
+    @Query("SELECT COALESCE(SUM(xpEarned), 0) FROM quiz_history")
+    suspend fun getLifetimeXp(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHistory(history: QuizHistory)
 
@@ -59,8 +95,12 @@ interface QuizDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAchievements(achievements: List<Achievement>)
 
-    @Query("UPDATE achievements SET isUnlocked = 1, unlockedAt = :timestamp WHERE id = :id")
-    suspend fun unlockAchievement(id: String, timestamp: Long)
+    /** Adds achievements that don't exist yet without wiping the unlock state of existing ones. */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertMissingAchievements(achievements: List<Achievement>)
+
+    @Query("UPDATE achievements SET isUnlocked = 1, unlockedAt = :timestamp WHERE id = :id AND isUnlocked = 0")
+    suspend fun unlockAchievement(id: String, timestamp: Long): Int
 
     @Query("UPDATE achievements SET isUnlocked = 0, unlockedAt = NULL")
     suspend fun resetAchievements()

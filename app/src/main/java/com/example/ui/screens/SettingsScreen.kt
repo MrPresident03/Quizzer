@@ -102,8 +102,8 @@ fun SettingsScreen(
 
             // 1. Clear Question History
             SettingsActionRow(
-                title = "Recycle Sighted Questions",
-                description = "Resets question answer counters so previous items replay frequently inside sessions.",
+                title = "Recycle Seen Questions",
+                description = "Forgets which questions you've already seen, so older questions can come up again.",
                 buttonText = "Clear History",
                 onClick = { showClearHistoryDialog = true },
                 tag = "clear_question_history_button"
@@ -146,8 +146,8 @@ fun SettingsScreen(
     if (showClearHistoryDialog) {
         AlertDialog(
             onDismissRequest = { showClearHistoryDialog = false },
-            title = { Text("Recycle Sighted Questions?") },
-            text = { Text("This will clear answer tracking counters, restoring the algorithm's default selection weighting to ensure questions duplicate normally again.") },
+            title = { Text("Recycle Seen Questions?") },
+            text = { Text("The app normally avoids repeating questions you've seen recently. This clears that memory, so previously seen questions can appear again.") },
             confirmButton = {
                 TextButton(
                     onClick = {
