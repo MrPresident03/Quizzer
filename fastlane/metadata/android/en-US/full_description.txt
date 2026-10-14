@@ -1,0 +1,27 @@
+Quizzer is trivia that keeps you learning — and keeps the questions fresh.
+
+DAILY CHALLENGE
+Everyone gets the same 10 questions each day, from easy to hard. Play once, then share your score as a spoiler-free 🟩🟥 grid and see how your friends did.
+
+QUESTIONS THAT DON'T REPEAT
+Quizzer remembers what you've already seen and serves new questions first. Hundreds of hand-checked questions are built in and work offline, and thousands more are added from the Open Trivia Database when you're online.
+
+LEARN FROM EVERY ANSWER
+See why each answer is right the moment you answer. Every question you miss goes into Review Mistakes, and comes back until you get it right.
+
+20 TOPICS, PLUS FLAGS AND CAPITALS
+History, science, geography, sport, film and music, literature, art, food, technology, maths, mythology, animals, law, business, language and more. Test yourself on the flags of 185 countries and the capitals of nearly 100.
+
+PLAY YOUR WAY
+• Quick Play: one tap starts a quiz with your favourite settings
+• Mix any topics, pick a difficulty, choose 10, 20, 30 or Endless
+• Multiple choice or true/false, timed (20 seconds) or relaxed
+• Free lifelines every quiz: 50/50, skip, extra time and ask the audience
+
+TRACK YOUR PROGRESS
+Daily streaks with earned streak freezes, XP and levels, 20 badges, an activity graph and accuracy for every topic — with a one-tap drill for your weakest one.
+
+MADE TO BE PLEASANT
+No ads, no accounts, no in-app purchases. Four colour themes, dark mode, larger text, sound and haptics, and an optional evening reminder for the Daily Challenge.
+
+Online questions come from the Open Trivia Database (opentdb.com), licensed CC BY-SA 4.0.

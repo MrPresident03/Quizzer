@@ -88,7 +88,7 @@ class LearningToolsTest {
             LocalDate.of(2026, 10, 14),
             DailyResult("2026-10-14", listOf(true, true, false, true), 105)
         )
-        assertEquals("🧠 BrainBlitz Daily #287\n3/4  ⏱ 1:45\n🟩🟩🟥🟩", text)
+        assertEquals("🧠 Quizzer Daily #287\n3/4  ⏱ 1:45\n🟩🟩🟥🟩", text)
     }
 
     @Test

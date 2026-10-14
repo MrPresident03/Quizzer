@@ -39,12 +39,19 @@ jobs:
           set -o pipefail
           ./gradlew testDebugUnitTest --stacktrace 2>&1 | tee test-output.txt
 
+      # Builds the shrunk/obfuscated Play Store variant (signed with the debug key here) so R8
+      # problems are caught on every PR, not on release day.
+      - name: Check release build
+        run: |
+          set -o pipefail
+          ./gradlew assembleRelease --stacktrace 2>&1 | tee release-output.txt
+
       # Put the key Gradle error lines on the run summary / PR checks, so failures can be
       # diagnosed without digging through the full log.
       - name: Summarise failure
         if: failure()
         run: |
-          details=$(cat build-output.txt test-output.txt 2>/dev/null \
+          details=$(cat build-output.txt test-output.txt release-output.txt 2>/dev/null \
             | grep -E "FAILED|What went wrong|^e: |Execution failed|Caused by|Exception:|at com\.example|> Task :app:[a-zA-Z]+ FAILED|tests completed" \
             | grep -v "^\s*at org\.gradle" | head -60)
           details="${details//'%'/'%25'}"
@@ -54,7 +61,7 @@ jobs:
       - name: Upload debug APK
         uses: actions/upload-artifact@v7
         with:
-          name: BrainBlitz-debug-apk
+          name: Quizzer-dev-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 

@@ -24,7 +24,7 @@ class GreetingScreenshotTest {
   fun greeting_screenshot() {
     composeTestRule.setContent { 
         BrainBlitzTheme { 
-            Text("BrainBlitz Capital & Flag Challenges!") 
+            Text("Quizzer: Daily Trivia") 
         } 
     }
 

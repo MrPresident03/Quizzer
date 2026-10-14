@@ -130,7 +130,7 @@ fun SettingsScreen(
             // 4. Daily Challenge reminder
             PreferenceToggle(
                 title = "Daily Reminder",
-                description = if (reminderDenied) "Notifications are blocked — allow them for BrainBlitz in system settings"
+                description = if (reminderDenied) "Notifications are blocked — allow them for Quizzer in system settings"
                 else "A nudge at ${DailyReminder.REMINDER_HOUR - 12} pm if you haven't played the Daily Challenge",
                 icon = Icons.Default.NotificationsActive,
                 checked = reminderEnabled,
@@ -181,7 +181,7 @@ fun SettingsScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("BrainBlitz", fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.bodyLarge)
+                    Text("Quizzer", fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.bodyLarge)
                     Text("Version ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall)
                     Text("Online questions from the Open Trivia Database (opentdb.com), licensed CC BY-SA 4.0.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
                 }
