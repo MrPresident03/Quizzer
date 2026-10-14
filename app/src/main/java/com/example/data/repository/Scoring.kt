@@ -10,7 +10,8 @@ enum class SessionType(val label: String) {
     PRACTICE("Practice"),
     DAILY("Daily"),
     FLAGS("Flags"),
-    ENDLESS("Endless")
+    ENDLESS("Endless"),
+    REVIEW("Review")
 }
 
 /** Everything the repository needs to record a finished session and evaluate achievements. */

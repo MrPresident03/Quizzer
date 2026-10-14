@@ -6,7 +6,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 
 // --- COLOR SCHEME DEFINITIONS ---
 
@@ -110,6 +113,7 @@ private val ClassicLight = lightColorScheme(
 fun BrainBlitzTheme(
     themeId: String = "midnight_blue", // "midnight_blue", "forest_green", "sunset_orange", "classic"
     darkTheme: Boolean = isSystemInDarkTheme(),
+    largeText: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when (themeId) {
@@ -119,9 +123,18 @@ fun BrainBlitzTheme(
         else -> if (darkTheme) MidnightDark else MidnightLight // default "midnight_blue"
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    // "Increase Font Text Size" setting: scale every sp-based text size (including hard-coded
+    // fontSize values) on top of the system font scale.
+    val density = LocalDensity.current
+    val scaledDensity = if (largeText) Density(density.density, density.fontScale * LARGE_TEXT_SCALE) else density
+
+    CompositionLocalProvider(LocalDensity provides scaledDensity) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
+
+private const val LARGE_TEXT_SCALE = 1.15f

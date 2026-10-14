@@ -44,7 +44,11 @@ android {
       signingConfig = signingConfigs.getByName("release")
     }
     debug {
-      signingConfig = signingConfigs.getByName("debugConfig")
+      // Only use the shared debug keystore when it's present (it's gitignored), so CI and fresh
+      // clones can build with the default Android debug key instead of failing.
+      if (file("${rootDir}/debug.keystore").exists()) {
+        signingConfig = signingConfigs.getByName("debugConfig")
+      }
     }
   }
   compileOptions {
@@ -56,6 +60,15 @@ android {
     buildConfig = true
   }
   testOptions { unitTests { isIncludeAndroidResources = true } }
+}
+
+// KSP (Room/Moshi code generation) is only needed for the app's own sources; tests don't use those
+// annotations, so skip it for test source sets. Note: KSP2 may log a harmless
+// "ApplicationManager.getApplication() is null" NullPointerException from a background thread.
+tasks.configureEach {
+  if (name.startsWith("ksp") && (name.endsWith("UnitTestKotlin") || name.endsWith("AndroidTestKotlin"))) {
+    enabled = false
+  }
 }
 
 // Configure the Secrets Gradle Plugin to use .env and .env.example files

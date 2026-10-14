@@ -1,0 +1,67 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21' # Robolectric needs Java 21 to run Android SDK 36 tests
+
+      - name: Set up Gradle (with caching)
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build debug APK
+        run: |
+          set -o pipefail
+          ./gradlew assembleDebug --stacktrace 2>&1 | tee build-output.txt
+
+      - name: Run unit tests
+        run: |
+          set -o pipefail
+          ./gradlew testDebugUnitTest --stacktrace 2>&1 | tee test-output.txt
+
+      # Put the key Gradle error lines on the run summary / PR checks, so failures can be
+      # diagnosed without digging through the full log.
+      - name: Summarise failure
+        if: failure()
+        run: |
+          details=$(cat build-output.txt test-output.txt 2>/dev/null \
+            | grep -E "FAILED|What went wrong|^e: |Execution failed|Caused by|Exception:|at com\.example|> Task :app:[a-zA-Z]+ FAILED|tests completed" \
+            | grep -v "^\s*at org\.gradle" | head -60)
+          details="${details//'%'/'%25'}"
+          details="${details//$'\n'/'%0A'}"
+          echo "::error title=Gradle failure::${details}"
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: BrainBlitz-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-reports
+          path: app/build/reports/tests/
+          if-no-files-found: ignore

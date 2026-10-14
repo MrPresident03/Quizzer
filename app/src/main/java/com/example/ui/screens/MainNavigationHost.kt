@@ -18,7 +18,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import com.example.QuizApplication
+import com.example.data.repository.DailyChallenge
 import com.example.data.repository.SessionType
+import com.example.ui.shareText
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import com.example.ui.viewmodel.QuizViewModel
 import com.example.ui.viewmodel.QuizViewModelFactory
 import com.example.ui.theme.BrainBlitzTheme
@@ -38,9 +43,24 @@ fun MainNavigationHost() {
     val history by mainViewModel.quizHistory.collectAsState()
     val achievements by mainViewModel.achievements.collectAsState()
     val dailyPlayed by mainViewModel.dailyPlayedToday.collectAsState()
+    val todayDailyResult by mainViewModel.todayDailyResult.collectAsState()
+    val mistakeCount by mainViewModel.mistakeCount.collectAsState()
+    val topicStats by mainViewModel.topicStats.collectAsState()
+    val reminderEnabled by mainViewModel.dailyReminderEnabled.collectAsState()
+    val activityContext = LocalContext.current
+
+    // Derived from real history: lifetime XP (level progress) and the days you actually played.
+    val lifetimeXp = remember(history) { history.sumOf { it.xpEarned } }
+    val playedDays = remember(history) {
+        val zone = ZoneId.systemDefault()
+        history.mapTo(HashSet()) { Instant.ofEpochMilli(it.timestamp).atZone(zone).toLocalDate() }
+    }
+    val shareDaily: () -> Unit = {
+        mainViewModel.dailyShareText()?.let { shareText(activityContext, it) }
+    }
 
     // Handle Active Theme Wrap dynamically!
-    BrainBlitzTheme(themeId = stats.activeThemeId) {
+    BrainBlitzTheme(themeId = stats.activeThemeId, largeText = stats.fontSizePreference == "large") {
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = currentBackStackEntry?.destination?.route
 
@@ -260,6 +280,13 @@ fun MainNavigationHost() {
                         onStartFlagQuiz = { mode, difficulty, count ->
                             mainViewModel.startFlagsQuiz(mode, difficulty, count)
                             navController.navigate("practice_quiz")
+                        },
+                        lifetimeXp = lifetimeXp,
+                        playedDays = playedDays,
+                        mistakeCount = mistakeCount,
+                        onStartMistakeReview = {
+                            mainViewModel.startMistakeReview()
+                            navController.navigate("practice_quiz")
                         }
                     )
                 }
@@ -281,10 +308,20 @@ fun MainNavigationHost() {
 
                 // Route E: Analytics achievements Screen Tab 3
                 composable("analytics_milestones") {
+                    LaunchedEffect(Unit) { mainViewModel.refreshTopicStats() }
                     StatsAndAchievementsScreen(
                         userStats = stats,
                         historyList = history,
-                        achievementList = achievements
+                        achievementList = achievements,
+                        topicStats = topicStats,
+                        onPracticeTopic = { topic ->
+                            if (topic == "Flags") {
+                                mainViewModel.startFlagsQuiz("Mixed", "Mixed", 10)
+                            } else {
+                                mainViewModel.startPracticeQuiz(listOf(topic), "Mixed", 10, "Mixed")
+                            }
+                            navController.navigate("practice_quiz")
+                        }
                     )
                 }
 
@@ -322,7 +359,9 @@ fun MainNavigationHost() {
                         },
                         onClearQuestionHistory = {
                             mainViewModel.clearHistoryAndRepeats()
-                        }
+                        },
+                        reminderEnabled = reminderEnabled,
+                        onReminderChange = { mainViewModel.setDailyReminder(it) }
                     )
                 }
 
@@ -331,11 +370,14 @@ fun MainNavigationHost() {
                     DailyChallengeLobbyScreen(
                         userStats = stats,
                         dailyPlayed = dailyPlayed,
+                        challengeNumber = DailyChallenge.number(LocalDate.now()),
+                        todayResult = todayDailyResult,
                         onNavigateBack = { navController.popBackStack() },
                         onStartDailyQuiz = {
                             mainViewModel.startDailyChallenge()
                             navController.navigate("daily_quiz")
-                        }
+                        },
+                        onShare = shareDaily
                     )
                 }
 
@@ -387,7 +429,8 @@ fun MainNavigationHost() {
                         isLoading = loading,
                         loadError = error,
                         isTimed = timed,
-                        isEndless = type == SessionType.ENDLESS
+                        isEndless = type == SessionType.ENDLESS,
+                        onNext = { mainViewModel.continueToNext() }
                     )
                 }
 
@@ -439,7 +482,8 @@ fun MainNavigationHost() {
                         isLoading = loading,
                         loadError = error,
                         isTimed = timed,
-                        isEndless = type == SessionType.ENDLESS
+                        isEndless = type == SessionType.ENDLESS,
+                        onNext = { mainViewModel.continueToNext() }
                     )
                 }
 
@@ -458,7 +502,8 @@ fun MainNavigationHost() {
                             navController.navigate("dashboard") {
                                 popUpTo("daily_results") { inclusive = true }
                             }
-                        }
+                        },
+                        onShare = shareDaily
                     )
                 }
 
