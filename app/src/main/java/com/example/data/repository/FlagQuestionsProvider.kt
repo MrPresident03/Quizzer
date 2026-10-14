@@ -11,7 +11,10 @@ object FlagQuestionsProvider {
         val flag: String, 
         val continent: String,
         val difficulty: String // "easy", "medium", "hard"
-    )
+    ) {
+        /** Primary continent, so "Europe/Asia" countries are grouped with Europe for distractors. */
+        val region: String get() = continent.substringBefore('/')
+    }
 
     val countries = listOf(
         // --- EASY DIFFICULTIES (Well-known countries / iconic flags) ---
@@ -206,80 +209,73 @@ object FlagQuestionsProvider {
         CountryFlag("Afghanistan", "🇦🇫", "Asia", "hard")
     )
 
-    fun generateFlagQuiz(mode: String, difficulty: String, count: Int): List<Question> {
-        val questions = mutableListOf<Question>()
-        
-        // Filter based on the selected difficulty tier
-        val targetPool = when (difficulty.lowercase(Locale.getDefault())) {
-            "easy" -> countries.filter { it.difficulty == "easy" }
-            "medium" -> countries.filter { it.difficulty == "medium" }
-            "hard" -> countries.filter { it.difficulty == "hard" }
-            else -> countries // "mixed" / "all"
-        }
+    fun flagToCountryText(country: CountryFlag) = "Which country belongs to this flag?\n\n${country.flag}"
+    fun countryToFlagText(country: CountryFlag) = "Identify the correct flag for the country:\n\n${country.name}"
 
-        // If targetPool is empty or too small, fallback to everything
+    /**
+     * @param lastSeen returns when a question key (see [QuestionPicker.keyOf]) was last shown, or null.
+     *   Countries you haven't been asked about recently are picked first, so repeated flag quizzes
+     *   cycle through the whole pool instead of re-drawing the same flags.
+     */
+    fun generateFlagQuiz(
+        mode: String,
+        difficulty: String,
+        count: Int,
+        lastSeen: (String) -> Long? = { null },
+        random: Random = Random.Default
+    ): List<Question> {
+        val targetPool = when (difficulty.lowercase(Locale.ROOT)) {
+            "easy", "medium", "hard" -> countries.filter { it.difficulty == difficulty.lowercase(Locale.ROOT) }
+            else -> countries // "Mixed"
+        }
         val sourcePool = if (targetPool.size < 4) countries else targetPool
-        val shuffledPool = sourcePool.shuffled()
 
         val qty = if (count == 999) 40 else count
-        val finalCount = qty.coerceAtMost(shuffledPool.size)
+        val targets = QuestionPicker.pickFresh(
+            candidates = sourcePool,
+            count = qty,
+            lastSeen = { country ->
+                listOfNotNull(
+                    lastSeen(QuestionPicker.keyOf(flagToCountryText(country))),
+                    lastSeen(QuestionPicker.keyOf(countryToFlagText(country)))
+                ).maxOrNull()
+            },
+            random = random
+        )
 
-        for (i in 0 until finalCount) {
-            val target = shuffledPool[i]
-            
-            // Choose question mode format:
-            // "flag_to_country" (Recognize country name from flag)
-            // "country_to_flag" (Recognize flag emoji from country name)
-            val currentMode = if (mode == "Mixed") {
-                if (Random.nextBoolean()) "flag_to_country" else "country_to_flag"
-            } else {
-                mode
+        return targets.map { target ->
+            val currentMode = when (mode) {
+                "flag_to_country", "country_to_flag" -> mode
+                else -> if (random.nextBoolean()) "flag_to_country" else "country_to_flag"
             }
 
-            if (currentMode == "flag_to_country") {
-                // Wrong options are other countries (distractors pulled from entire pool to keep diversity high)
-                val wrongOptions = countries.filter { it.name != target.name }
-                    .shuffled()
-                    .take(3)
-                    .map { it.name }
-                
-                val options = (wrongOptions + target.name).shuffled()
-                val correctIndex = options.indexOf(target.name)
+            // Distractors come from the same continent when possible, so the answer isn't obvious
+            // just from geography (e.g. three European flags and one Pacific one).
+            val sameRegion = countries.filter { it.name != target.name && it.region == target.region }
+            val distractorPool = if (sameRegion.size >= 3) sameRegion else countries.filter { it.name != target.name }
+            val distractors = distractorPool.shuffled(random).take(3)
 
-                questions.add(
-                    Question(
-                        text = "Which country belongs to this flag?\n\n${target.flag}",
-                        optionsList = options,
-                        correctIndex = correctIndex,
-                        category = "Flags: Flag to Country",
-                        difficulty = target.difficulty,
-                        explanation = "This is the national flag of ${target.name}. It represents the country's unity and heritage in the ${target.continent} region."
-                    )
+            if (currentMode == "flag_to_country") {
+                val options = (distractors.map { it.name } + target.name).shuffled(random)
+                Question(
+                    text = flagToCountryText(target),
+                    optionsList = options,
+                    correctIndex = options.indexOf(target.name),
+                    category = "Flags: Flag to Country",
+                    difficulty = target.difficulty,
+                    explanation = "This is the national flag of ${target.name} (${target.continent})."
                 )
             } else {
-                // Wrong options are other country flags
-                val wrongOptions = countries.filter { it.flag != target.flag }
-                    .shuffled()
-                    .take(3)
-                    .map { it.flag }
-                
-                val correctLabel = target.flag
-                val options = (wrongOptions + correctLabel).shuffled()
-                val correctIndex = options.indexOf(correctLabel)
-
-                questions.add(
-                    Question(
-                        text = "Identify the correct flag for the country:\n\n${target.name}",
-                        optionsList = options,
-                        correctIndex = correctIndex,
-                        category = "Flags: Country to Flag",
-                        difficulty = target.difficulty,
-                        explanation = "${target.flag} belongs to ${target.name} (${target.continent})."
-                    )
+                val options = (distractors.map { it.flag } + target.flag).shuffled(random)
+                Question(
+                    text = countryToFlagText(target),
+                    optionsList = options,
+                    correctIndex = options.indexOf(target.flag),
+                    category = "Flags: Country to Flag",
+                    difficulty = target.difficulty,
+                    explanation = "${target.flag} belongs to ${target.name} (${target.continent})."
                 )
             }
         }
-
-        return questions
     }
 }

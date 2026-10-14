@@ -7,21 +7,24 @@ import com.example.data.model.Achievement
 import com.example.data.model.Question
 import com.example.data.model.QuizHistory
 import com.example.data.model.UserStats
+import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import java.io.InputStream
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.LocalDate
+import java.util.Locale
 import kotlin.random.Random
 
 class QuizRepository(
     private val context: Context,
-    private val quizDao: QuizDao
+    private val quizDao: QuizDao,
+    private val prefs: QuizPrefs = QuizPrefs(context),
+    private val remote: OpenTdbRemoteSource = OpenTdbRemoteSource(prefs)
 ) {
 
     val userStats: Flow<UserStats?> = quizDao.getUserStatsFlow()
@@ -31,674 +34,424 @@ class QuizRepository(
 
     private val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
 
-    // --- SEEDING & INITIALIZATION ---
-    suspend fun initializeAppIfNeeded() {
-        withContext(Dispatchers.IO) {
-            // 1. Seed Questions if empty
-            val count = quizDao.getQuestionsCount()
-            if (count == 0) {
-                seedQuestions()
-            }
+    private val initMutex = Mutex()
+    @Volatile private var initialized = false
 
-            // 2. Initialize default UserStats
-            val stats = quizDao.getUserStats()
-            if (stats == null) {
+    // --- SEEDING & INITIALIZATION ---
+
+    /**
+     * Safe to call repeatedly; quiz builders call it first so a quiz started on the very first launch
+     * can't race the background seeding and come back empty.
+     */
+    suspend fun initializeAppIfNeeded() = withContext(Dispatchers.IO) {
+        if (initialized) return@withContext
+        initMutex.withLock {
+            if (initialized) return@withLock
+            syncBundledQuestions()
+            if (quizDao.getUserStats() == null) {
                 quizDao.insertOrUpdateUserStats(UserStats())
             }
-
-            // 3. Seed Achievements if empty or count mismatch
-            val achievements = quizDao.getAllAchievements()
-            if (achievements.size < 20) {
-                seedAchievements()
-            }
+            // IGNORE (not REPLACE) so adding a new achievement in an update doesn't re-lock earned ones.
+            quizDao.insertMissingAchievements(defaultAchievements())
+            initialized = true
         }
     }
 
-    private suspend fun seedQuestions() {
-        val seededList = mutableListOf<Question>()
-        
-        // Load from assets/questions.json
-        try {
-            val jsonString = context.assets.open("questions.json").bufferedReader().use { it.readText() }
-            val listType = Types.newParameterizedType(List::class.java, JsonQuestion::class.java)
-            val adapter = moshi.adapter<List<JsonQuestion>>(listType)
-            val jsonQuestions = adapter.fromJson(jsonString)
-            jsonQuestions?.forEach { jq ->
-                seededList.add(
-                    Question(
-                        text = jq.text,
-                        optionsList = jq.options,
-                        correctIndex = jq.correctIndex,
-                        category = jq.category,
-                        difficulty = jq.difficulty,
-                        explanation = jq.explanation,
-                        imageUrl = jq.imageUrl
-                    )
-                )
-            }
-            Log.d("QuizRepository", "Loaded ${seededList.size} questions from json assets")
-        } catch (e: Exception) {
-            Log.e("QuizRepository", "Error loading seed JSON questions, falling back", e)
-        }
+    /**
+     * Loads assets/questions.json into Room. Versioned, so new bundled questions reach existing
+     * installs too (the old code only seeded when the table was empty), and the old auto-generated
+     * placeholder questions are removed once.
+     */
+    private suspend fun syncBundledQuestions() {
+        if (prefs.bundledSeedVersion >= BUNDLED_SEED_VERSION) return
+        val bundled = loadBundledQuestions() ?: return // try again next launch
 
-        // Procedural generator to guarantee at least 500 questions across all 20 categories
-        val categories = listOf(
-            "General Knowledge", "Science & Nature", "History", "Geography",
-            "Sports & Recreation", "Entertainment", "Literature & Books",
-            "Art & Architecture", "Food & Drink", "Technology & Computing",
-            "Mathematics & Logic", "Pop Culture & Memes", "Language & Linguistics",
-            "Politics & World Leaders", "Business & Economics", "Health & Medicine",
-            "Religion & Mythology", "Animals & Wildlife", "Fashion & Design",
-            "True Crime & Law"
-        )
-
-        // Generate custom procedural questions for each category to reach total of 510+ questions
-        val questionsPerCategoryNeeded = 25
-        for (cat in categories) {
-            val existingInCatCount = seededList.count { it.category == cat }
-            val needed = (questionsPerCategoryNeeded - existingInCatCount).coerceAtLeast(5)
-            
-            for (i in 1..needed) {
-                val difficulty = when {
-                    i % 3 == 0 -> "hard"
-                    i % 2 == 0 -> "medium"
-                    else -> "easy"
-                }
-                
-                // Procedural generation of trivia items per category
-                val (qText, options, corrIdx, explanation) = generateProceduralQuestion(cat, i, difficulty)
-                seededList.add(
-                    Question(
-                        text = qText,
-                        optionsList = options,
-                        correctIndex = corrIdx,
-                        category = cat,
-                        difficulty = difficulty,
-                        explanation = explanation
-                    )
-                )
-            }
-        }
-
-        // Ensure we have exactly or more than 500 questions
-        quizDao.insertQuestions(seededList)
-        Log.d("QuizRepository", "Seeded total of ${seededList.size} offline questions into Room")
+        val removed = quizDao.deleteLegacyGeneratedQuestions()
+        val existing = quizDao.getAllQuestionTexts().mapTo(HashSet()) { QuestionPicker.normalizedText(it) }
+        val toInsert = bundled
+            .filter { QuestionPicker.normalizedText(it.text) !in existing }
+            .distinctBy { QuestionPicker.normalizedText(it.text) }
+        quizDao.insertQuestions(toInsert)
+        prefs.bundledSeedVersion = BUNDLED_SEED_VERSION
+        Log.d(TAG, "Question bank synced: removed $removed placeholders, added ${toInsert.size} bundled questions")
     }
 
-    private fun generateProceduralQuestion(category: String, index: Int, difficulty: String): ProceduralData {
-        return when (category) {
-            "Mathematics & Logic" -> {
-                val num1 = Random.nextInt(10, 100)
-                val num2 = Random.nextInt(5, 50)
-                val sum = num1 + num2
-                val options = listOf("$sum", "${sum + 7}", "${sum - 5}", "${sum + 12}").shuffled()
-                val corrIdx = options.indexOf("$sum")
-                ProceduralData(
-                    text = "What is the correct sum of $num1 plus $num2?",
-                    options = options,
-                    correctIndex = corrIdx,
-                    explanation = "$num1 + $num2 equals exactly $sum."
-                )
-            }
-            "Science & Nature" -> {
-                val elements = listOf("Carbon" to "C", "Sodium" to "Na", "Oxygen" to "O", "Helium" to "He", "Iron" to "Fe", "Gold" to "Au", "Silver" to "Ag")
-                val pair = elements[index % elements.size]
-                val options = listOf(pair.second, "K", "Cl", "Ca").shuffled()
-                val corrIdx = options.indexOf(pair.second)
-                ProceduralData(
-                    text = "What is the correct periodic table chemical symbol for ${pair.first}?",
-                    options = options,
-                    correctIndex = corrIdx,
-                    explanation = "The chemical symbol for ${pair.first} is indeed ${pair.second}."
-                )
-            }
-            "Geography" -> {
-                val capitals = listOf("Nepal" to "Kathmandu", "Sweden" to "Stockholm", "Egypt" to "Cairo", "Canada" to "Ottawa", "Japan" to "Tokyo", "Kenya" to "Nairobi", "Argentina" to "Buenos Aires")
-                val pair = capitals[index % capitals.size]
-                val options = listOf(pair.second, "Paris", "London", "Cape Town").shuffled()
-                val corrIdx = options.indexOf(pair.second)
-                ProceduralData(
-                    text = "What is the official capital city of ${pair.first}?",
-                    options = options,
-                    correctIndex = corrIdx,
-                    explanation = "The capital of ${pair.first} is ${pair.second}."
-                )
-            }
-            "History" -> {
-                val items = listOf(
-                    Triple("first Roman Emperor", "Augustus", "Julius Caesar"),
-                    Triple("discoverer of Penicillin", "Alexander Fleming", "Louis Pasteur"),
-                    Triple("conqueror of the Persian Empire", "Alexander the Great", "Napoleon"),
-                    Triple("famous Queen of Ancient Egypt", "Cleopatra", "Nefertiti")
-                )
-                val t = items[index % items.size]
-                val options = listOf(t.second, t.third, "Nero", "Socrates").shuffled()
-                val corrIdx = options.indexOf(t.second)
-                ProceduralData(
-                    text = "Who historical figure is celebrated as the ${t.first}?",
-                    options = options,
-                    correctIndex = corrIdx,
-                    explanation = "${t.second} was the professional ${t.first}."
-                )
-            }
-            "Sports & Recreation" -> {
-                val items = listOf(
-                    "Standard Basketball" to "5",
-                    "Standard Cricket" to "11",
-                    "Standard American Football" to "11",
-                    "Standard Volleyball" to "6",
-                    "Standard Ice Hockey" to "6"
-                )
-                val pair = items[index % items.size]
-                val options = listOf(pair.second, "9", "7", "11").distinct().shuffled()
-                val corrIdx = options.indexOf(pair.second)
-                ProceduralData(
-                    text = "How many players are on the field/court for a single team in ${pair.first}?",
-                    options = options,
-                    correctIndex = corrIdx,
-                    explanation = "There are standard ${pair.second} players on court for a team in ${pair.first}."
-                )
-            }
-            "Animals & Wildlife" -> {
-                val animalPride = listOf("Lions" to "Pride", "Wolves" to "Pack", "Fish" to "School", "Geese" to "Gaggle", "Crows" to "Murder", "Whales" to "Pod")
-                val pair = animalPride[index % animalPride.size]
-                val options = listOf(pair.second, "Herd", "Flock", "Colony").distinct().shuffled()
-                val corrIdx = options.indexOf(pair.second)
-                ProceduralData(
-                    text = "What is the correct collective noun used for a grouping of ${pair.first}?",
-                    options = options,
-                    correctIndex = corrIdx,
-                    explanation = "A group of ${pair.first} is professionally referred to as a ${pair.second}."
-                )
-            }
-            else -> {
-                // General or fallback generator
-                val qNo = index * 3 + 42
-                val answer = qNo * 2
-                val options = listOf("$answer", "${answer + 10}", "${answer - 5}", "${answer + 20}").shuffled()
-                val corrIdx = options.indexOf("$answer")
-                ProceduralData(
-                    text = "Question #$index under category $category: What is the mathematically solved result of $qNo times 2?",
-                    options = options,
-                    correctIndex = corrIdx,
-                    explanation = "Multiplying $qNo by 2 gives exactly $answer."
-                )
-            }
+    private fun loadBundledQuestions(): List<Question>? = try {
+        val json = context.assets.open("questions.json").bufferedReader().use { it.readText() }
+        val type = Types.newParameterizedType(List::class.java, BundledQuestionJson::class.java)
+        val parsed = moshi.adapter<List<BundledQuestionJson>>(type).fromJson(json).orEmpty()
+        parsed.map {
+            Question(
+                text = it.text.trim(),
+                optionsList = it.options.map(String::trim),
+                correctIndex = it.correctIndex,
+                category = it.category,
+                difficulty = it.difficulty.lowercase(Locale.ROOT),
+                explanation = it.explanation,
+                imageUrl = it.imageUrl
+            )
+        }.filter { q ->
+            QuestionPicker.isPlayable(q).also { ok -> if (!ok) Log.w(TAG, "Skipping malformed bundled question: ${q.text}") }
         }
+    } catch (e: Exception) {
+        Log.e(TAG, "Could not read bundled questions.json", e)
+        null
     }
 
-    private data class ProceduralData(
-        val text: String,
-        val options: List<String>,
-        val correctIndex: Int,
-        val explanation: String
+    private fun defaultAchievements() = listOf(
+        Achievement("first_quiz", "First Step", "Complete your first quiz session!", "ic_badge_1"),
+        Achievement("first_perfect", "Perfect Blitz", "Get a perfect score in any practice or daily quiz!", "ic_badge_2"),
+        Achievement("streak_3", "Spark of Fire", "Achieve a 3-day daily streak!", "ic_badge_3"),
+        Achievement("streak_7", "Week on Fire", "Maintain a 7-day daily streak!", "ic_badge_4"),
+        Achievement("questions_100", "Centurion", "Answer 100 questions correctly in total!", "ic_badge_5"),
+        Achievement("science_master", "Newton's Apprentice", "Answer 50 science questions correctly!", "ic_badge_6"),
+        Achievement("history_master", "Time Traveler", "Answer 50 history questions correctly!", "ic_badge_7"),
+        Achievement("sports_master", "Olympian", "Answer 50 sports questions correctly!", "ic_badge_8"),
+        Achievement("tech_master", "Technophile", "Answer 50 technology questions correctly!", "ic_badge_9"),
+        Achievement("speed_demon", "Speed Demon", "Answer 10 questions in a row in under 10 seconds each!", "ic_badge_10"),
+        Achievement("lifeline_lover", "Lifeline Lover", "Use 15 total lifelines during quizzes!", "ic_badge_11"),
+        Achievement("shop_spree", "Shopaholic", "Purchase 5 lifelines or themes from the XP Shop!", "ic_badge_12"),
+        Achievement("hard_conqueror", "Hard Core", "Complete any quiz on Hard difficulty!", "ic_badge_13"),
+        Achievement("endless_survivor", "Endless Survivor", "Score 30 points or more in Endless Practice Mode!", "ic_badge_14"),
+        Achievement("rich_student", "XP Magnet", "Accumulate over 1,000 total XP points!", "ic_badge_15"),
+        Achievement("mixed_master", "Jack of All Trades", "Complete a Mixed topics quiz of 30 questions!", "ic_badge_16"),
+        Achievement("level_5s", "Level Up", "Reach Level 5 in progression!", "ic_badge_17"),
+        Achievement("daily_champ", "Daily Champion", "Earn a perfect score in a Daily Challenge!", "ic_badge_18"),
+        Achievement("half_hundred", "Half Centurion", "Complete 50 quizzes in total!", "ic_badge_19"),
+        Achievement("grand_master", "Grand Master", "Reach Level 20 of progression!", "ic_badge_20")
     )
 
-    private suspend fun seedAchievements() {
-        val list = listOf(
-            Achievement("first_quiz", "First Step", "Complete your first quiz session!", "ic_badge_1"),
-            Achievement("first_perfect", "Perfect Blitz", "Get a perfect score in any practice or daily quiz!", "ic_badge_2"),
-            Achievement("streak_3", "Spark of Fire", "Achieve a 3-day daily streak!", "ic_badge_3"),
-            Achievement("streak_7", "Week on Fire", "Maintain a 7-day daily streak!", "ic_badge_4"),
-            Achievement("questions_100", "Centurion", "Answer 100 questions correctly in total!", "ic_badge_5"),
-            Achievement("science_master", "Newton's Apprentice", "Answer 50 science questions correctly!", "ic_badge_6"),
-            Achievement("history_master", "Time Traveler", "Answer 50 history questions correctly!", "ic_badge_7"),
-            Achievement("sports_master", "Olympian", "Answer 50 sports questions correctly!", "ic_badge_8"),
-            Achievement("tech_master", "Technophile", "Answer 50 technology questions correctly!", "ic_badge_9"),
-            Achievement("speed_demon", "Speed Demon", "Answer 10 questions in a row in under 10 seconds each!", "ic_badge_10"),
-            Achievement("lifeline_lover", "Lifeline Lover", "Use 15 total lifelines during quizzes!", "ic_badge_11"),
-            Achievement("shop_spree", "Shopaholic", "Purchase 5 lifelines or themes from the XP Shop!", "ic_badge_12"),
-            Achievement("hard_conqueror", "Hard Core", "Complete any quiz on Hard difficulty!", "ic_badge_13"),
-            Achievement("endless_survivor", "Endless Survivor", "Score 30 points or more in Endless Practice Mode!", "ic_badge_14"),
-            Achievement("rich_student", "XP Magnet", "Accumulate over 1,000 total XP points!", "ic_badge_15"),
-            Achievement("mixed_master", "Jack of All Trades", "Complete a Mixed topics quiz of 30 questions!", "ic_badge_16"),
-            Achievement("level_5s", "Level Up", "Reach Level 5 in progression!", "ic_badge_17"),
-            Achievement("daily_champ", "Daily Champion", "Earn a perfect score in a Daily Challenge!", "ic_badge_18"),
-            Achievement("half_hundred", "Half Centurion", "Complete 50 quizzes in total!", "ic_badge_19"),
-            Achievement("grand_master", "Grand Master", "Reach Level 20 of progression!", "ic_badge_20")
-        )
-        quizDao.insertAchievements(list)
-    }
+    // --- QUIZ BUILDING ---
 
-    private fun getOpenTdbCategoryId(categoryName: String): Int? {
-        return when (categoryName) {
-            "General Knowledge" -> 9
-            "Science & Nature" -> 17
-            "History" -> 23
-            "Geography" -> 22
-            "Sports & Recreation" -> 21
-            "Entertainment" -> 11 // Film
-            "Literature & Books" -> 10 // Books
-            "Art & Architecture" -> 25 // Art
-            "Technology & Computing" -> 18 // Computers
-            "Mathematics & Logic" -> 19 // Mathematics
-            "Pop Culture & Memes" -> 26 // Celebrities
-            "Religion & Mythology" -> 20 // Mythology
-            "Animals & Wildlife" -> 27 // Animals
-            "Politics & World Leaders" -> 24 // Politics
-            "Business & Economics" -> 9
-            "Health & Medicine" -> 17
-            "Food & Drink" -> 9
-            "Language & Linguistics" -> 9
-            "Fashion & Design" -> 25
-            "True Crime & Law" -> 9
-            else -> null
-        }
-    }
-
-    // --- QUIZ DATA GENERATION ---
+    /**
+     * Builds a practice quiz.
+     *
+     * One OpenTDB call is made per quiz (the API allows one call every 5 seconds), aimed at the
+     * selected topic with the thinnest local pool. Everything fetched is cached in Room, so the
+     * offline bank keeps growing. The quiz is then drawn from remote + local questions, preferring
+     * never-seen and least-recently-seen ones, balanced across the selected topics.
+     *
+     * @param excludeKeys question keys already used in this session (endless mode refills).
+     */
     suspend fun getPracticeQuiz(
         categories: List<String>,
         difficulty: String, // "easy", "medium", "hard", "Mixed"
-        count: Int, // 10, 20, 30, or 999 for Endless (we will fetch 50 and append more as needed)
-        format: String // "Multiple Choice", "True/False", "Mixed"
+        count: Int,         // 10, 20, 30, or ENDLESS_COUNT
+        format: String,     // "Multiple Choice", "True/False", "Mixed"
+        excludeKeys: Set<String> = emptySet()
     ): List<Question> = withContext(Dispatchers.IO) {
-        val qty = if (count == 999) 50 else count
-        val tdbDiff = if (difficulty == "Mixed") null else difficulty.lowercase(Locale.getDefault())
-        val tdbType = when (format) {
+        initializeAppIfNeeded()
+        val random = Random.Default
+        val qty = if (count == ENDLESS_COUNT) ENDLESS_BATCH_SIZE else count.coerceAtLeast(1)
+        val diff = difficulty.lowercase(Locale.ROOT).takeIf { it in DIFFICULTIES }
+        val apiType = when (format) {
             "Multiple Choice" -> "multiple"
             "True/False" -> "boolean"
             else -> null
         }
-        val categoryId = if (categories.isNotEmpty() && !categories.contains("All Topics") && !categories.contains("Capital Cities Challenge")) {
-            getOpenTdbCategoryId(categories.random())
-        } else {
-            null
+        val selected = categories.filter { it != Categories.ALL_TOPICS }.distinct()
+        val wantsCapitals = Categories.CAPITAL_CITIES in selected
+        val topics = selected - Categories.CAPITAL_CITIES
+        val seen = prefs.seenSnapshot()
+        val lastSeen: (String) -> Long? = { key -> seen[key] }
+
+        // Flag and capital questions are multiple-choice only.
+        val multipleChoiceAllowed = apiType != "boolean"
+        var capitalCount = 0
+        var flagCount = 0
+        when {
+            wantsCapitals && topics.isEmpty() -> capitalCount = qty
+            wantsCapitals -> capitalCount = qty / (topics.size + 1)
         }
-
-        // Dedicated Capital Cities Challenge topic
-        if (categories.contains("Capital Cities Challenge")) {
-            return@withContext CapitalCitiesProvider.generateCapitalQuiz(difficulty, qty)
+        if (multipleChoiceAllowed && Categories.GEOGRAPHY in topics) {
+            val geographyShare = qty / (topics.size + if (wantsCapitals) 1 else 0)
+            flagCount = geographyShare / 4
+            capitalCount += geographyShare / 4
+        } else if (multipleChoiceAllowed && selected.isEmpty()) {
+            flagCount = qty / 10
+            capitalCount = qty / 10
         }
+        val coreCount = qty - capitalCount - flagCount
 
-        var baseQuestions = emptyList<Question>()
+        val core = buildCore(topics, diff, apiType, coreCount, lastSeen, excludeKeys, random)
+        val flags = if (flagCount > 0) {
+            FlagQuestionsProvider.generateFlagQuiz("Mixed", difficulty, flagCount, lastSeen, random)
+        } else emptyList()
+        val capitals = if (capitalCount > 0) {
+            CapitalCitiesProvider.generateCapitalQuiz(difficulty, capitalCount, lastSeen, random)
+        } else emptyList()
 
-        try {
-            Log.d("QuizRepository", "Fetching $qty questions from OpenTDB... category=$categoryId difficulty=$tdbDiff type=$tdbType")
-            val response = com.example.data.api.OpenTdbApiClient.service.getQuestions(
-                amount = qty,
-                category = categoryId,
-                difficulty = tdbDiff,
-                type = tdbType
-            )
-            if (response.responseCode == 0 && response.results.isNotEmpty()) {
-                baseQuestions = response.results.map { item ->
-                    val unescapedText = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.question)
-                    val unescapedCorrectAnswer = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.correctAnswer)
-                    val decodedOptions = if (item.type == "boolean") {
-                        listOf("True", "False")
-                    } else {
-                        (item.incorrectAnswers + item.correctAnswer)
-                            .map { com.example.data.api.OpenTdbApiClient.unescapeHtmlString(it) }
-                            .shuffled()
-                    }
-                    val correctIdx = decodedOptions.indexOf(unescapedCorrectAnswer).coerceAtLeast(0)
-                    
-                    Question(
-                        text = unescapedText,
-                        optionsList = decodedOptions,
-                        correctIndex = correctIdx,
-                        category = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.category),
-                        difficulty = item.difficulty.lowercase(Locale.getDefault()),
-                        explanation = "The correct answer is: $unescapedCorrectAnswer."
-                    )
-                }
-            } else {
-                Log.w("QuizRepository", "OpenTDB returned error code: ${response.responseCode}. Falling back to local questions.")
-            }
-        } catch (e: Exception) {
-            Log.e("QuizRepository", "OpenTDB fetch exception: ${e.localizedMessage}. Falling back to offline seed.", e)
-        }
-
-        if (baseQuestions.isEmpty()) {
-            val allQuestions = quizDao.getAllQuestions()
-            
-            // Filter by categories if selected
-            var filtered = if (categories.isEmpty() || categories.contains("All Topics")) {
-                allQuestions
-            } else {
-                allQuestions.filter { it.category in categories }
-            }
-
-            // Filter by difficulty
-            if (difficulty != "Mixed") {
-                filtered = filtered.filter { it.difficulty.lowercase() == difficulty.lowercase() }
-            }
-
-            // Filter by format
-            filtered = when (format) {
-                "True/False" -> filtered.filter { it.optionsList.size == 2 || it.optionsList.any { o -> o.lowercase() == "true" } }
-                "Multiple Choice" -> filtered.filter { it.optionsList.size > 2 }
-                else -> filtered
-            }
-
-            // Weight towards unseen / rarely answered correctly (answeredCount ascending, correctRatio ascending)
-            val sorted = filtered.sortedWith(
-                compareBy<Question> { it.answeredCount }
-                    .thenBy { if (it.answeredCount == 0) 0f else (it.correctCount.toFloat() / it.answeredCount) }
-            )
-
-            baseQuestions = sorted.take(qty).shuffled()
-        }
-
-        val blendedList = baseQuestions.toMutableList()
-
-        // Inject flag and capital city questions into "Geography" or "All Topics" (mixed/random) sessions
-        val hasGeography = categories.contains("Geography")
-        val isAllTopics = categories.isEmpty() || categories.contains("All Topics")
-
-        val flagQty = when {
-            hasGeography -> (qty * 0.4).toInt().coerceAtLeast(1)
-            isAllTopics -> (qty * 0.15).toInt().coerceAtLeast(1)
-            else -> 0
-        }
-
-        val capitalQty = when {
-            hasGeography -> (qty * 0.4).toInt().coerceAtLeast(1)
-            isAllTopics -> (qty * 0.15).toInt().coerceAtLeast(1)
-            else -> 0
-        }
-
-        if (flagQty > 0) {
-            val flags = FlagQuestionsProvider.generateFlagQuiz("Mixed", difficulty, flagQty)
-            for (f in flags) {
-                if (blendedList.isNotEmpty()) {
-                    blendedList.removeAt(blendedList.size - 1)
-                }
-                blendedList.add(f)
-            }
-        }
-
-        if (capitalQty > 0) {
-            val capitals = CapitalCitiesProvider.generateCapitalQuiz(difficulty, capitalQty)
-            for (c in capitals) {
-                if (blendedList.isNotEmpty()) {
-                    blendedList.removeAt(blendedList.size - 1)
-                }
-                blendedList.add(c)
-            }
-        }
-
-        return@withContext blendedList.shuffled()
+        finalizeQuiz(core + flags + capitals, excludeKeys, random)
     }
 
     suspend fun getDailyChallengeQuiz(): List<Question> = withContext(Dispatchers.IO) {
-        var baseQuestions = emptyList<Question>()
-        try {
-            Log.d("QuizRepository", "Fetching 10 Daily Challenge questions from OpenTDB...")
-            val response = com.example.data.api.OpenTdbApiClient.service.getQuestions(
-                amount = 10,
-                category = null,
-                difficulty = null,
-                type = null
-            )
-            if (response.responseCode == 0 && response.results.isNotEmpty()) {
-                baseQuestions = response.results.map { item ->
-                    val unescapedText = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.question)
-                    val unescapedCorrectAnswer = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.correctAnswer)
-                    val decodedOptions = if (item.type == "boolean") {
-                        listOf("True", "False")
-                    } else {
-                        (item.incorrectAnswers + item.correctAnswer)
-                            .map { com.example.data.api.OpenTdbApiClient.unescapeHtmlString(it) }
-                            .shuffled()
-                    }
-                    val correctIdx = decodedOptions.indexOf(unescapedCorrectAnswer).coerceAtLeast(0)
-                    
-                    Question(
-                        text = unescapedText,
-                        optionsList = decodedOptions,
-                        correctIndex = correctIdx,
-                        category = com.example.data.api.OpenTdbApiClient.unescapeHtmlString(item.category),
-                        difficulty = item.difficulty.lowercase(Locale.getDefault()),
-                        explanation = "The correct answer is: $unescapedCorrectAnswer."
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("QuizRepository", "Daily Challenge OpenTDB fetch exception: ${e.localizedMessage}. Falling back to offline seed.", e)
-        }
+        initializeAppIfNeeded()
+        val random = Random.Default
+        val seen = prefs.seenSnapshot()
+        val lastSeen: (String) -> Long? = { key -> seen[key] }
 
-        if (baseQuestions.isEmpty()) {
-            val sdf = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-            val dateHash = sdf.format(Date()).hashCode()
-            val rand = Random(dateHash)
-            
-            val all = quizDao.getAllQuestions()
-            if (all.isNotEmpty()) {
-                baseQuestions = all.shuffled(rand).take(10)
-            }
-        }
-
-        // Guarantee fallback is not empty
-        if (baseQuestions.isEmpty()) return@withContext emptyList<Question>()
-
-        // Crop to 6, then add 2 flag challenge and 2 capital city challenge questions
-        val dailyQuestions = baseQuestions.toMutableList()
-        while (dailyQuestions.size > 6) {
-            dailyQuestions.removeAt(dailyQuestions.size - 1)
-        }
-
-        val flags = FlagQuestionsProvider.generateFlagQuiz("Mixed", "Mixed", 2)
-        dailyQuestions.addAll(flags)
-
-        val capitals = CapitalCitiesProvider.generateCapitalQuiz("Mixed", 2)
-        dailyQuestions.addAll(capitals)
-
-        return@withContext dailyQuestions.shuffled()
+        // 6 mixed trivia + 2 flag + 2 capital questions.
+        val core = buildCore(emptyList(), null, null, DAILY_CORE_SIZE, lastSeen, emptySet(), random)
+        val flags = FlagQuestionsProvider.generateFlagQuiz("Mixed", "Mixed", 2, lastSeen, random)
+        val capitals = CapitalCitiesProvider.generateCapitalQuiz("Mixed", 2, lastSeen, random)
+        finalizeQuiz(core + flags + capitals, emptySet(), random)
     }
 
     suspend fun getFlagQuiz(mode: String, difficulty: String, count: Int): List<Question> = withContext(Dispatchers.IO) {
-        return@withContext FlagQuestionsProvider.generateFlagQuiz(mode, difficulty, count)
+        val seen = prefs.seenSnapshot()
+        val random = Random.Default
+        val flags = FlagQuestionsProvider.generateFlagQuiz(mode, difficulty, count, { seen[it] }, random)
+        finalizeQuiz(flags, emptySet(), random)
     }
 
     suspend fun getCapitalQuiz(difficulty: String, count: Int): List<Question> = withContext(Dispatchers.IO) {
-        return@withContext CapitalCitiesProvider.generateCapitalQuiz(difficulty, count)
+        val seen = prefs.seenSnapshot()
+        val random = Random.Default
+        val capitals = CapitalCitiesProvider.generateCapitalQuiz(difficulty, count, { seen[it] }, random)
+        finalizeQuiz(capitals, emptySet(), random)
+    }
+
+    private suspend fun buildCore(
+        topics: List<String>,
+        difficulty: String?,
+        apiType: String?,
+        count: Int,
+        lastSeen: (String) -> Long?,
+        excludeKeys: Set<String>,
+        random: Random
+    ): List<Question> {
+        if (count <= 0) return emptyList()
+        val freshness: (Question) -> Long? = { lastSeen(QuestionPicker.keyOf(it)) }
+
+        fun matchesFormat(q: Question) = when (apiType) {
+            "boolean" -> QuestionPicker.isTrueFalse(q)
+            "multiple" -> q.optionsList.size > 2
+            else -> true
+        }
+        fun matches(q: Question, useDifficulty: Boolean) =
+            (topics.isEmpty() || q.category in topics) &&
+                (!useDifficulty || difficulty == null || q.difficulty.equals(difficulty, ignoreCase = true)) &&
+                matchesFormat(q) &&
+                QuestionPicker.keyOf(q) !in excludeKeys
+
+        // 1. Pick which topic gets the (single) network call: the one with the fewest unseen local questions.
+        var local = quizDao.getAllQuestions().filter(QuestionPicker::isPlayable)
+        val remoteTopic: String? = if (topics.isEmpty()) null else {
+            topics.filter(Categories::hasRemoteSource)
+                .shuffled(random)
+                .minByOrNull { topic -> local.count { it.category == topic && matches(it, true) && freshness(it) == null } }
+                ?: NO_REMOTE
+        }
+
+        // 2. Fetch and cache, so the offline bank grows with every online session.
+        val remoteQuestions = if (remoteTopic == NO_REMOTE) emptyList() else remote.fetch(remoteTopic, difficulty, apiType, count)
+        if (remoteQuestions.isNotEmpty()) {
+            cacheRemoteQuestions(remoteQuestions)
+            local = quizDao.getAllQuestions().filter(QuestionPicker::isPlayable)
+        }
+
+        // 3. Freshest-first, balanced across the chosen topics.
+        val pool = QuestionPicker.dedupe(remoteQuestions.filter { matches(it, false) } + local.filter { matches(it, true) })
+        val buckets = if (topics.size <= 1) listOf(pool) else topics.map { topic -> pool.filter { it.category == topic } }
+        var picked = QuestionPicker.balancedPick(
+            buckets.map { QuestionPicker.orderByFreshness(it, freshness, random) },
+            count,
+            random
+        )
+
+        // 4. Too few for this difficulty? Top up from the same topics at any difficulty.
+        if (picked.size < count && difficulty != null) {
+            val have = picked.mapTo(HashSet()) { QuestionPicker.keyOf(it) }
+            val extra = QuestionPicker.dedupe(local.filter { matches(it, false) && QuestionPicker.keyOf(it) !in have })
+            picked = picked + QuestionPicker.pickFresh(extra, count - picked.size, freshness, random)
+        }
+
+        // 5. Still nothing at all (e.g. True/False on a topic with no T/F questions): use any topic.
+        if (picked.isEmpty()) {
+            val any = QuestionPicker.dedupe(local.filter { matchesFormat(it) && QuestionPicker.keyOf(it) !in excludeKeys })
+            picked = QuestionPicker.pickFresh(any, count, freshness, random)
+        }
+        return picked
+    }
+
+    private suspend fun cacheRemoteQuestions(questions: List<Question>) {
+        val existing = quizDao.getAllQuestionTexts().mapTo(HashSet()) { QuestionPicker.normalizedText(it) }
+        val fresh = questions
+            .filter { QuestionPicker.normalizedText(it.text) !in existing }
+            .distinctBy { QuestionPicker.normalizedText(it.text) }
+            .map { it.copy(id = 0) }
+        if (fresh.isNotEmpty()) quizDao.insertQuestions(fresh)
+    }
+
+    /** Dedupe, drop malformed rows, shuffle question order AND each question's answer order. */
+    private fun finalizeQuiz(questions: List<Question>, excludeKeys: Set<String>, random: Random): List<Question> =
+        QuestionPicker.dedupe(questions)
+            .filter { QuestionPicker.isPlayable(it) && QuestionPicker.keyOf(it) !in excludeKeys }
+            .shuffled(random)
+            .map { QuestionPicker.shuffleOptions(it, random) }
+
+    // --- PER-ANSWER TRACKING ---
+
+    /** Remembers the question as seen (so it's deprioritised next time) and updates its counters. */
+    suspend fun recordAnswer(question: Question, isCorrect: Boolean) = withContext(Dispatchers.IO) {
+        prefs.markSeen(listOf(QuestionPicker.keyOf(question)))
+        quizDao.incrementAnswerStats(question.text, if (isCorrect) 1 else 0)
+    }
+
+    fun isDailyPlayed(today: LocalDate = LocalDate.now()): Boolean = prefs.dailyPlayedDate == today.toString()
+
+    fun markDailyPlayed(today: LocalDate = LocalDate.now()) {
+        prefs.dailyPlayedDate = today.toString()
     }
 
     // --- PROGRESSION & GAMIFICATION STATS UPDATE ---
-    suspend fun recordQuizSession(
-        correctCount: Int,
-        totalCount: Int,
-        timeTakenSeconds: Int,
-        category: String,
-        difficulty: String,
-        quizType: String, // "Practice" or "Daily"
-        speedDemonQuestionsAnsweredInTimeStreak: Int = 0,
-        lifelinesUsedCount: Int = 0
-    ) = withContext(Dispatchers.IO) {
-        // 1. Save directly to DB history
-        val baseXP = correctCount * 10
-        val streakBonus = if (correctCount == totalCount) 50 else 0
-        val difficultyMultiplier = when (difficulty.lowercase()) {
-            "hard" -> 1.5f
-            "medium" -> 1.2f
-            else -> 1.0f
-        }
-        val xpEarned = ((baseXP + streakBonus) * difficultyMultiplier).toInt()
 
-        val history = QuizHistory(
-            categoryName = category,
-            score = correctCount,
-            totalQuestions = totalCount,
-            difficulty = difficulty,
-            timeTakenSeconds = timeTakenSeconds,
-            xpEarned = xpEarned,
-            quizType = quizType
+    /** Saves the session, updates stats/streak/level and unlocks achievements. Returns XP earned. */
+    suspend fun recordQuizSession(summary: SessionSummary): Int = withContext(Dispatchers.IO) {
+        if (summary.totalCount == 0) return@withContext 0
+        val today = LocalDate.now()
+        val xpEarned = Scoring.sessionXp(summary.questions, summary.answers)
+
+        quizDao.insertHistory(
+            QuizHistory(
+                categoryName = summary.categoryLabel,
+                score = summary.correctCount,
+                totalQuestions = summary.totalCount,
+                difficulty = summary.selectedDifficulty,
+                timeTakenSeconds = summary.durationSeconds,
+                xpEarned = xpEarned,
+                quizType = summary.type.label
+            )
         )
-        quizDao.insertHistory(history)
 
-        // 2. Fetch and Update UserStats
         val stats = quizDao.getUserStats() ?: UserStats()
-        
-        // Dynamic streak check based on dates
-        val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        val yesterdayCalendar = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
-        val yesterdayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(yesterdayCalendar.time)
-        
-        var newStreak = stats.currentStreak
-        if (stats.lastQuizDateStr == todayStr) {
-            // Already played today, streak stays the same
-        } else if (stats.lastQuizDateStr == yesterdayStr) {
-            newStreak += 1
-        } else {
-            // Check if streak freeze was used (grace period)
-            if (stats.hasStreakFreeze > 0 && stats.lastQuizDateStr != null) {
-                // Keep the streak intact! Consume 1 freeze
-                val consumedFreeze = stats.hasStreakFreeze - 1
-                newStreak += 1
-                Log.d("QuizRepository", "Streak saved by consuming 1 freeze! Remaining: $consumedFreeze")
-            } else {
-                newStreak = 1 // reset or start
-            }
-        }
-
-        // Calculate XP and level
-        val totalXP = stats.xpPoints + xpEarned
-        
-        // Progression level calculator (e.g., Level = totalXP / 500 + 1 up to level 50)
-        val newLevel = (totalXP / 350 + 1).coerceAtMost(50)
+        val streak = Scoring.nextStreak(
+            currentStreak = stats.currentStreak,
+            lastPlayed = Scoring.parseDate(stats.lastQuizDateStr),
+            today = today,
+            freezesOwned = stats.hasStreakFreeze
+        )
+        val lifetimeXp = quizDao.getLifetimeXp()
+        val newLevel = Scoring.levelForLifetimeXp(lifetimeXp)
 
         val updatedStats = stats.copy(
-            currentStreak = newStreak,
-            totalQuestionsAnswered = stats.totalQuestionsAnswered + totalCount,
-            correctAnswersCount = stats.correctAnswersCount + correctCount,
-            xpPoints = totalXP,
-            currentLevel = newLevel,
-            lastQuizDateStr = todayStr
+            currentStreak = streak.streak,
+            hasStreakFreeze = (stats.hasStreakFreeze - streak.freezesUsed).coerceAtLeast(0),
+            totalQuestionsAnswered = stats.totalQuestionsAnswered + summary.totalCount,
+            correctAnswersCount = stats.correctAnswersCount + summary.correctCount,
+            xpPoints = stats.xpPoints + xpEarned, // spendable balance
+            currentLevel = maxOf(stats.currentLevel, newLevel),
+            lastQuizDateStr = today.toString()
         )
         quizDao.insertOrUpdateUserStats(updatedStats)
 
-        // 3. Evaluate Achievements dynamically
-        val allCompletedHistory = quizDao.getAllHistoryFlow().firstOrNull() ?: emptyList()
-        val totalQuizzes = allCompletedHistory.size + 1 // + the current one
+        // Counters for achievements that need more than the stats table tracks.
+        val correctByCategory = summary.questions
+            .filterIndexed { index, _ -> summary.answers.getOrNull(index) == true }
+            .groupingBy { it.category }
+            .eachCount()
+        prefs.addCategoryCorrect(correctByCategory)
+        prefs.addLifelinesUsed(summary.lifelinesUsed)
+        if (summary.type == SessionType.DAILY) markDailyPlayed(today)
 
-        // Simple check for unlocking achievements
-        if (totalQuizzes >= 1) unlockAchievementIfValid("first_quiz")
-        if (correctCount == totalCount) unlockAchievementIfValid("first_perfect")
-        if (newStreak >= 3) unlockAchievementIfValid("streak_3")
-        if (newStreak >= 7) unlockAchievementIfValid("streak_7")
-        if (updatedStats.correctAnswersCount >= 100) unlockAchievementIfValid("questions_100")
-        if (newLevel >= 5) unlockAchievementIfValid("level_5s")
-        if (newLevel >= 20) unlockAchievementIfValid("grand_master")
-        if (difficulty.lowercase() == "hard") unlockAchievementIfValid("hard_conqueror")
-        if (quizType == "Daily" && correctCount == totalCount) unlockAchievementIfValid("daily_champ")
-        if (totalQuizzes >= 50) unlockAchievementIfValid("half_hundred")
-        if (totalXP >= 1000) unlockAchievementIfValid("rich_student")
-        if (speedDemonQuestionsAnsweredInTimeStreak >= 10) unlockAchievementIfValid("speed_demon")
-        if (category == "Science & Nature" && updatedStats.correctAnswersCount >= 50) unlockAchievementIfValid("science_master")
-        if (category == "History" && updatedStats.correctAnswersCount >= 50) unlockAchievementIfValid("history_master")
-        if (category == "Sports & Recreation" && updatedStats.correctAnswersCount >= 50) unlockAchievementIfValid("sports_master")
-        if (category == "Technology & Computing" && updatedStats.correctAnswersCount >= 50) unlockAchievementIfValid("tech_master")
+        val totalQuizzes = quizDao.getHistoryCount()
+        val unlocks = buildList {
+            add("first_quiz")
+            if (summary.isPerfect) add("first_perfect")
+            if (streak.streak >= 3) add("streak_3")
+            if (streak.streak >= 7) add("streak_7")
+            if (updatedStats.correctAnswersCount >= 100) add("questions_100")
+            if (prefs.categoryCorrect("Science & Nature") >= 50) add("science_master")
+            if (prefs.categoryCorrect("History") >= 50) add("history_master")
+            if (prefs.categoryCorrect("Sports & Recreation") >= 50) add("sports_master")
+            if (prefs.categoryCorrect("Technology & Computing") >= 50) add("tech_master")
+            if (summary.bestSpeedStreak >= 10) add("speed_demon")
+            if (prefs.lifelinesUsedTotal >= 15) add("lifeline_lover")
+            if (summary.selectedDifficulty.equals("hard", ignoreCase = true)) add("hard_conqueror")
+            if (summary.type == SessionType.ENDLESS && summary.correctCount >= 30) add("endless_survivor")
+            if (lifetimeXp >= 1000) add("rich_student")
+            if (summary.isMixedTopics && summary.totalCount >= 30) add("mixed_master")
+            if (updatedStats.currentLevel >= 5) add("level_5s")
+            if (summary.type == SessionType.DAILY && summary.isPerfect) add("daily_champ")
+            if (totalQuizzes >= 50) add("half_hundred")
+            if (updatedStats.currentLevel >= 20) add("grand_master")
+        }
+        unlocks.forEach { unlockAchievement(it) }
+        xpEarned
     }
 
-    private suspend fun unlockAchievementIfValid(id: String) {
-        val list = quizDao.getAllAchievements()
-        val match = list.find { it.id == id }
-        if (match != null && !match.isUnlocked) {
-            quizDao.unlockAchievement(id, System.currentTimeMillis())
-            Log.d("QuizRepository", "Achievement UNLOCKED: $id")
+    private suspend fun unlockAchievement(id: String) {
+        if (quizDao.unlockAchievement(id, System.currentTimeMillis()) > 0) {
+            Log.d(TAG, "Achievement UNLOCKED: $id")
         }
     }
 
-    suspend fun incrementAnswerStats(questionId: Int, isCorrect: Boolean) = withContext(Dispatchers.IO) {
-        val questions = quizDao.getAllQuestions()
-        val q = questions.find { it.id == questionId }
-        if (q != null) {
-            val updated = q.copy(
-                answeredCount = q.answeredCount + 1,
-                correctCount = q.correctCount + if (isCorrect) 1 else 0
-            )
-            quizDao.updateQuestion(updated)
-        }
-    }
+    // --- SHOP & LIFELINES ---
 
     suspend fun buyLifeline(lifelineType: String, cost: Int): Boolean = withContext(Dispatchers.IO) {
         val stats = quizDao.getUserStats() ?: return@withContext false
-        if (stats.xpPoints >= cost) {
-            val updated = when (lifelineType) {
-                "5050" -> stats.copy(
-                    xpPoints = stats.xpPoints - cost,
-                    lifelineFiftyFiftyCount = stats.lifelineFiftyFiftyCount + 1
-                )
-                "skip" -> stats.copy(
-                    xpPoints = stats.xpPoints - cost,
-                    lifelineSkipCount = stats.lifelineSkipCount + 1
-                )
-                "time" -> stats.copy(
-                    xpPoints = stats.xpPoints - cost,
-                    lifelineExtraTimeCount = stats.lifelineExtraTimeCount + 1
-                )
-                "audience" -> stats.copy(
-                    xpPoints = stats.xpPoints - cost,
-                    lifelineAskAudienceCount = stats.lifelineAskAudienceCount + 1
-                )
-                "freeze" -> stats.copy(
-                    xpPoints = stats.xpPoints - cost,
-                    hasStreakFreeze = stats.hasStreakFreeze + 1
-                )
-                else -> stats
-            }
-            quizDao.insertOrUpdateUserStats(updated)
-            unlockAchievementIfValid("shop_spree")
-            return@withContext true
+        if (cost < 0 || stats.xpPoints < cost) return@withContext false
+        val paid = stats.copy(xpPoints = stats.xpPoints - cost)
+        val updated = when (lifelineType) {
+            "5050" -> paid.copy(lifelineFiftyFiftyCount = stats.lifelineFiftyFiftyCount + 1)
+            "skip" -> paid.copy(lifelineSkipCount = stats.lifelineSkipCount + 1)
+            "time" -> paid.copy(lifelineExtraTimeCount = stats.lifelineExtraTimeCount + 1)
+            "audience" -> paid.copy(lifelineAskAudienceCount = stats.lifelineAskAudienceCount + 1)
+            "freeze" -> paid.copy(hasStreakFreeze = stats.hasStreakFreeze + 1)
+            else -> return@withContext false // unknown item: don't take the XP
         }
-        return@withContext false
+        quizDao.insertOrUpdateUserStats(updated)
+        recordShopPurchase()
+        true
     }
 
     suspend fun unlockTheme(themeId: String, cost: Int): Boolean = withContext(Dispatchers.IO) {
         val stats = quizDao.getUserStats() ?: return@withContext false
-        val currentUnlocked = moshi.adapter<List<String>>(Types.newParameterizedType(List::class.java, String::class.java))
-            .fromJson(stats.unlockedThemesJson) ?: listOf("midnight_blue")
-        
+        val adapter = moshi.adapter<List<String>>(Types.newParameterizedType(List::class.java, String::class.java))
+        val currentUnlocked = runCatching { adapter.fromJson(stats.unlockedThemesJson) }.getOrNull()
+            ?: listOf("midnight_blue", "classic")
+
         if (themeId in currentUnlocked) return@withContext true
-        
-        if (stats.xpPoints >= cost) {
-            val nextUnlocked = (currentUnlocked + themeId).distinct()
-            val jsonString = moshi.adapter<List<String>>(Types.newParameterizedType(List::class.java, String::class.java))
-                .toJson(nextUnlocked)
-            val updated = stats.copy(
-                xpPoints = stats.xpPoints - cost,
-                unlockedThemesJson = jsonString,
-                activeThemeId = themeId
-            )
-            quizDao.insertOrUpdateUserStats(updated)
-            unlockAchievementIfValid("shop_spree")
-            return@withContext true
-        }
-        return@withContext false
+        if (stats.xpPoints < cost) return@withContext false
+
+        val updated = stats.copy(
+            xpPoints = stats.xpPoints - cost,
+            unlockedThemesJson = adapter.toJson((currentUnlocked + themeId).distinct()),
+            activeThemeId = themeId
+        )
+        quizDao.insertOrUpdateUserStats(updated)
+        recordShopPurchase()
+        true
+    }
+
+    private suspend fun recordShopPurchase() {
+        prefs.addShopPurchase()
+        if (prefs.shopPurchases >= 5) unlockAchievement("shop_spree")
     }
 
     suspend fun selectTheme(themeId: String) = withContext(Dispatchers.IO) {
         val stats = quizDao.getUserStats() ?: return@withContext
-        val updated = stats.copy(activeThemeId = themeId)
-        quizDao.insertOrUpdateUserStats(updated)
+        quizDao.insertOrUpdateUserStats(stats.copy(activeThemeId = themeId))
     }
 
     suspend fun useLifeline(lifelineType: String): Boolean = withContext(Dispatchers.IO) {
         val stats = quizDao.getUserStats() ?: return@withContext false
         val updated = when (lifelineType) {
-            "5050" -> {
-                if (stats.lifelineFiftyFiftyCount <= 0) return@withContext false
-                stats.copy(lifelineFiftyFiftyCount = stats.lifelineFiftyFiftyCount - 1)
-            }
-            "skip" -> {
-                if (stats.lifelineSkipCount <= 0) return@withContext false
-                stats.copy(lifelineSkipCount = stats.lifelineSkipCount - 1)
-            }
-            "time" -> {
-                if (stats.lifelineExtraTimeCount <= 0) return@withContext false
-                stats.copy(lifelineExtraTimeCount = stats.lifelineExtraTimeCount - 1)
-            }
-            "audience" -> {
-                if (stats.lifelineAskAudienceCount <= 0) return@withContext false
-                stats.copy(lifelineAskAudienceCount = stats.lifelineAskAudienceCount - 1)
-            }
-            else -> stats
-        }
+            "5050" -> stats.takeIf { it.lifelineFiftyFiftyCount > 0 }
+                ?.copy(lifelineFiftyFiftyCount = stats.lifelineFiftyFiftyCount - 1)
+            "skip" -> stats.takeIf { it.lifelineSkipCount > 0 }
+                ?.copy(lifelineSkipCount = stats.lifelineSkipCount - 1)
+            "time" -> stats.takeIf { it.lifelineExtraTimeCount > 0 }
+                ?.copy(lifelineExtraTimeCount = stats.lifelineExtraTimeCount - 1)
+            "audience" -> stats.takeIf { it.lifelineAskAudienceCount > 0 }
+                ?.copy(lifelineAskAudienceCount = stats.lifelineAskAudienceCount - 1)
+            else -> null
+        } ?: return@withContext false
         quizDao.insertOrUpdateUserStats(updated)
-        return@withContext true
+        true
     }
+
+    // --- SETTINGS ---
 
     suspend fun updateConfig(sound: Boolean, haptic: Boolean, textLarge: Boolean, displayName: String, avatar: String) = withContext(Dispatchers.IO) {
         val stats = quizDao.getUserStats() ?: return@withContext
@@ -706,7 +459,7 @@ class QuizRepository(
             isSoundEffectsEnabled = sound,
             isHapticFeedbackEnabled = haptic,
             fontSizePreference = if (textLarge) "large" else "normal",
-            displayName = displayName.takeIf { it.isNotBlank() } ?: stats.displayName,
+            displayName = displayName.trim().takeIf { it.isNotBlank() }?.take(MAX_NAME_LENGTH) ?: stats.displayName,
             avatarId = avatar
         )
         quizDao.insertOrUpdateUserStats(updated)
@@ -716,22 +469,39 @@ class QuizRepository(
         quizDao.clearHistory()
         quizDao.resetAchievements()
         quizDao.insertOrUpdateUserStats(UserStats())
+        prefs.resetProgress()
     }
 
+    /** "Recycle seen questions": forget what's been shown so older questions can come back. */
     suspend fun clearQuestionHistory() = withContext(Dispatchers.IO) {
-        val list = quizDao.getAllQuestions()
-        val resetList = list.map { it.copy(answeredCount = 0, correctCount = 0) }
-        quizDao.insertQuestions(resetList)
+        quizDao.resetAnswerStats()
+        prefs.clearSeen()
+        prefs.openTdbToken = null // a fresh token lets OpenTDB serve previously seen questions again
     }
 
-    // Secondary DTO model matching local questions assets JSON
-    private data class JsonQuestion(
-        val text: String,
-        val options: List<String>,
-        val correctIndex: Int,
-        val category: String,
-        val difficulty: String,
-        val explanation: String,
-        val imageUrl: String? = null
-    )
+    companion object {
+        private const val TAG = "QuizRepository"
+
+        /** Bump when assets/questions.json changes so existing installs pick up the new questions. */
+        const val BUNDLED_SEED_VERSION = 2
+
+        const val ENDLESS_COUNT = 999
+        const val ENDLESS_BATCH_SIZE = 20
+        private const val DAILY_CORE_SIZE = 6
+        private const val MAX_NAME_LENGTH = 24
+        private const val NO_REMOTE = "\u0000no-remote"
+        private val DIFFICULTIES = setOf("easy", "medium", "hard")
+    }
 }
+
+/** Shape of each entry in assets/questions.json. */
+@JsonClass(generateAdapter = true)
+internal data class BundledQuestionJson(
+    val text: String,
+    val options: List<String>,
+    val correctIndex: Int,
+    val category: String,
+    val difficulty: String,
+    val explanation: String,
+    val imageUrl: String? = null
+)

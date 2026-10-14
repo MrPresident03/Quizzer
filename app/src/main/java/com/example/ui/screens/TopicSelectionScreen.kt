@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TopicSelectionScreen(
     onNavigateBack: () -> Unit,
-    onStartQuiz: (categories: List<String>, difficulty: String, count: Int, format: String) -> Unit
+    onStartQuiz: (categories: List<String>, difficulty: String, count: Int, format: String, timed: Boolean) -> Unit
 ) {
     val topics = remember { getTopicsList() }
     val selectedTopics = remember { mutableStateListOf<String>() }
@@ -79,7 +79,7 @@ fun TopicSelectionScreen(
             // Featured Capital Cities Challenge Card
             Card(
                 onClick = {
-                    onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat)
+                    onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat, isTimedEnabled)
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
@@ -124,7 +124,7 @@ fun TopicSelectionScreen(
                     }
                     IconButton(
                         onClick = {
-                            onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat)
+                            onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat, isTimedEnabled)
                         },
                         modifier = Modifier.size(32.dp)
                     ) {
@@ -334,7 +334,7 @@ fun TopicSelectionScreen(
                 Button(
                     onClick = {
                         val activeCats = selectedTopics.toList()
-                        onStartQuiz(activeCats, selectedDifficulty, selectedCount, selectedFormat)
+                        onStartQuiz(activeCats, selectedDifficulty, selectedCount, selectedFormat, isTimedEnabled)
                     },
                     modifier = Modifier
                         .fillMaxWidth()

@@ -10,7 +10,8 @@ object CapitalCitiesProvider {
         val country: String,
         val capital: String,
         val continent: String,
-        val difficulty: String // "easy", "medium", "hard"
+        val difficulty: String, // "easy", "medium", "hard"
+        val note: String? = null
     )
 
     val capitals = listOf(
@@ -25,7 +26,7 @@ object CapitalCitiesProvider {
         CountryCapital("Italy", "Rome", "Europe", "easy"),
         CountryCapital("Brazil", "Brasília", "Americas", "easy"),
         CountryCapital("India", "New Delhi", "Asia", "easy"),
-        CountryCapital("South Africa", "Pretoria", "Africa", "easy"),
+        CountryCapital("South Africa", "Pretoria", "Africa", "easy", "South Africa has three capitals: Pretoria (executive), Cape Town (legislative) and Bloemfontein (judicial)."),
         CountryCapital("China", "Beijing", "Asia", "easy"),
         CountryCapital("Mexico", "Mexico City", "Americas", "easy"),
         CountryCapital("Spain", "Madrid", "Europe", "easy"),
@@ -38,7 +39,7 @@ object CapitalCitiesProvider {
         CountryCapital("Egypt", "Cairo", "Africa/Asia", "easy"),
         CountryCapital("Sweden", "Stockholm", "Europe", "easy"),
         CountryCapital("Switzerland", "Bern", "Europe", "easy"),
-        CountryCapital("Netherlands", "Amsterdam", "Europe", "easy"),
+        CountryCapital("Netherlands", "Amsterdam", "Europe", "easy", "Amsterdam is the constitutional capital, but the government and parliament sit in The Hague."),
         CountryCapital("Indonesia", "Jakarta", "Asia", "easy"),
         CountryCapital("Iran", "Tehran", "Asia", "easy"),
         CountryCapital("Iraq", "Baghdad", "Asia", "easy"),
@@ -88,14 +89,14 @@ object CapitalCitiesProvider {
         CountryCapital("Latvia", "Riga", "Europe", "hard"),
         CountryCapital("Lithuania", "Vilnius", "Europe", "hard"),
         CountryCapital("Ecuador", "Quito", "Americas", "hard"),
-        CountryCapital("Bolivia", "Sucre", "Americas", "hard"),
+        CountryCapital("Bolivia", "Sucre", "Americas", "hard", "Sucre is the constitutional capital; La Paz is the seat of government."),
         CountryCapital("Paraguay", "Asunción", "Americas", "hard"),
         CountryCapital("Uruguay", "Montevideo", "Americas", "hard"),
         CountryCapital("Madagascar", "Antananarivo", "Africa", "hard"),
         CountryCapital("Iceland", "Reykjavik", "Europe", "hard"),
         CountryCapital("Mongolia", "Ulaanbaatar", "Asia", "hard"),
         CountryCapital("Nepal", "Kathmandu", "Asia", "hard"),
-        CountryCapital("Sri Lanka", "Sri Jayawardenepura Kotte", "Asia", "hard"),
+        CountryCapital("Sri Lanka", "Sri Jayawardenepura Kotte", "Asia", "hard", "Sri Jayawardenepura Kotte is the legislative capital; Colombo is the commercial capital."),
         CountryCapital("Kazakhstan", "Astana", "Asia", "hard"),
         CountryCapital("Bhutan", "Thimphu", "Asia", "hard"),
         CountryCapital("Myanmar", "Naypyidaw", "Asia", "hard"),
@@ -113,76 +114,84 @@ object CapitalCitiesProvider {
         CountryCapital("Seychelles", "Victoria", "Africa", "hard"),
         CountryCapital("Mauritius", "Port Louis", "Africa", "hard"),
         CountryCapital("Senegal", "Dakar", "Africa", "hard"),
-        CountryCapital("Ivory Coast", "Yamoussoukro", "Africa", "hard"),
+        CountryCapital("Ivory Coast", "Yamoussoukro", "Africa", "hard", "Yamoussoukro is the official capital, while Abidjan is the largest city and economic centre."),
         CountryCapital("Zimbabwe", "Harare", "Africa", "hard"),
         CountryCapital("Fiji", "Suva", "Oceania", "hard"),
         CountryCapital("Papua New Guinea", "Port Moresby", "Oceania", "hard")
     )
 
-    fun generateCapitalQuiz(difficulty: String, count: Int): List<Question> {
-        val questions = mutableListOf<Question>()
+    fun capitalOfCountryText(c: CountryCapital) = "What is the official capital city of ${c.country}?"
+    fun countryOfCapitalText(c: CountryCapital) = "Which country has ${c.capital} as its official capital city?"
 
-        // Filter based on selected difficulty tier
-        val targetPool = when (difficulty.lowercase(Locale.getDefault())) {
-            "easy" -> capitals.filter { it.difficulty == "easy" }
-            "medium" -> capitals.filter { it.difficulty == "medium" }
-            "hard" -> capitals.filter { it.difficulty == "hard" }
-            else -> capitals // "mixed"
+    /** "Which country has Singapore as its capital?" gives the answer away, so only ask it one way. */
+    private fun capitalSharesCountryName(c: CountryCapital) =
+        c.capital.contains(c.country, ignoreCase = true) || c.country.contains(c.capital, ignoreCase = true)
+
+    /**
+     * @param lastSeen returns when a question key (see [QuestionPicker.keyOf]) was last shown, or null.
+     *   Countries not asked about recently are picked first.
+     */
+    fun generateCapitalQuiz(
+        difficulty: String,
+        count: Int,
+        lastSeen: (String) -> Long? = { null },
+        random: Random = Random.Default
+    ): List<Question> {
+        val targetPool = when (difficulty.lowercase(Locale.ROOT)) {
+            "easy", "medium", "hard" -> capitals.filter { it.difficulty == difficulty.lowercase(Locale.ROOT) }
+            else -> capitals // "Mixed"
         }
-
         val sourcePool = if (targetPool.size < 4) capitals else targetPool
-        val shuffledPool = sourcePool.shuffled()
 
         val qty = if (count == 999) 40 else count
-        val finalCount = qty.coerceAtMost(shuffledPool.size)
+        val targets = QuestionPicker.pickFresh(
+            candidates = sourcePool,
+            count = qty,
+            lastSeen = { c ->
+                listOfNotNull(
+                    lastSeen(QuestionPicker.keyOf(capitalOfCountryText(c))),
+                    lastSeen(QuestionPicker.keyOf(countryOfCapitalText(c)))
+                ).maxOrNull()
+            },
+            random = random
+        )
 
-        for (i in 0 until finalCount) {
-            val target = shuffledPool[i]
-
-            // Deciding direction: What is the capital of X? OR Which country has Y as capital?
-            val askCapitalOfCountry = Random.nextBoolean()
+        return targets.map { target ->
+            val explanation = buildString {
+                append("The capital of ${target.country} is ${target.capital}.")
+                target.note?.let { append(" ").append(it) }
+            }
+            val askCapitalOfCountry = capitalSharesCountryName(target) || random.nextBoolean()
 
             if (askCapitalOfCountry) {
                 val wrongOptions = capitals.filter { it.capital != target.capital }
-                    .shuffled()
+                    .shuffled(random)
                     .take(3)
                     .map { it.capital }
-
-                val options = (wrongOptions + target.capital).shuffled()
-                val correctIndex = options.indexOf(target.capital)
-
-                questions.add(
-                    Question(
-                        text = "What is the official capital city of ${target.country}?",
-                        optionsList = options,
-                        correctIndex = correctIndex,
-                        category = "Capital Cities Challenge",
-                        difficulty = target.difficulty,
-                        explanation = "The capital of ${target.country} is ${target.capital}."
-                    )
+                val options = (wrongOptions + target.capital).shuffled(random)
+                Question(
+                    text = capitalOfCountryText(target),
+                    optionsList = options,
+                    correctIndex = options.indexOf(target.capital),
+                    category = Categories.CAPITAL_CITIES,
+                    difficulty = target.difficulty,
+                    explanation = explanation
                 )
             } else {
                 val wrongOptions = capitals.filter { it.country != target.country }
-                    .shuffled()
+                    .shuffled(random)
                     .take(3)
                     .map { it.country }
-
-                val options = (wrongOptions + target.country).shuffled()
-                val correctIndex = options.indexOf(target.country)
-
-                questions.add(
-                    Question(
-                        text = "Which country has ${target.capital} as its official capital city?",
-                        optionsList = options,
-                        correctIndex = correctIndex,
-                        category = "Capital Cities Challenge",
-                        difficulty = target.difficulty,
-                        explanation = "${target.capital} is the capital city of ${target.country}."
-                    )
+                val options = (wrongOptions + target.country).shuffled(random)
+                Question(
+                    text = countryOfCapitalText(target),
+                    optionsList = options,
+                    correctIndex = options.indexOf(target.country),
+                    category = Categories.CAPITAL_CITIES,
+                    difficulty = target.difficulty,
+                    explanation = explanation
                 )
             }
         }
-
-        return questions
     }
 }

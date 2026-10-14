@@ -1,7 +1,12 @@
 [
   {
     "text": "Which of the following elements has the atomic number 1?",
-    "options": ["Helium", "Hydrogen", "Lithium", "Oxygen"],
+    "options": [
+      "Helium",
+      "Hydrogen",
+      "Lithium",
+      "Oxygen"
+    ],
     "correctIndex": 1,
     "category": "Science & Nature",
     "difficulty": "easy",
@@ -10,7 +15,12 @@
   },
   {
     "text": "What is the capital of Australia?",
-    "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+    "options": [
+      "Sydney",
+      "Melbourne",
+      "Canberra",
+      "Brisbane"
+    ],
     "correctIndex": 2,
     "category": "Geography",
     "difficulty": "easy",
@@ -19,7 +29,12 @@
   },
   {
     "text": "Who painted the Mona Lisa?",
-    "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+    "options": [
+      "Vincent van Gogh",
+      "Pablo Picasso",
+      "Leonardo da Vinci",
+      "Michelangelo"
+    ],
     "correctIndex": 2,
     "category": "Art & Architecture",
     "difficulty": "easy",
@@ -28,7 +43,12 @@
   },
   {
     "text": "Which planet is known as the Red Planet?",
-    "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+    "options": [
+      "Venus",
+      "Mars",
+      "Jupiter",
+      "Saturn"
+    ],
     "correctIndex": 1,
     "category": "Science & Nature",
     "difficulty": "easy",
@@ -37,7 +57,12 @@
   },
   {
     "text": "In what year did World War II end?",
-    "options": ["1918", "1939", "1945", "1950"],
+    "options": [
+      "1918",
+      "1939",
+      "1945",
+      "1950"
+    ],
     "correctIndex": 2,
     "category": "History",
     "difficulty": "easy",
@@ -46,7 +71,12 @@
   },
   {
     "text": "What is the primary ingredient in guacamole?",
-    "options": ["Tomato", "Avocado", "Cucumber", "Onion"],
+    "options": [
+      "Tomato",
+      "Avocado",
+      "Cucumber",
+      "Onion"
+    ],
     "correctIndex": 1,
     "category": "Food & Drink",
     "difficulty": "easy",
@@ -55,7 +85,12 @@
   },
   {
     "text": "What does CPU stand for in computer science?",
-    "options": ["Central Process Unit", "Computer Processing Unit", "Central Processing Unit", "Control Program Unit"],
+    "options": [
+      "Central Process Unit",
+      "Computer Processing Unit",
+      "Central Processing Unit",
+      "Control Program Unit"
+    ],
     "correctIndex": 2,
     "category": "Technology & Computing",
     "difficulty": "easy",
@@ -64,7 +99,12 @@
   },
   {
     "text": "How many players are on the field for one team in a standard soccer match?",
-    "options": ["9", "10", "11", "12"],
+    "options": [
+      "9",
+      "10",
+      "11",
+      "12"
+    ],
     "correctIndex": 2,
     "category": "Sports & Recreation",
     "difficulty": "easy",
@@ -73,7 +113,12 @@
   },
   {
     "text": "Which company developed the Android operating system before Google acquired it?",
-    "options": ["Android Inc.", "Apple", "Nokia", "Motorola"],
+    "options": [
+      "Android Inc.",
+      "Apple",
+      "Nokia",
+      "Motorola"
+    ],
     "correctIndex": 0,
     "category": "Technology & Computing",
     "difficulty": "medium",
@@ -82,7 +127,12 @@
   },
   {
     "text": "Who is the author of 'To Kill a Mockingbird'?",
-    "options": ["F. Scott Fitzgerald", "Harper Lee", "Ernest Hemingway", "Mark Twain"],
+    "options": [
+      "F. Scott Fitzgerald",
+      "Harper Lee",
+      "Ernest Hemingway",
+      "Mark Twain"
+    ],
     "correctIndex": 1,
     "category": "Literature & Books",
     "difficulty": "easy",
@@ -91,7 +141,12 @@
   },
   {
     "text": "What is the value of the mathematical constant Pi rounded to 2 decimal places?",
-    "options": ["3.12", "3.14", "3.16", "3.18"],
+    "options": [
+      "3.12",
+      "3.14",
+      "3.16",
+      "3.18"
+    ],
     "correctIndex": 1,
     "category": "Mathematics & Logic",
     "difficulty": "easy",
@@ -100,7 +155,12 @@
   },
   {
     "text": "Which popular internet meme features a Shiba Inu with comic sans monologues?",
-    "options": ["Grumpy Cat", "Pepe the Frog", "Doge", "Nyan Cat"],
+    "options": [
+      "Grumpy Cat",
+      "Pepe the Frog",
+      "Doge",
+      "Nyan Cat"
+    ],
     "correctIndex": 2,
     "category": "Pop Culture & Memes",
     "difficulty": "easy",
@@ -108,17 +168,13 @@
     "imageUrl": null
   },
   {
-    "text": "What is the derivation of the word 'etymology'?",
-    "options": ["Study of insects", "Study of word origins", "Study of truth", "Study of maps"],
-    "correctIndex": 1,
-    "category": "Language & Linguistics",
-    "difficulty": "medium",
-    "explanation": "Etymology comes from the Greek 'etymon' meaning 'true sense', and 'logia' meaning 'study of'.",
-    "imageUrl": null
-  },
-  {
     "text": "Who is the Prime Minister of the United Kingdom who led during WWII?",
-    "options": ["Neville Chamberlain", "Clement Attlee", "Winston Churchill", "Anthony Eden"],
+    "options": [
+      "Neville Chamberlain",
+      "Clement Attlee",
+      "Winston Churchill",
+      "Anthony Eden"
+    ],
     "correctIndex": 2,
     "category": "Politics & World Leaders",
     "difficulty": "easy",
@@ -127,7 +183,12 @@
   },
   {
     "text": "In economics, what index measures inflation by calculating changes in prices of goods bought by typical households?",
-    "options": ["GDP Deflator", "Consumer Price Index (CPI)", "Producer Price Index (PPI)", "Big Mac Index"],
+    "options": [
+      "GDP Deflator",
+      "Consumer Price Index (CPI)",
+      "Producer Price Index (PPI)",
+      "Big Mac Index"
+    ],
     "correctIndex": 1,
     "category": "Business & Economics",
     "difficulty": "medium",
@@ -136,7 +197,12 @@
   },
   {
     "text": "Which hormone regulates glucose levels in the human bloodstream?",
-    "options": ["Adrenaline", "Thyroxine", "Insulin", "Melatonin"],
+    "options": [
+      "Adrenaline",
+      "Thyroxine",
+      "Insulin",
+      "Melatonin"
+    ],
     "correctIndex": 2,
     "category": "Health & Medicine",
     "difficulty": "easy",
@@ -145,7 +211,12 @@
   },
   {
     "text": "In Greek mythology, who is the god of the underworld?",
-    "options": ["Zeus", "Poseidon", "Hades", "Hermes"],
+    "options": [
+      "Zeus",
+      "Poseidon",
+      "Hades",
+      "Hermes"
+    ],
     "correctIndex": 2,
     "category": "Religion & Mythology",
     "difficulty": "easy",
@@ -154,7 +225,12 @@
   },
   {
     "text": "What is the only mammal capable of sustained flight?",
-    "options": ["Flying Squirrel", "Bat", "Sugar Glider", "Flying Lemur"],
+    "options": [
+      "Flying Squirrel",
+      "Bat",
+      "Sugar Glider",
+      "Flying Lemur"
+    ],
     "correctIndex": 1,
     "category": "Animals & Wildlife",
     "difficulty": "easy",
@@ -163,7 +239,12 @@
   },
   {
     "text": "Which luxury French fashion house is known for its interlocking 'CC' monogram?",
-    "options": ["Christian Dior", "Hermès", "Chanel", "Yves Saint Laurent"],
+    "options": [
+      "Christian Dior",
+      "Hermès",
+      "Chanel",
+      "Yves Saint Laurent"
+    ],
     "correctIndex": 2,
     "category": "Fashion & Design",
     "difficulty": "easy",
@@ -172,7 +253,12 @@
   },
   {
     "text": "In criminal law, what term describes the mental intent to commit a crime?",
-    "options": ["Actus Reus", "Mens Rea", "Habeas Corpus", "De Minimis"],
+    "options": [
+      "Actus Reus",
+      "Mens Rea",
+      "Habeas Corpus",
+      "De Minimis"
+    ],
     "correctIndex": 1,
     "category": "True Crime & Law",
     "difficulty": "medium",
@@ -181,7 +267,12 @@
   },
   {
     "text": "Who is known as the inventor of the World Wide Web?",
-    "options": ["Bill Gates", "Alan Turing", "Tim Berners-Lee", "Steve Jobs"],
+    "options": [
+      "Bill Gates",
+      "Alan Turing",
+      "Tim Berners-Lee",
+      "Steve Jobs"
+    ],
     "correctIndex": 2,
     "category": "General Knowledge",
     "difficulty": "easy",
@@ -190,7 +281,12 @@
   },
   {
     "text": "What temperature in Celsius does water boil at standard atmospheric pressure?",
-    "options": ["90°C", "100°C", "120°C", "212°C"],
+    "options": [
+      "90°C",
+      "100°C",
+      "120°C",
+      "212°C"
+    ],
     "correctIndex": 1,
     "category": "Science & Nature",
     "difficulty": "easy",
@@ -199,7 +295,12 @@
   },
   {
     "text": "Which treaty formally ended World War I in 1919?",
-    "options": ["Treaty of Ghent", "Treaty of Versailles", "Treaty of Utrecht", "Treaty of Portsmouth"],
+    "options": [
+      "Treaty of Ghent",
+      "Treaty of Versailles",
+      "Treaty of Utrecht",
+      "Treaty of Portsmouth"
+    ],
     "correctIndex": 1,
     "category": "History",
     "difficulty": "easy",
@@ -208,7 +309,12 @@
   },
   {
     "text": "Which of these countries is landlocked?",
-    "options": ["Switzerland", "Italy", "Vietnam", "Brazil"],
+    "options": [
+      "Switzerland",
+      "Italy",
+      "Vietnam",
+      "Brazil"
+    ],
     "correctIndex": 0,
     "category": "Geography",
     "difficulty": "easy",
@@ -217,7 +323,12 @@
   },
   {
     "text": "In tennis, what term describes a score of 40-40?",
-    "options": ["Deuce", "Love", "Advantage", "Break Point"],
+    "options": [
+      "Deuce",
+      "Love",
+      "Advantage",
+      "Break Point"
+    ],
     "correctIndex": 0,
     "category": "Sports & Recreation",
     "difficulty": "easy",
@@ -226,7 +337,12 @@
   },
   {
     "text": "Which movie won the first Academy Award for Best Picture in 1929?",
-    "options": ["Metropolis", "Wings", "The Jazz Singer", "Sunrise"],
+    "options": [
+      "Metropolis",
+      "Wings",
+      "The Jazz Singer",
+      "Sunrise"
+    ],
     "correctIndex": 1,
     "category": "Entertainment",
     "difficulty": "hard",
@@ -235,7 +351,12 @@
   },
   {
     "text": "Who wrote 'The Odyssey' and 'The Iliad' in ancient Greece?",
-    "options": ["Sophocles", "Socrates", "Homer", "Euripides"],
+    "options": [
+      "Sophocles",
+      "Socrates",
+      "Homer",
+      "Euripides"
+    ],
     "correctIndex": 2,
     "category": "Literature & Books",
     "difficulty": "easy",
@@ -244,7 +365,12 @@
   },
   {
     "text": "Which architectural style is characterized by pointed arches, ribbed vaults, and flying buttresses?",
-    "options": ["Romanesque", "Baroque", "Gothic", "Neoclassical"],
+    "options": [
+      "Romanesque",
+      "Baroque",
+      "Gothic",
+      "Neoclassical"
+    ],
     "correctIndex": 2,
     "category": "Art & Architecture",
     "difficulty": "medium",
@@ -253,7 +379,12 @@
   },
   {
     "text": "What spirit is distilled from fermented sugarcane juice or molasses?",
-    "options": ["Vodka", "Whiskey", "Rum", "Tequila"],
+    "options": [
+      "Vodka",
+      "Whiskey",
+      "Rum",
+      "Tequila"
+    ],
     "correctIndex": 2,
     "category": "Food & Drink",
     "difficulty": "easy",
@@ -262,7 +393,12 @@
   },
   {
     "text": "What does SQL stand for in database management?",
-    "options": ["Structured Query Language", "System Query Language", "Simple Queue List", "Standard Query Layout"],
+    "options": [
+      "Structured Query Language",
+      "System Query Language",
+      "Simple Queue List",
+      "Standard Query Layout"
+    ],
     "correctIndex": 0,
     "category": "Technology & Computing",
     "difficulty": "easy",
@@ -271,7 +407,12 @@
   },
   {
     "text": "What is the next prime number after 7?",
-    "options": ["9", "11", "13", "15"],
+    "options": [
+      "9",
+      "11",
+      "13",
+      "15"
+    ],
     "correctIndex": 1,
     "category": "Mathematics & Logic",
     "difficulty": "easy",
@@ -280,7 +421,12 @@
   },
   {
     "text": "Which internet challenge in 2014 raised over $115 million for ALS neurodegenerative research?",
-    "options": ["The Harlem Shake", "Mannequin Challenge", "Ice Bucket Challenge", "Planking"],
+    "options": [
+      "The Harlem Shake",
+      "Mannequin Challenge",
+      "Ice Bucket Challenge",
+      "Planking"
+    ],
     "correctIndex": 2,
     "category": "Pop Culture & Memes",
     "difficulty": "easy",
@@ -289,7 +435,12 @@
   },
   {
     "text": "Which language family does English belong to?",
-    "options": ["Romance", "Celtic", "Germanic", "Slavic"],
+    "options": [
+      "Romance",
+      "Celtic",
+      "Germanic",
+      "Slavic"
+    ],
     "correctIndex": 2,
     "category": "Language & Linguistics",
     "difficulty": "easy",
@@ -298,7 +449,12 @@
   },
   {
     "text": "Who is the longest-serving President of the United States?",
-    "options": ["George Washington", "Abraham Lincoln", "Franklin D. Roosevelt", "Theodore Roosevelt"],
+    "options": [
+      "George Washington",
+      "Abraham Lincoln",
+      "Franklin D. Roosevelt",
+      "Theodore Roosevelt"
+    ],
     "correctIndex": 2,
     "category": "Politics & World Leaders",
     "difficulty": "medium",
@@ -306,17 +462,13 @@
     "imageUrl": null
   },
   {
-    "text": "What index represents the share performance of the 30 largest publicly owned companies in the US?",
-    "options": ["Nasdaq Composite", "Dow Jones Industrial Average", "S&P 500", "Russell 2000"],
-    "correctIndex": 1,
-    "category": "Business & Economics",
-    "difficulty": "medium",
-    "explanation": "The Dow Jones Industrial Average (DJIA) is a price-weighted stock market index of 30 prominent blue-chip companies.",
-    "imageUrl": null
-  },
-  {
     "text": "What is the medical term for the windpipe?",
-    "options": ["Larynx", "Esophagus", "Trachea", "Pharynx"],
+    "options": [
+      "Larynx",
+      "Esophagus",
+      "Trachea",
+      "Pharynx"
+    ],
     "correctIndex": 2,
     "category": "Health & Medicine",
     "difficulty": "easy",
@@ -325,7 +477,12 @@
   },
   {
     "text": "In Roman mythology, who is the equivalent of the Greek god Poseidon?",
-    "options": ["Jupiter", "Neptune", "Mars", "Pluto"],
+    "options": [
+      "Jupiter",
+      "Neptune",
+      "Mars",
+      "Pluto"
+    ],
     "correctIndex": 1,
     "category": "Religion & Mythology",
     "difficulty": "easy",
@@ -334,7 +491,12 @@
   },
   {
     "text": "What is the fastest land animal?",
-    "options": ["Pronghorn", "Cheetah", "Lion", "Falcon"],
+    "options": [
+      "Pronghorn",
+      "Cheetah",
+      "Lion",
+      "Falcon"
+    ],
     "correctIndex": 1,
     "category": "Animals & Wildlife",
     "difficulty": "easy",
@@ -342,21 +504,4433 @@
     "imageUrl": null
   },
   {
-    "text": "What year did the infamous Titanic sink in the North Atlantic?",
-    "options": ["1905", "1912", "1923", "1931"],
-    "correctIndex": 1,
-    "category": "Geography",
-    "difficulty": "medium",
-    "explanation": "The RMS Titanic sank on April 15, 1912, during its maiden voyage from Southampton to New York City.",
+    "text": "How many days are in a leap year?",
+    "options": [
+      "365",
+      "367",
+      "366",
+      "364"
+    ],
+    "correctIndex": 2,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "A leap year adds 29 February, giving 366 days.",
     "imageUrl": null
   },
   {
-    "text": "By what nickname was the serial killer Theodore Robert Bundy known?",
-    "options": ["The Night Stalker", "Ted Bundy", "The Zodiac Killer", "The BTK Killer"],
+    "text": "Which colour do you get by mixing blue and yellow paint?",
+    "options": [
+      "Purple",
+      "Brown",
+      "Green",
+      "Orange"
+    ],
+    "correctIndex": 2,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "Blue and yellow are mixed to make green in the traditional colour wheel.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many continents are there in the most widely taught model?",
+    "options": [
+      "8",
+      "5",
+      "6",
+      "7"
+    ],
+    "correctIndex": 3,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "The seven-continent model is Africa, Antarctica, Asia, Australia/Oceania, Europe, North America and South America.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the largest ocean on Earth?",
+    "options": [
+      "Pacific Ocean",
+      "Atlantic Ocean",
+      "Arctic Ocean",
+      "Indian Ocean"
+    ],
+    "correctIndex": 0,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "The Pacific covers about a third of Earth's surface.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many hours are there in a week?",
+    "options": [
+      "172",
+      "168",
+      "148",
+      "160"
+    ],
+    "correctIndex": 1,
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "explanation": "7 days × 24 hours = 168 hours.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which country gave the Statue of Liberty to the United States?",
+    "options": [
+      "United Kingdom",
+      "Spain",
+      "Italy",
+      "France"
+    ],
+    "correctIndex": 3,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "It was a gift from the people of France, dedicated in 1886.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which city is the Colosseum?",
+    "options": [
+      "Naples",
+      "Florence",
+      "Rome",
+      "Athens"
+    ],
+    "correctIndex": 2,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "The Colosseum is an ancient Roman amphitheatre in the centre of Rome.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the hardest naturally occurring substance?",
+    "options": [
+      "Quartz",
+      "Topaz",
+      "Diamond",
+      "Granite"
+    ],
+    "correctIndex": 2,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "Diamond scores 10, the maximum, on the Mohs hardness scale.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many strings does a standard guitar have?",
+    "options": [
+      "7",
+      "5",
+      "4",
+      "6"
+    ],
+    "correctIndex": 3,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "A standard acoustic or electric guitar has six strings.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which language has the most native speakers in the world?",
+    "options": [
+      "Hindi",
+      "Mandarin Chinese",
+      "English",
+      "Spanish"
+    ],
+    "correctIndex": 1,
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "explanation": "Mandarin has the most native speakers; English has the most speakers overall once second-language speakers are counted.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the currency of Japan?",
+    "options": [
+      "Ringgit",
+      "Yen",
+      "Yuan",
+      "Won"
+    ],
+    "correctIndex": 1,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "Japan uses the yen.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many minutes are in a full day?",
+    "options": [
+      "1,400",
+      "1,240",
+      "1,440",
+      "1,600"
+    ],
+    "correctIndex": 2,
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "explanation": "24 hours × 60 minutes = 1,440 minutes.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which musical instrument has 88 keys in its standard modern form?",
+    "options": [
+      "Harpsichord",
+      "Piano",
+      "Accordion",
+      "Organ"
+    ],
+    "correctIndex": 1,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "A standard modern piano has 88 keys: 52 white and 36 black.",
+    "imageUrl": null
+  },
+  {
+    "text": "A dozen is equal to 12.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "General Knowledge",
+    "difficulty": "easy",
+    "explanation": "A dozen is a group of twelve.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Great Wall of China is easy to see from the Moon with the naked eye.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "General Knowledge",
+    "difficulty": "medium",
+    "explanation": "A popular myth: the wall is far too narrow to be seen from the Moon without aid.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the chemical symbol for gold?",
+    "options": [
+      "Gd",
+      "Go",
+      "Au",
+      "Ag"
+    ],
+    "correctIndex": 2,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Au comes from the Latin word for gold, 'aurum'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which gas do plants absorb from the air for photosynthesis?",
+    "options": [
+      "Carbon dioxide",
+      "Hydrogen",
+      "Nitrogen",
+      "Oxygen"
+    ],
+    "correctIndex": 0,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Plants take in carbon dioxide and release oxygen during photosynthesis.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which part of a cell is known as its 'powerhouse'?",
+    "options": [
+      "Ribosome",
+      "Nucleus",
+      "Mitochondrion",
+      "Golgi apparatus"
+    ],
+    "correctIndex": 2,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Mitochondria produce most of the cell's chemical energy (ATP).",
+    "imageUrl": null
+  },
+  {
+    "text": "Which is the largest planet in our solar system?",
+    "options": [
+      "Uranus",
+      "Jupiter",
+      "Neptune",
+      "Saturn"
+    ],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Jupiter is more than twice as massive as all the other planets combined.",
+    "imageUrl": null
+  },
+  {
+    "text": "Roughly how fast does light travel in a vacuum?",
+    "options": [
+      "About 3,000 km per second",
+      "About 3,000,000 km per second",
+      "About 30,000 km per second",
+      "About 300,000 km per second"
+    ],
+    "correctIndex": 3,
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "explanation": "The speed of light is about 299,792 km per second.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the most abundant gas in Earth's atmosphere?",
+    "options": [
+      "Carbon dioxide",
+      "Nitrogen",
+      "Oxygen",
+      "Argon"
+    ],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "explanation": "Nitrogen makes up about 78% of the atmosphere; oxygen about 21%.",
+    "imageUrl": null
+  },
+  {
+    "text": "What type of rock forms when magma or lava cools and hardens?",
+    "options": [
+      "Limestone",
+      "Sedimentary",
+      "Metamorphic",
+      "Igneous"
+    ],
+    "correctIndex": 3,
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "explanation": "Igneous rocks such as basalt and granite form from cooled molten rock.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which scientist set out the three laws of motion?",
+    "options": [
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Isaac Newton",
+      "Johannes Kepler"
+    ],
+    "correctIndex": 2,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Newton published his laws of motion in the Principia in 1687.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the chemical formula for table salt?",
+    "options": [
+      "KCl",
+      "NaCl",
+      "NaOH",
+      "CaCO3"
+    ],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "explanation": "Table salt is sodium chloride, NaCl.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which metal has the highest melting point?",
+    "options": [
+      "Tungsten",
+      "Iron",
+      "Platinum",
+      "Titanium"
+    ],
+    "correctIndex": 0,
+    "category": "Science & Nature",
+    "difficulty": "hard",
+    "explanation": "Tungsten melts at about 3,422°C, the highest of any metal.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which particle in an atom has no electric charge?",
+    "options": [
+      "Neutron",
+      "Positron",
+      "Proton",
+      "Electron"
+    ],
+    "correctIndex": 0,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Neutrons are neutral; protons are positive and electrons negative.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the SI unit of force?",
+    "options": [
+      "Pascal",
+      "Watt",
+      "Newton",
+      "Joule"
+    ],
+    "correctIndex": 2,
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "explanation": "Force is measured in newtons (N); joules measure energy.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which planet has the most prominent ring system?",
+    "options": [
+      "Saturn",
+      "Uranus",
+      "Jupiter",
+      "Mars"
+    ],
+    "correctIndex": 0,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "All four giant planets have rings, but Saturn's are by far the largest and brightest.",
+    "imageUrl": null
+  },
+  {
+    "text": "Sound travels faster in water than in air.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "explanation": "Sound moves at roughly 1,480 m/s in water versus about 343 m/s in air.",
+    "imageUrl": null
+  },
+  {
+    "text": "Venus is the hottest planet in our solar system.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Science & Nature",
+    "difficulty": "medium",
+    "explanation": "Its thick carbon dioxide atmosphere traps heat, making it hotter than Mercury.",
+    "imageUrl": null
+  },
+  {
+    "text": "Humans and non-avian dinosaurs lived at the same time.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Science & Nature",
+    "difficulty": "easy",
+    "explanation": "Non-avian dinosaurs died out about 66 million years ago, long before humans appeared.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who was the first President of the United States?",
+    "options": [
+      "Benjamin Franklin",
+      "George Washington",
+      "Thomas Jefferson",
+      "John Adams"
+    ],
+    "correctIndex": 1,
+    "category": "History",
+    "difficulty": "easy",
+    "explanation": "George Washington served as the first president from 1789 to 1797.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which year did the Berlin Wall fall?",
+    "options": [
+      "1979",
+      "1991",
+      "1985",
+      "1989"
+    ],
+    "correctIndex": 3,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "The wall was opened on 9 November 1989.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which civilisation built Machu Picchu?",
+    "options": [
+      "Olmec",
+      "Aztec",
+      "Maya",
+      "Inca"
+    ],
+    "correctIndex": 3,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "Machu Picchu was built by the Inca in the 15th century in the Andes of Peru.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who was the first emperor of Rome?",
+    "options": [
+      "Caligula",
+      "Nero",
+      "Augustus",
+      "Julius Caesar"
+    ],
+    "correctIndex": 2,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "Augustus became emperor in 27 BC. Julius Caesar was dictator but never emperor.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which year did Christopher Columbus first reach the Americas?",
+    "options": [
+      "1492",
+      "1488",
+      "1500",
+      "1519"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "easy",
+    "explanation": "His first voyage reached the Caribbean in October 1492.",
+    "imageUrl": null
+  },
+  {
+    "text": "Suleiman the Magnificent ruled which empire?",
+    "options": [
+      "Mughal Empire",
+      "Ottoman Empire",
+      "Byzantine Empire",
+      "Persian Empire"
+    ],
+    "correctIndex": 1,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "Suleiman ruled the Ottoman Empire from 1520 to 1566, its peak.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which year was the Magna Carta sealed?",
+    "options": [
+      "1066",
+      "1314",
+      "1215",
+      "1415"
+    ],
+    "correctIndex": 2,
+    "category": "History",
+    "difficulty": "hard",
+    "explanation": "King John sealed the Magna Carta at Runnymede in 1215.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who was the first person to walk on the Moon?",
+    "options": [
+      "Neil Armstrong",
+      "Buzz Aldrin",
+      "Michael Collins",
+      "Yuri Gagarin"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "easy",
+    "explanation": "Neil Armstrong stepped onto the Moon during Apollo 11 in July 1969.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which war was fought between the northern and southern US states from 1861 to 1865?",
+    "options": [
+      "American Civil War",
+      "Spanish-American War",
+      "War of 1812",
+      "Revolutionary War"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "easy",
+    "explanation": "The American Civil War ended with the Union's victory in 1865.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who discovered penicillin in 1928?",
+    "options": [
+      "Alexander Fleming",
+      "Joseph Lister",
+      "Marie Curie",
+      "Louis Pasteur"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "Alexander Fleming noticed mould killing bacteria in a culture dish in 1928.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which ancient wonder stood in Alexandria?",
+    "options": [
+      "The Lighthouse (Pharos)",
+      "The Hanging Gardens",
+      "The Colossus",
+      "The Temple of Artemis"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "hard",
+    "explanation": "The Pharos lighthouse of Alexandria was one of the Seven Wonders of the Ancient World.",
+    "imageUrl": null
+  },
+  {
+    "text": "In 1893, which became the first self-governing country to give women the vote in national elections?",
+    "options": [
+      "Finland",
+      "United Kingdom",
+      "New Zealand",
+      "Australia"
+    ],
+    "correctIndex": 2,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "New Zealand women voted in a general election for the first time in 1893.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Rosetta Stone helped scholars decipher which writing system?",
+    "options": [
+      "Egyptian hieroglyphs",
+      "Linear B",
+      "Cuneiform",
+      "Maya glyphs"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "It carries the same decree in hieroglyphic, Demotic and Greek, which unlocked hieroglyphs in the 1820s.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which year did the Titanic sink?",
+    "options": [
+      "1923",
+      "1931",
+      "1912",
+      "1905"
+    ],
+    "correctIndex": 2,
+    "category": "History",
+    "difficulty": "medium",
+    "explanation": "RMS Titanic sank in the North Atlantic in April 1912 on its maiden voyage.",
+    "imageUrl": null
+  },
+  {
+    "text": "The French Revolution began in 1789.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "History",
+    "difficulty": "easy",
+    "explanation": "It began in 1789; the storming of the Bastille was on 14 July that year.",
+    "imageUrl": null
+  },
+  {
+    "text": "Napoleon Bonaparte was unusually short for his time, at about 5 feet (152 cm).",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "History",
+    "difficulty": "hard",
+    "explanation": "He was about 5 ft 6-7 in (around 168-170 cm), roughly average; the myth partly comes from French inches being longer than English ones.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the longest river in Africa?",
+    "options": [
+      "Congo",
+      "Nile",
+      "Niger",
+      "Zambezi"
+    ],
+    "correctIndex": 1,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "The Nile runs about 6,650 km through north-eastern Africa.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which is the largest country by area?",
+    "options": [
+      "United States",
+      "China",
+      "Russia",
+      "Canada"
+    ],
+    "correctIndex": 2,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "Russia covers about 17 million square kilometres.",
+    "imageUrl": null
+  },
+  {
+    "text": "Mount Everest sits on the border between Nepal and which other territory?",
+    "options": [
+      "Pakistan",
+      "Bhutan",
+      "China (Tibet)",
+      "India"
+    ],
+    "correctIndex": 2,
+    "category": "Geography",
+    "difficulty": "medium",
+    "explanation": "The border between Nepal and the Tibet region of China runs across its summit.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the largest desert in the world, counting polar deserts?",
+    "options": [
+      "Sahara",
+      "Gobi",
+      "Arabian Desert",
+      "Antarctic Desert"
+    ],
+    "correctIndex": 3,
+    "category": "Geography",
+    "difficulty": "hard",
+    "explanation": "Antarctica is the largest desert; the Sahara is the largest hot desert.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which African country has the largest population?",
+    "options": [
+      "Nigeria",
+      "South Africa",
+      "Ethiopia",
+      "Egypt"
+    ],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "medium",
+    "explanation": "Nigeria is Africa's most populous country.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Strait of Gibraltar separates Spain from which country?",
+    "options": [
+      "Morocco",
+      "Portugal",
+      "Tunisia",
+      "Algeria"
+    ],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "medium",
+    "explanation": "At its narrowest the strait is about 14 km wide between Spain and Morocco.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the smallest country in the world by area?",
+    "options": [
+      "Vatican City",
+      "Monaco",
+      "Liechtenstein",
+      "San Marino"
+    ],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "Vatican City covers less than half a square kilometre.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which river flows through Baghdad?",
+    "options": [
+      "Tigris",
+      "Euphrates",
+      "Jordan",
+      "Nile"
+    ],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "hard",
+    "explanation": "Baghdad lies on the Tigris; the Euphrates runs further west.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which is the largest US state by area?",
+    "options": [
+      "California",
+      "Texas",
+      "Alaska",
+      "Montana"
+    ],
+    "correctIndex": 2,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "Alaska is more than twice the size of Texas.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which mountain range is K2?",
+    "options": [
+      "Himalayas",
+      "Hindu Kush",
+      "Karakoram",
+      "Andes"
+    ],
+    "correctIndex": 2,
+    "category": "Geography",
+    "difficulty": "hard",
+    "explanation": "K2, the world's second-highest mountain, is in the Karakoram on the China-Pakistan border.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which is the deepest lake in the world?",
+    "options": [
+      "Lake Baikal",
+      "Lake Tanganyika",
+      "Lake Superior",
+      "Caspian Sea"
+    ],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "medium",
+    "explanation": "Lake Baikal in Siberia is about 1,640 m deep at its deepest point.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which line of latitude divides Earth into the Northern and Southern Hemispheres?",
+    "options": [
+      "The Tropic of Cancer",
+      "The Equator",
+      "The Prime Meridian",
+      "The Arctic Circle"
+    ],
+    "correctIndex": 1,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "The Equator sits at 0 degrees latitude.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which country is home to the most lakes?",
+    "options": [
+      "Canada",
+      "Finland",
+      "Russia",
+      "United States"
+    ],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "medium",
+    "explanation": "Canada has more lakes than any other country, by most estimates more than the rest of the world combined.",
+    "imageUrl": null
+  },
+  {
+    "text": "Australia is both a country and a continent.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "Australia is a country and also the name commonly given to its continent.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Amazon River flows into the Pacific Ocean.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Geography",
+    "difficulty": "easy",
+    "explanation": "The Amazon flows east across South America into the Atlantic Ocean.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many players from each team are on a basketball court at once?",
+    "options": [
+      "7",
+      "6",
+      "4",
+      "5"
+    ],
+    "correctIndex": 3,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "Each basketball team has five players on court.",
+    "imageUrl": null
+  },
+  {
+    "text": "How often is the FIFA men's World Cup held?",
+    "options": [
+      "Every 3 years",
+      "Every 2 years",
+      "Every 5 years",
+      "Every 4 years"
+    ],
+    "correctIndex": 3,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "The World Cup takes place every four years.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many rings are on the Olympic flag?",
+    "options": [
+      "6",
+      "4",
+      "5",
+      "7"
+    ],
+    "correctIndex": 2,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "The five interlocking rings represent the union of the inhabited continents.",
+    "imageUrl": null
+  },
+  {
+    "text": "In golf, what is one stroke under par on a hole called?",
+    "options": [
+      "Eagle",
+      "Birdie",
+      "Albatross",
+      "Bogey"
+    ],
+    "correctIndex": 1,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "A birdie is one under par; an eagle is two under.",
+    "imageUrl": null
+  },
+  {
+    "text": "How long is a marathon?",
+    "options": [
+      "26 km",
+      "42.195 km",
+      "40 km",
+      "50 km"
+    ],
+    "correctIndex": 1,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "A marathon is 42.195 km, or 26.2 miles.",
+    "imageUrl": null
+  },
+  {
+    "text": "Rugby takes its name from a school in which country?",
+    "options": [
+      "New Zealand",
+      "France",
+      "South Africa",
+      "England"
+    ],
+    "correctIndex": 3,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "The game is named after Rugby School in England, where it developed in the 1800s.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many balls are bowled in a standard over in cricket?",
+    "options": [
+      "6",
+      "10",
+      "5",
+      "8"
+    ],
+    "correctIndex": 0,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "A standard over has six legal deliveries.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the highest score possible with a single dart?",
+    "options": [
+      "60",
+      "180",
+      "100",
+      "50"
+    ],
+    "correctIndex": 0,
+    "category": "Sports & Recreation",
+    "difficulty": "hard",
+    "explanation": "A treble 20 scores 60; the bullseye is worth 50. Three treble 20s make 180.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which sport is the Stanley Cup awarded?",
+    "options": [
+      "American football",
+      "Baseball",
+      "Ice hockey",
+      "Basketball"
+    ],
+    "correctIndex": 2,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "The Stanley Cup is the championship trophy of the NHL.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many players does a netball team have on court?",
+    "options": [
+      "6",
+      "7",
+      "9",
+      "5"
+    ],
+    "correctIndex": 1,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "Netball is played seven-a-side.",
+    "imageUrl": null
+  },
+  {
+    "text": "What colour jersey does the overall leader of the Tour de France wear?",
+    "options": [
+      "Yellow",
+      "Polka dot",
+      "White",
+      "Green"
+    ],
+    "correctIndex": 0,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "The leader wears the maillot jaune, the yellow jersey.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which city were the first modern Olympic Games held in 1896?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Athens"
+    ],
+    "correctIndex": 3,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "The first modern Olympics were held in Athens in 1896.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which sport would you perform a slam dunk?",
+    "options": [
+      "Volleyball",
+      "Basketball",
+      "Tennis",
+      "Water polo"
+    ],
+    "correctIndex": 1,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "A slam dunk is a basketball shot forced down through the hoop.",
+    "imageUrl": null
+  },
+  {
+    "text": "Men's singles matches at tennis Grand Slams are played as best of five sets.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Sports & Recreation",
+    "difficulty": "medium",
+    "explanation": "Men's singles at the four Grand Slams are best of five; women's are best of three.",
+    "imageUrl": null
+  },
+  {
+    "text": "In football (soccer), the goalkeeper may handle the ball anywhere on the pitch.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Sports & Recreation",
+    "difficulty": "easy",
+    "explanation": "Goalkeepers may only handle the ball inside their own penalty area.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which film franchise features the character Darth Vader?",
+    "options": [
+      "Alien",
+      "Star Wars",
+      "The Matrix",
+      "Star Trek"
+    ],
+    "correctIndex": 1,
+    "category": "Entertainment",
+    "difficulty": "easy",
+    "explanation": "Darth Vader first appeared in Star Wars (1977).",
+    "imageUrl": null
+  },
+  {
+    "text": "Who composed the 'Moonlight' Sonata?",
+    "options": [
+      "Johann Sebastian Bach",
+      "Frédéric Chopin",
+      "Ludwig van Beethoven",
+      "Wolfgang Amadeus Mozart"
+    ],
+    "correctIndex": 2,
+    "category": "Entertainment",
+    "difficulty": "medium",
+    "explanation": "Beethoven wrote his Piano Sonata No. 14, nicknamed 'Moonlight', in 1801.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which band was John Lennon a member of?",
+    "options": [
+      "The Beatles",
+      "The Who",
+      "The Rolling Stones",
+      "Queen"
+    ],
+    "correctIndex": 0,
+    "category": "Entertainment",
+    "difficulty": "easy",
+    "explanation": "Lennon co-founded The Beatles with Paul McCartney, George Harrison and Ringo Starr.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which animated Disney film features the song 'Let It Go'?",
+    "options": [
+      "Tangled",
+      "Moana",
+      "Encanto",
+      "Frozen"
+    ],
+    "correctIndex": 3,
+    "category": "Entertainment",
+    "difficulty": "easy",
+    "explanation": "'Let It Go' is from Frozen (2013).",
+    "imageUrl": null
+  },
+  {
+    "text": "Who directed the 1993 film 'Jurassic Park'?",
+    "options": [
+      "Steven Spielberg",
+      "George Lucas",
+      "Ridley Scott",
+      "James Cameron"
+    ],
+    "correctIndex": 0,
+    "category": "Entertainment",
+    "difficulty": "easy",
+    "explanation": "Jurassic Park was directed by Steven Spielberg.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which video game character is a plumber who rescues Princess Peach?",
+    "options": [
+      "Pac-Man",
+      "Sonic",
+      "Link",
+      "Mario"
+    ],
+    "correctIndex": 3,
+    "category": "Entertainment",
+    "difficulty": "easy",
+    "explanation": "Mario is Nintendo's mascot, first appearing in Donkey Kong (1981).",
+    "imageUrl": null
+  },
+  {
+    "text": "Which TV series is set in the fictional town of Hawkins, Indiana?",
+    "options": [
+      "Stranger Things",
+      "Twin Peaks",
+      "The Walking Dead",
+      "Riverdale"
+    ],
+    "correctIndex": 0,
+    "category": "Entertainment",
+    "difficulty": "medium",
+    "explanation": "Stranger Things takes place in Hawkins, Indiana, in the 1980s.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many symphonies did Beethoven complete?",
+    "options": [
+      "12",
+      "9",
+      "5",
+      "7"
+    ],
+    "correctIndex": 1,
+    "category": "Entertainment",
+    "difficulty": "medium",
+    "explanation": "Beethoven completed nine symphonies; the Ninth includes the 'Ode to Joy'.",
+    "imageUrl": null
+  },
+  {
+    "text": "What was Walt Disney's first full-length animated feature film?",
+    "options": [
+      "Pinocchio",
+      "Bambi",
+      "Fantasia",
+      "Snow White and the Seven Dwarfs"
+    ],
+    "correctIndex": 3,
+    "category": "Entertainment",
+    "difficulty": "medium",
+    "explanation": "Snow White and the Seven Dwarfs was released in 1937.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many lines does a standard musical staff have?",
+    "options": [
+      "5",
+      "4",
+      "7",
+      "6"
+    ],
+    "correctIndex": 0,
+    "category": "Entertainment",
+    "difficulty": "medium",
+    "explanation": "Standard notation uses a five-line staff.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which film won the first Academy Award for Best Animated Feature?",
+    "options": [
+      "Spirited Away",
+      "Shrek",
+      "Monsters, Inc.",
+      "Toy Story 2"
+    ],
+    "correctIndex": 1,
+    "category": "Entertainment",
+    "difficulty": "hard",
+    "explanation": "Shrek won the first Best Animated Feature Oscar, awarded in 2002.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which company makes the PlayStation consoles?",
+    "options": [
+      "Microsoft",
+      "Nintendo",
+      "Sony",
+      "Sega"
+    ],
+    "correctIndex": 2,
+    "category": "Entertainment",
+    "difficulty": "easy",
+    "explanation": "The first PlayStation was released by Sony in 1994.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Lord of the Rings film trilogy was filmed mainly in New Zealand.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Entertainment",
+    "difficulty": "easy",
+    "explanation": "Peter Jackson shot the trilogy at hundreds of locations across New Zealand.",
+    "imageUrl": null
+  },
+  {
+    "text": "Mozart was born in Vienna.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Entertainment",
+    "difficulty": "medium",
+    "explanation": "Mozart was born in Salzburg in 1756, though he later lived and worked in Vienna.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who wrote the novel '1984'?",
+    "options": [
+      "H. G. Wells",
+      "Ray Bradbury",
+      "George Orwell",
+      "Aldous Huxley"
+    ],
+    "correctIndex": 2,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "George Orwell published Nineteen Eighty-Four in 1949.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which fictional detective lives at 221B Baker Street?",
+    "options": [
+      "Sherlock Holmes",
+      "Miss Marple",
+      "Philip Marlowe",
+      "Hercule Poirot"
+    ],
+    "correctIndex": 0,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "Sherlock Holmes, created by Arthur Conan Doyle, lodges at 221B Baker Street.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who wrote 'Pride and Prejudice'?",
+    "options": [
+      "Jane Austen",
+      "Emily Brontë",
+      "Charlotte Brontë",
+      "Mary Shelley"
+    ],
+    "correctIndex": 0,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "Jane Austen published Pride and Prejudice in 1813.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which Shakespeare play do Rosencrantz and Guildenstern appear?",
+    "options": [
+      "King Lear",
+      "Hamlet",
+      "Macbeth",
+      "Othello"
+    ],
+    "correctIndex": 1,
+    "category": "Literature & Books",
+    "difficulty": "medium",
+    "explanation": "They are Hamlet's former schoolfriends, summoned to spy on him.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who wrote 'One Hundred Years of Solitude'?",
+    "options": [
+      "Gabriel García Márquez",
+      "Mario Vargas Llosa",
+      "Jorge Luis Borges",
+      "Isabel Allende"
+    ],
+    "correctIndex": 0,
+    "category": "Literature & Books",
+    "difficulty": "medium",
+    "explanation": "The Colombian author Gabriel García Márquez published it in 1967.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who wrote 'Frankenstein'?",
+    "options": [
+      "Bram Stoker",
+      "Edgar Allan Poe",
+      "Robert Louis Stevenson",
+      "Mary Shelley"
+    ],
+    "correctIndex": 3,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "Mary Shelley's Frankenstein was first published in 1818.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Russian author wrote 'War and Peace'?",
+    "options": [
+      "Ivan Turgenev",
+      "Leo Tolstoy",
+      "Anton Chekhov",
+      "Fyodor Dostoevsky"
+    ],
+    "correctIndex": 1,
+    "category": "Literature & Books",
+    "difficulty": "medium",
+    "explanation": "Tolstoy's War and Peace was published in full in 1869.",
+    "imageUrl": null
+  },
+  {
+    "text": "In 'The Hobbit', what is the dragon called?",
+    "options": [
+      "Ancalagon",
+      "Smaug",
+      "Scatha",
+      "Glaurung"
+    ],
+    "correctIndex": 1,
+    "category": "Literature & Books",
+    "difficulty": "medium",
+    "explanation": "Smaug guards the treasure of the Lonely Mountain.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who wrote the epic poem 'Paradise Lost'?",
+    "options": [
+      "Geoffrey Chaucer",
+      "John Milton",
+      "William Blake",
+      "Edmund Spenser"
+    ],
+    "correctIndex": 1,
+    "category": "Literature & Books",
+    "difficulty": "hard",
+    "explanation": "John Milton published Paradise Lost in 1667.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many syllables does a traditional haiku have in total?",
+    "options": [
+      "19",
+      "14",
+      "17",
+      "12"
+    ],
+    "correctIndex": 2,
+    "category": "Literature & Books",
+    "difficulty": "medium",
+    "explanation": "A traditional haiku has three lines of 5, 7 and 5 syllables.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which author created the land of Narnia?",
+    "options": [
+      "J. R. R. Tolkien",
+      "Lewis Carroll",
+      "Philip Pullman",
+      "C. S. Lewis"
+    ],
+    "correctIndex": 3,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "C. S. Lewis wrote The Chronicles of Narnia, beginning in 1950.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Greek playwright wrote 'Oedipus Rex'?",
+    "options": [
+      "Aeschylus",
+      "Euripides",
+      "Aristophanes",
+      "Sophocles"
+    ],
+    "correctIndex": 3,
+    "category": "Literature & Books",
+    "difficulty": "hard",
+    "explanation": "Sophocles wrote Oedipus Rex around 429 BC.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the name of the whale hunted by Captain Ahab?",
+    "options": [
+      "Moby Dick",
+      "Leviathan",
+      "Queequeg",
+      "Nautilus"
+    ],
+    "correctIndex": 0,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "Herman Melville's 1851 novel follows Ahab's hunt for the white whale Moby Dick.",
+    "imageUrl": null
+  },
+  {
+    "text": "'Don Quixote' was written by Miguel de Cervantes.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Literature & Books",
+    "difficulty": "easy",
+    "explanation": "Cervantes published Don Quixote in two parts, in 1605 and 1615.",
+    "imageUrl": null
+  },
+  {
+    "text": "Charles Dickens wrote 'Wuthering Heights'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Literature & Books",
+    "difficulty": "medium",
+    "explanation": "Wuthering Heights (1847) was written by Emily Brontë.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who painted 'The Starry Night'?",
+    "options": [
+      "Vincent van Gogh",
+      "Paul Cézanne",
+      "Claude Monet",
+      "Edvard Munch"
+    ],
+    "correctIndex": 0,
+    "category": "Art & Architecture",
+    "difficulty": "easy",
+    "explanation": "Van Gogh painted The Starry Night in 1889.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who sculpted the marble statue of David in Florence (1501-1504)?",
+    "options": [
+      "Michelangelo",
+      "Rodin",
+      "Bernini",
+      "Donatello"
+    ],
+    "correctIndex": 0,
+    "category": "Art & Architecture",
+    "difficulty": "easy",
+    "explanation": "Michelangelo carved his David from a single block of marble.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which art movement is Salvador Dalí most associated with?",
+    "options": [
+      "Cubism",
+      "Pop Art",
+      "Surrealism",
+      "Impressionism"
+    ],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "easy",
+    "explanation": "Dalí was a leading figure of Surrealism.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who painted the ceiling of the Sistine Chapel?",
+    "options": [
+      "Botticelli",
+      "Raphael",
+      "Michelangelo",
+      "Leonardo da Vinci"
+    ],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "easy",
+    "explanation": "Michelangelo painted the ceiling between 1508 and 1512.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which architect designed the Sagrada Família in Barcelona?",
+    "options": [
+      "Le Corbusier",
+      "Santiago Calatrava",
+      "Antoni Gaudí",
+      "Frank Gehry"
+    ],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "Gaudí worked on the basilica from 1883 until his death in 1926.",
+    "imageUrl": null
+  },
+  {
+    "text": "Claude Monet was a founder of which art movement?",
+    "options": [
+      "Expressionism",
+      "Realism",
+      "Impressionism",
+      "Fauvism"
+    ],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "The movement is named after Monet's painting 'Impression, Sunrise'.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which city is the Louvre museum?",
+    "options": [
+      "London",
+      "Madrid",
+      "Rome",
+      "Paris"
+    ],
+    "correctIndex": 3,
+    "category": "Art & Architecture",
+    "difficulty": "easy",
+    "explanation": "The Louvre in Paris is the world's most-visited art museum.",
+    "imageUrl": null
+  },
+  {
+    "text": "Pablo Picasso co-founded which art movement?",
+    "options": [
+      "Futurism",
+      "Dada",
+      "Fauvism",
+      "Cubism"
+    ],
+    "correctIndex": 3,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "Picasso and Georges Braque developed Cubism around 1907-1911.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which of the Seven Wonders of the Ancient World still stands today?",
+    "options": [
+      "Great Pyramid of Giza",
+      "Hanging Gardens of Babylon",
+      "Lighthouse of Alexandria",
+      "Colossus of Rhodes"
+    ],
+    "correctIndex": 0,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "The Great Pyramid is the oldest of the wonders and the only one still standing.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who painted 'Girl with a Pearl Earring'?",
+    "options": [
+      "Rembrandt",
+      "Frans Hals",
+      "Jan van Eyck",
+      "Johannes Vermeer"
+    ],
+    "correctIndex": 3,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "The Dutch painter Johannes Vermeer painted it around 1665.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Mughal emperor built the Taj Mahal?",
+    "options": [
+      "Babur",
+      "Akbar",
+      "Aurangzeb",
+      "Shah Jahan"
+    ],
+    "correctIndex": 3,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "Shah Jahan built it as a mausoleum for his wife Mumtaz Mahal.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Norwegian artist painted 'The Scream'?",
+    "options": [
+      "Egon Schiele",
+      "Wassily Kandinsky",
+      "Edvard Munch",
+      "Gustav Klimt"
+    ],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "easy",
+    "explanation": "Edvard Munch made several versions of The Scream from 1893.",
+    "imageUrl": null
+  },
+  {
+    "text": "Frank Lloyd Wright designed which famous house built over a waterfall?",
+    "options": [
+      "Robie House",
+      "Glass House",
+      "Fallingwater",
+      "Villa Savoye"
+    ],
+    "correctIndex": 2,
+    "category": "Art & Architecture",
+    "difficulty": "hard",
+    "explanation": "Fallingwater in Pennsylvania was completed in 1939.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Leaning Tower of Pisa was built as a bell tower.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Art & Architecture",
+    "difficulty": "medium",
+    "explanation": "It is the freestanding bell tower (campanile) of Pisa Cathedral.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Sydney Opera House was designed by a Danish architect.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Art & Architecture",
+    "difficulty": "hard",
+    "explanation": "It was designed by Jørn Utzon of Denmark.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which country does paella come from?",
+    "options": [
+      "Portugal",
+      "Mexico",
+      "Spain",
+      "Italy"
+    ],
+    "correctIndex": 2,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Paella originated in Valencia, on Spain's east coast.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the main ingredient in hummus?",
+    "options": [
+      "Black beans",
+      "Fava beans",
+      "Chickpeas",
+      "Lentils"
+    ],
+    "correctIndex": 2,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Hummus is made from chickpeas blended with tahini, lemon and garlic.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is sushi rice usually seasoned with?",
+    "options": [
+      "Lime juice",
+      "Fish sauce",
+      "Soy sauce",
+      "Rice vinegar"
+    ],
+    "correctIndex": 3,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Sushi rice is seasoned with rice vinegar, sugar and salt.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which spice comes from crocus flowers and is the most expensive by weight?",
+    "options": [
+      "Cinnamon",
+      "Saffron",
+      "Cardamom",
+      "Vanilla"
+    ],
+    "correctIndex": 1,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Saffron is the hand-picked stigmas of the saffron crocus.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which pastry is used to make profiteroles and éclairs?",
+    "options": [
+      "Shortcrust pastry",
+      "Filo pastry",
+      "Puff pastry",
+      "Choux pastry"
+    ],
+    "correctIndex": 3,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Choux pastry puffs up with steam, leaving a hollow centre to fill.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which cheese is traditionally used on a Margherita pizza?",
+    "options": [
+      "Gorgonzola",
+      "Mozzarella",
+      "Parmesan",
+      "Ricotta"
+    ],
+    "correctIndex": 1,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "A Margherita is topped with tomato, mozzarella and basil.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is tofu made from?",
+    "options": [
+      "Chickpeas",
+      "Rice",
+      "Soybeans",
+      "Wheat"
+    ],
+    "correctIndex": 2,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Tofu is made by curdling soy milk and pressing the curds.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which country produces the most coffee?",
+    "options": [
+      "Brazil",
+      "Vietnam",
+      "Ethiopia",
+      "Colombia"
+    ],
+    "correctIndex": 0,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Brazil has been the world's largest coffee producer for over 150 years.",
+    "imageUrl": null
+  },
+  {
+    "text": "Kimchi is a traditional dish from which country?",
+    "options": [
+      "Japan",
+      "Korea",
+      "Thailand",
+      "China"
+    ],
+    "correctIndex": 1,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Kimchi is fermented vegetables, usually napa cabbage, central to Korean cuisine.",
+    "imageUrl": null
+  },
+  {
+    "text": "What makes bread dough rise when yeast is used?",
+    "options": [
+      "Steam from the water",
+      "Oxygen added by kneading",
+      "Carbon dioxide from fermentation",
+      "Salt reacting with flour"
+    ],
+    "correctIndex": 2,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Yeast ferments sugars, releasing carbon dioxide that gets trapped in the gluten.",
+    "imageUrl": null
+  },
+  {
+    "text": "Champagne is traditionally made from Pinot Noir, Pinot Meunier and which white grape?",
+    "options": [
+      "Sauvignon Blanc",
+      "Pinot Grigio",
+      "Chardonnay",
+      "Riesling"
+    ],
+    "correctIndex": 2,
+    "category": "Food & Drink",
+    "difficulty": "hard",
+    "explanation": "Chardonnay is the main white grape of Champagne.",
+    "imageUrl": null
+  },
+  {
+    "text": "Dashi, the Japanese soup stock, is traditionally made from which two ingredients?",
+    "options": [
+      "Soy sauce and sugar",
+      "Kombu and bonito flakes",
+      "Miso and tofu",
+      "Rice and sesame"
+    ],
+    "correctIndex": 1,
+    "category": "Food & Drink",
+    "difficulty": "hard",
+    "explanation": "Classic dashi is made from kombu (kelp) and katsuobushi (dried bonito).",
+    "imageUrl": null
+  },
+  {
+    "text": "Which nut is used to make marzipan?",
+    "options": [
+      "Pistachio",
+      "Walnut",
+      "Hazelnut",
+      "Almond"
+    ],
+    "correctIndex": 3,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Marzipan is made from ground almonds and sugar.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which cheese is traditionally used in a Greek salad?",
+    "options": [
+      "Halloumi",
+      "Cheddar",
+      "Mozzarella",
+      "Feta"
+    ],
+    "correctIndex": 3,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "A Greek salad is topped with feta, a brined sheep's or goat's milk cheese.",
+    "imageUrl": null
+  },
+  {
+    "text": "The pavlova is named after a ballerina from which country?",
+    "options": [
+      "England",
+      "Italy",
+      "Russia",
+      "France"
+    ],
+    "correctIndex": 2,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "It is named after the Russian ballerina Anna Pavlova, who toured Australia and New Zealand in the 1920s.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which vegetable gives borscht its deep red colour?",
+    "options": [
+      "Red pepper",
+      "Red cabbage",
+      "Tomato",
+      "Beetroot"
+    ],
+    "correctIndex": 3,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Borscht gets its colour from beetroot.",
+    "imageUrl": null
+  },
+  {
+    "text": "Goulash is a national dish of which country?",
+    "options": [
+      "Hungary",
+      "Austria",
+      "Poland",
+      "Greece"
+    ],
+    "correctIndex": 0,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Goulash (gulyás) is a paprika-spiced stew from Hungary.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which spirit is distilled from the blue agave plant?",
+    "options": [
+      "Vodka",
+      "Tequila",
+      "Rum",
+      "Gin"
+    ],
+    "correctIndex": 1,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Tequila is made from blue agave, mainly in the Mexican state of Jalisco.",
+    "imageUrl": null
+  },
+  {
+    "text": "White chocolate contains cocoa solids (cocoa mass).",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Food & Drink",
+    "difficulty": "hard",
+    "explanation": "White chocolate contains cocoa butter, sugar and milk but no cocoa solids, which is why it isn't brown.",
+    "imageUrl": null
+  },
+  {
+    "text": "Much of the 'wasabi' served outside Japan is actually coloured horseradish.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Food & Drink",
+    "difficulty": "medium",
+    "explanation": "Real wasabi is expensive, so a horseradish-and-mustard paste dyed green is common.",
+    "imageUrl": null
+  },
+  {
+    "text": "Botanically, tomatoes are fruits.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Food & Drink",
+    "difficulty": "easy",
+    "explanation": "Tomatoes develop from the flower and contain seeds, so botanists class them as fruits.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'HTTP' stand for?",
+    "options": [
+      "HyperText Transmission Process",
+      "HyperText Transfer Protocol",
+      "High Transfer Text Protocol",
+      "Host Transfer Technology Protocol"
+    ],
+    "correctIndex": 1,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "HTTP is the protocol web browsers use to request pages from servers.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many bits are in a byte?",
+    "options": [
+      "4",
+      "8",
+      "16",
+      "10"
+    ],
+    "correctIndex": 1,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "A byte is eight bits.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who co-founded Apple with Steve Jobs in 1976?",
+    "options": [
+      "Steve Wozniak",
+      "Larry Page",
+      "Bill Gates",
+      "Paul Allen"
+    ],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "Steve Wozniak designed the Apple I and co-founded Apple with Jobs (and, briefly, Ronald Wayne).",
+    "imageUrl": null
+  },
+  {
+    "text": "Which language is used to style the look of web pages?",
+    "options": [
+      "CSS",
+      "HTML",
+      "Python",
+      "SQL"
+    ],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "CSS (Cascading Style Sheets) controls layout, colours and fonts; HTML provides the structure.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'RAM' stand for?",
+    "options": [
+      "Runtime Allocation Module",
+      "Rapid Action Memory",
+      "Read Access Memory",
+      "Random Access Memory"
+    ],
+    "correctIndex": 3,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "RAM is the fast, temporary memory a computer uses while running programs.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which company originally created the Java programming language?",
+    "options": [
+      "Microsoft",
+      "IBM",
+      "Oracle",
+      "Sun Microsystems"
+    ],
+    "correctIndex": 3,
+    "category": "Technology & Computing",
+    "difficulty": "medium",
+    "explanation": "Java was created at Sun Microsystems in the 1990s; Oracle acquired Sun in 2010.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the decimal number 10 written in binary?",
+    "options": [
+      "1001",
+      "1100",
+      "1110",
+      "1010"
+    ],
+    "correctIndex": 3,
+    "category": "Technology & Computing",
+    "difficulty": "medium",
+    "explanation": "1010 in binary is 8 + 2 = 10.",
+    "imageUrl": null
+  },
+  {
+    "text": "What was the name of the early graphical web browser, released in 1993, that helped popularise the web?",
+    "options": [
+      "Netscape Navigator",
+      "Mosaic",
+      "Opera",
+      "Internet Explorer"
+    ],
+    "correctIndex": 1,
+    "category": "Technology & Computing",
+    "difficulty": "hard",
+    "explanation": "NCSA Mosaic (1993) brought images and a point-and-click interface to the web.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which data structure works on a 'last in, first out' (LIFO) basis?",
+    "options": [
+      "Queue",
+      "Linked list",
+      "Hash table",
+      "Stack"
+    ],
+    "correctIndex": 3,
+    "category": "Technology & Computing",
+    "difficulty": "medium",
+    "explanation": "A stack removes the most recently added item first, like a stack of plates.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who is often called the first computer programmer for her work on Babbage's Analytical Engine?",
+    "options": [
+      "Grace Hopper",
+      "Margaret Hamilton",
+      "Ada Lovelace",
+      "Hedy Lamarr"
+    ],
+    "correctIndex": 2,
+    "category": "Technology & Computing",
+    "difficulty": "medium",
+    "explanation": "Ada Lovelace published an algorithm for the Analytical Engine in 1843.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'URL' stand for?",
+    "options": [
+      "Unified Routing Locator",
+      "Universal Resource Link",
+      "Uniform Resource Locator",
+      "User Resource Locator"
+    ],
+    "correctIndex": 2,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "A URL is the address of a resource on the internet.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which logic gate outputs 'true' only when both inputs are true?",
+    "options": [
+      "XOR",
+      "NOT",
+      "AND",
+      "OR"
+    ],
+    "correctIndex": 2,
+    "category": "Technology & Computing",
+    "difficulty": "medium",
+    "explanation": "An AND gate outputs 1 only if both inputs are 1.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is malware that encrypts your files and demands payment called?",
+    "options": [
+      "Ransomware",
+      "Spyware",
+      "A worm",
+      "Adware"
+    ],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "Ransomware holds data hostage until a ransom is paid.",
+    "imageUrl": null
+  },
+  {
+    "text": "Linux is an open-source operating system kernel.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "easy",
+    "explanation": "Linus Torvalds released the Linux kernel as open-source software in 1991.",
+    "imageUrl": null
+  },
+  {
+    "text": "Under the IEC standard, 1,024 bytes is a 'kibibyte' (KiB), while a kilobyte (kB) is 1,000 bytes.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Technology & Computing",
+    "difficulty": "hard",
+    "explanation": "The IEC introduced binary prefixes like kibi- and mebi- in 1998 to remove the ambiguity.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the square root of 144?",
+    "options": [
+      "12",
+      "11",
+      "14",
+      "16"
+    ],
+    "correctIndex": 0,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "12 × 12 = 144.",
+    "imageUrl": null
+  },
+  {
+    "text": "What do the interior angles of a triangle add up to?",
+    "options": [
+      "360 degrees",
+      "180 degrees",
+      "270 degrees",
+      "90 degrees"
+    ],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "On a flat plane, the three angles of any triangle sum to 180 degrees.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is 15% of 200?",
+    "options": [
+      "35",
+      "25",
+      "15",
+      "30"
+    ],
+    "correctIndex": 3,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "0.15 × 200 = 30.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is 2 to the power of 10?",
+    "options": [
+      "2,048",
+      "1,024",
+      "1,000",
+      "512"
+    ],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "medium",
+    "explanation": "2¹⁰ = 1,024.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many sides does a hexagon have?",
+    "options": [
+      "5",
+      "7",
+      "6",
+      "8"
+    ],
+    "correctIndex": 2,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "Hexa- means six.",
+    "imageUrl": null
+  },
+  {
+    "text": "What comes next in the Fibonacci sequence 1, 1, 2, 3, 5, 8, ...?",
+    "options": [
+      "12",
+      "11",
+      "15",
+      "13"
+    ],
+    "correctIndex": 3,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "Each number is the sum of the two before it: 5 + 8 = 13.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which of these numbers is neither prime nor composite?",
+    "options": [
+      "9",
+      "2",
+      "15",
+      "1"
+    ],
+    "correctIndex": 3,
+    "category": "Mathematics & Logic",
+    "difficulty": "medium",
+    "explanation": "1 has only one divisor, so it is neither prime nor composite.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the formula for the area of a circle with radius r?",
+    "options": [
+      "2πr",
+      "πr²",
+      "r²/π",
+      "πd"
+    ],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "medium",
+    "explanation": "Area = πr²; 2πr is the circumference.",
+    "imageUrl": null
+  },
+  {
+    "text": "What number is 'XL' in Roman numerals?",
+    "options": [
+      "40",
+      "60",
+      "110",
+      "90"
+    ],
+    "correctIndex": 0,
+    "category": "Mathematics & Logic",
+    "difficulty": "medium",
+    "explanation": "X before L means 50 - 10 = 40.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is 7 × 8?",
+    "options": [
+      "64",
+      "56",
+      "48",
+      "54"
+    ],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "easy",
+    "explanation": "7 × 8 = 56.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the derivative of x²?",
+    "options": [
+      "x²/2",
+      "x",
+      "2",
+      "2x"
+    ],
+    "correctIndex": 3,
+    "category": "Mathematics & Logic",
+    "difficulty": "hard",
+    "explanation": "By the power rule, the derivative of x² is 2x.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many prime numbers are there between 1 and 20?",
+    "options": [
+      "9",
+      "8",
+      "7",
+      "10"
+    ],
+    "correctIndex": 1,
+    "category": "Mathematics & Logic",
+    "difficulty": "hard",
+    "explanation": "They are 2, 3, 5, 7, 11, 13, 17 and 19.",
+    "imageUrl": null
+  },
+  {
+    "text": "A train travels 120 km in 1.5 hours. What is its average speed?",
+    "options": [
+      "75 km/h",
+      "60 km/h",
+      "80 km/h",
+      "90 km/h"
+    ],
+    "correctIndex": 2,
+    "category": "Mathematics & Logic",
+    "difficulty": "medium",
+    "explanation": "120 / 1.5 = 80 km/h.",
+    "imageUrl": null
+  },
+  {
+    "text": "Zero is an even number.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Mathematics & Logic",
+    "difficulty": "medium",
+    "explanation": "Zero is divisible by 2 with no remainder, so it is even.",
+    "imageUrl": null
+  },
+  {
+    "text": "A prime number has exactly two distinct positive divisors.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Mathematics & Logic",
+    "difficulty": "medium",
+    "explanation": "A prime's only divisors are 1 and itself.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which short-video app was launched internationally by ByteDance?",
+    "options": [
+      "TikTok",
+      "Vine",
+      "Instagram",
+      "Snapchat"
+    ],
+    "correctIndex": 0,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "ByteDance launched TikTok outside China in 2017.",
+    "imageUrl": null
+  },
+  {
+    "text": "The 'Rickroll' prank tricks people into watching a music video by which singer?",
+    "options": [
+      "Rick Astley",
+      "Rick James",
+      "Rick Ross",
+      "Rick Springfield"
+    ],
+    "correctIndex": 0,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "Rickrolling uses Rick Astley's 1987 hit 'Never Gonna Give You Up'.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does the slang acronym 'FOMO' stand for?",
+    "options": [
+      "Fear of missing out",
+      "Friends of my office",
+      "Fear of moving on",
+      "Full of my opinions"
+    ],
+    "correctIndex": 0,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "FOMO is anxiety that others are having good experiences without you.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'GIF' stand for?",
+    "options": [
+      "Graphic Image File",
+      "General Image Format",
+      "Graphics Interchange Format",
+      "Graphical Internet File"
+    ],
+    "correctIndex": 2,
+    "category": "Pop Culture & Memes",
+    "difficulty": "medium",
+    "explanation": "The GIF format was introduced by CompuServe in 1987.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Netflix series is about a deadly competition based on children's games in South Korea?",
+    "options": [
+      "Money Heist",
+      "Black Mirror",
+      "Alice in Borderland",
+      "Squid Game"
+    ],
+    "correctIndex": 3,
+    "category": "Pop Culture & Memes",
+    "difficulty": "medium",
+    "explanation": "Squid Game premiered in 2021 and became one of Netflix's most-watched series.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which block-building game created by Markus 'Notch' Persson became one of the best-selling video games ever?",
+    "options": [
+      "Minecraft",
+      "Terraria",
+      "Roblox",
+      "Fortnite"
+    ],
+    "correctIndex": 0,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "Minecraft was fully released in 2011 and has sold hundreds of millions of copies.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the official Unicode name of the emoji that is laughing with tears?",
+    "options": [
+      "Rolling on the Floor Laughing",
+      "Grinning Face",
+      "Face with Tears of Joy",
+      "Loudly Crying Face"
+    ],
+    "correctIndex": 2,
+    "category": "Pop Culture & Memes",
+    "difficulty": "medium",
+    "explanation": "Face with Tears of Joy was Oxford Dictionaries' 2015 'Word of the Year'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which superhero is the alter ego of Tony Stark?",
+    "options": [
+      "Batman",
+      "Doctor Strange",
+      "Iron Man",
+      "Captain America"
+    ],
+    "correctIndex": 2,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "Tony Stark is Iron Man in Marvel comics and films.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which company has owned YouTube since 2006?",
+    "options": [
+      "Meta",
+      "Amazon",
+      "Microsoft",
+      "Google"
+    ],
+    "correctIndex": 3,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "Google bought YouTube in 2006.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the name of the yellow Electric-type Pokémon that is the franchise's mascot?",
+    "options": [
+      "Raichu",
+      "Pichu",
+      "Pikachu",
+      "Jolteon"
+    ],
+    "correctIndex": 2,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "Pikachu has been the face of Pokémon since the 1990s.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which K-pop group released the hit single 'Dynamite' in 2020?",
+    "options": [
+      "TWICE",
+      "EXO",
+      "BLACKPINK",
+      "BTS"
+    ],
+    "correctIndex": 3,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "Dynamite was BTS's first all-English single and reached No. 1 in the US.",
+    "imageUrl": null
+  },
+  {
+    "text": "In internet slang, what does 'TL;DR' mean?",
+    "options": [
+      "Talk later; don't reply",
+      "Today's links; daily read",
+      "Too long; didn't read",
+      "To learn; do research"
+    ],
+    "correctIndex": 2,
+    "category": "Pop Culture & Memes",
+    "difficulty": "easy",
+    "explanation": "TL;DR introduces a short summary of a long post.",
+    "imageUrl": null
+  },
+  {
+    "text": "Using '#' hashtags to group topics was popularised on Twitter.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Pop Culture & Memes",
+    "difficulty": "medium",
+    "explanation": "Chris Messina proposed hashtags on Twitter in 2007.",
+    "imageUrl": null
+  },
+  {
+    "text": "The 'Harlem Shake' viral video craze took place in 2013.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Pop Culture & Memes",
+    "difficulty": "hard",
+    "explanation": "The Harlem Shake meme exploded in February 2013.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the official language of Brazil?",
+    "options": [
+      "French",
+      "Portuguese",
+      "Spanish",
+      "Italian"
+    ],
+    "correctIndex": 1,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Brazil was a Portuguese colony, and Portuguese is its official language.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a word that reads the same forwards and backwards, like 'level', called?",
+    "options": [
+      "Acronym",
+      "Anagram",
+      "Palindrome",
+      "Homophone"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Palindromes read the same in both directions.",
+    "imageUrl": null
+  },
+  {
+    "text": "Words that sound alike but differ in meaning, like 'there' and 'their', are called what?",
+    "options": [
+      "Palindromes",
+      "Antonyms",
+      "Synonyms",
+      "Homophones"
+    ],
+    "correctIndex": 3,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Homophones share a pronunciation but not a meaning.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which alphabet is used to write Russian?",
+    "options": [
+      "Cyrillic",
+      "Latin",
+      "Greek",
+      "Glagolitic"
+    ],
+    "correctIndex": 0,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Russian uses a 33-letter Cyrillic alphabet.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many letters are in the modern English alphabet?",
+    "options": [
+      "26",
+      "28",
+      "25",
+      "24"
+    ],
+    "correctIndex": 0,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "The English alphabet has 26 letters.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which letter is used most often in written English?",
+    "options": [
+      "A",
+      "S",
+      "T",
+      "E"
+    ],
+    "correctIndex": 3,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "E is the most frequent letter in English text.",
+    "imageUrl": null
+  },
+  {
+    "text": "What kind of language is Esperanto?",
+    "options": [
+      "A sign language",
+      "An extinct language",
+      "A constructed language",
+      "A pidgin"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "L. L. Zamenhof created Esperanto in 1887 as an easy-to-learn international language.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which language does the word 'kindergarten' come from?",
+    "options": [
+      "Danish",
+      "Dutch",
+      "German",
+      "Swedish"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Kindergarten is German for 'children's garden'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Japanese writing system uses characters adopted from Chinese?",
+    "options": [
+      "Hiragana",
+      "Hangul",
+      "Kanji",
+      "Devanagari"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Kanji are Chinese-derived characters; hiragana and katakana are Japanese syllabaries.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the official language of Iran?",
+    "options": [
+      "Persian (Farsi)",
+      "Turkish",
+      "Arabic",
+      "Urdu"
+    ],
+    "correctIndex": 0,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Persian, also called Farsi, is Iran's official language.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which of these is NOT a Romance language?",
+    "options": [
+      "Italian",
+      "Romanian",
+      "German",
+      "Portuguese"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Romance languages descend from Latin; German is a Germanic language.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the Korean alphabet called?",
+    "options": [
+      "Hanzi",
+      "Katakana",
+      "Kanji",
+      "Hangul"
+    ],
+    "correctIndex": 3,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Hangul was created in the 15th century under King Sejong.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a portmanteau word?",
+    "options": [
+      "A word that imitates a sound",
+      "A word borrowed from French",
+      "A blend of two words, like 'brunch'",
+      "A word with no vowels"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Brunch blends breakfast and lunch; smog blends smoke and fog.",
+    "imageUrl": null
+  },
+  {
+    "text": "A word that imitates the sound it describes, like 'buzz', is an example of what?",
+    "options": [
+      "Metaphor",
+      "Alliteration",
+      "Hyperbole",
+      "Onomatopoeia"
+    ],
+    "correctIndex": 3,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Onomatopoeia names a sound by imitating it.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which language has the most first-language speakers in India?",
+    "options": [
+      "Bengali",
+      "Telugu",
+      "Tamil",
+      "Hindi"
+    ],
+    "correctIndex": 3,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Hindi is the most widely spoken first language in India.",
+    "imageUrl": null
+  },
+  {
+    "text": "What part of speech describes a noun?",
+    "options": [
+      "Adverb",
+      "Verb",
+      "Adjective",
+      "Preposition"
+    ],
+    "correctIndex": 2,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Adjectives such as 'red' or 'tall' describe nouns.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'etymology' study?",
+    "options": [
+      "Maps",
+      "Insects",
+      "The meaning of dreams",
+      "The origins of words"
+    ],
+    "correctIndex": 3,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "Etymology traces where words come from and how their meanings changed.",
+    "imageUrl": null
+  },
+  {
+    "text": "Te reo Māori is an official language of New Zealand.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Language & Linguistics",
+    "difficulty": "easy",
+    "explanation": "Māori became an official language through the Māori Language Act 1987.",
+    "imageUrl": null
+  },
+  {
+    "text": "Mandarin Chinese is a tonal language.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Language & Linguistics",
+    "difficulty": "medium",
+    "explanation": "In Mandarin, the pitch pattern of a syllable changes its meaning.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who was the first woman to serve as Prime Minister of the United Kingdom?",
+    "options": [
+      "Margaret Thatcher",
+      "Barbara Castle",
+      "Liz Truss",
+      "Theresa May"
+    ],
+    "correctIndex": 0,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "Margaret Thatcher became Prime Minister in 1979.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which founding document begins with 'We the People'?",
+    "options": [
+      "The Bill of Rights",
+      "The US Constitution",
+      "The Declaration of Independence",
+      "The Magna Carta"
+    ],
+    "correctIndex": 1,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "Those are the opening words of the Constitution's preamble.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many permanent members does the UN Security Council have?",
+    "options": [
+      "7",
+      "10",
+      "5",
+      "15"
+    ],
+    "correctIndex": 2,
+    "category": "Politics & World Leaders",
+    "difficulty": "medium",
+    "explanation": "China, France, Russia, the UK and the US are the five permanent members.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who became South Africa's first president elected in a fully representative democratic election?",
+    "options": [
+      "Nelson Mandela",
+      "Thabo Mbeki",
+      "F. W. de Klerk",
+      "Desmond Tutu"
+    ],
+    "correctIndex": 0,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "Nelson Mandela was elected president in 1994.",
+    "imageUrl": null
+  },
+  {
+    "text": "In which city are the United Nations headquarters?",
+    "options": [
+      "Geneva",
+      "Brussels",
+      "New York City",
+      "Paris"
+    ],
+    "correctIndex": 2,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "The UN headquarters is in Manhattan, New York City.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the elected lower house of the UK Parliament called?",
+    "options": [
+      "House of Lords",
+      "Bundestag",
+      "Senate",
+      "House of Commons"
+    ],
+    "correctIndex": 3,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "Members of Parliament sit in the House of Commons.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Althing, founded in 930 AD, is the parliament of which country?",
+    "options": [
+      "Iceland",
+      "Ireland",
+      "Norway",
+      "Denmark"
+    ],
+    "correctIndex": 0,
+    "category": "Politics & World Leaders",
+    "difficulty": "hard",
+    "explanation": "The Althing is one of the oldest parliaments in the world.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Soviet leader introduced the policies of glasnost and perestroika?",
+    "options": [
+      "Nikita Khrushchev",
+      "Boris Yeltsin",
+      "Leonid Brezhnev",
+      "Mikhail Gorbachev"
+    ],
+    "correctIndex": 3,
+    "category": "Politics & World Leaders",
+    "difficulty": "medium",
+    "explanation": "Gorbachev's reforms in the late 1980s preceded the end of the USSR in 1991.",
+    "imageUrl": null
+  },
+  {
+    "text": "How long is a single term for a US President?",
+    "options": [
+      "4 years",
+      "5 years",
+      "6 years",
+      "2 years"
+    ],
+    "correctIndex": 0,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "US presidents are elected for four-year terms.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who led India's non-violent independence movement and is called the 'Father of the Nation'?",
+    "options": [
+      "Subhas Chandra Bose",
+      "B. R. Ambedkar",
+      "Mahatma Gandhi",
+      "Jawaharlal Nehru"
+    ],
+    "correctIndex": 2,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "Gandhi led non-violent resistance against British rule.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which treaty created the European Union, coming into force in 1993?",
+    "options": [
+      "Lisbon Treaty",
+      "Treaty of Rome",
+      "Schengen Agreement",
+      "Maastricht Treaty"
+    ],
+    "correctIndex": 3,
+    "category": "Politics & World Leaders",
+    "difficulty": "hard",
+    "explanation": "The Maastricht Treaty was signed in 1992 and took effect in November 1993.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who became the world's first female prime minister, in Sri Lanka in 1960?",
+    "options": [
+      "Indira Gandhi",
+      "Sirimavo Bandaranaike",
+      "Golda Meir",
+      "Margaret Thatcher"
+    ],
+    "correctIndex": 1,
+    "category": "Politics & World Leaders",
+    "difficulty": "hard",
+    "explanation": "Sirimavo Bandaranaike became Prime Minister of Ceylon (now Sri Lanka) in 1960.",
+    "imageUrl": null
+  },
+  {
+    "text": "What system of government does the United Kingdom have?",
+    "options": [
+      "Absolute monarchy",
+      "Presidential republic",
+      "Federal republic",
+      "Constitutional monarchy"
+    ],
+    "correctIndex": 3,
+    "category": "Politics & World Leaders",
+    "difficulty": "medium",
+    "explanation": "The monarch is head of state, while elected politicians govern through Parliament.",
+    "imageUrl": null
+  },
+  {
+    "text": "A US president can be elected to a maximum of two terms.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Politics & World Leaders",
+    "difficulty": "easy",
+    "explanation": "The 22nd Amendment, ratified in 1951, limits presidents to two elected terms.",
+    "imageUrl": null
+  },
+  {
+    "text": "Switzerland is a member of the European Union.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Politics & World Leaders",
+    "difficulty": "medium",
+    "explanation": "Switzerland is not an EU member, though it has close agreements with the EU.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'GDP' stand for?",
+    "options": [
+      "Gross Domestic Product",
+      "General Debt Percentage",
+      "Gross Development Plan",
+      "Global Domestic Price"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "easy",
+    "explanation": "GDP measures the total value of goods and services an economy produces.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the term for a general rise in prices across an economy?",
+    "options": [
+      "Inflation",
+      "Recession",
+      "Deflation",
+      "Stagnation"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "easy",
+    "explanation": "Inflation means money buys less over time.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a 'bear market'?",
+    "options": [
+      "A market for raw materials",
+      "A market with no trading",
+      "A market where prices are falling",
+      "A market where prices are rising"
+    ],
+    "correctIndex": 2,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "A bear market is usually defined as a fall of 20% or more from recent highs.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which economist wrote 'The Wealth of Nations' (1776)?",
+    "options": [
+      "Adam Smith",
+      "John Maynard Keynes",
+      "Karl Marx",
+      "David Ricardo"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "Adam Smith's book is a founding text of modern economics.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the currency of the United Kingdom?",
+    "options": [
+      "Krone",
+      "Euro",
+      "Franc",
+      "Pound sterling"
+    ],
+    "correctIndex": 3,
+    "category": "Business & Economics",
+    "difficulty": "easy",
+    "explanation": "The UK uses the pound sterling.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a company's first sale of shares to the public called?",
+    "options": [
+      "Initial public offering (IPO)",
+      "Dividend",
+      "Merger",
+      "Share buyback"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "easy",
+    "explanation": "An IPO is when a private company first lists its shares on a stock exchange.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a dividend?",
+    "options": [
+      "A share of profits paid to shareholders",
+      "A tax on imports",
+      "A loan to a company",
+      "A type of government bond"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "Companies pay dividends to shareholders out of their profits.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which body sets the key interest rate in the United States?",
+    "options": [
+      "The SEC",
+      "The Federal Reserve",
+      "The Treasury",
+      "The IMF"
+    ],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "The Federal Reserve's Open Market Committee sets the federal funds rate target.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'opportunity cost' mean?",
+    "options": [
+      "The cost of starting a business",
+      "The value of the next-best option you give up",
+      "The price of a stock option",
+      "A discount for paying early"
+    ],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "Choosing one option means giving up the benefits of the best alternative.",
+    "imageUrl": null
+  },
+  {
+    "text": "The rand is the currency of which country?",
+    "options": [
+      "South Africa",
+      "Nigeria",
+      "Kenya",
+      "Ghana"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "The South African rand is named after the Witwatersrand, the ridge where Johannesburg's gold was found.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a market dominated by a single seller called?",
+    "options": [
+      "A monopoly",
+      "A cartel",
+      "An oligopoly",
+      "A duopoly"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "easy",
+    "explanation": "A monopoly has one seller; an oligopoly has a few.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'B2B' stand for?",
+    "options": [
+      "Buy-to-bid",
+      "Brand-to-buyer",
+      "Back-to-basics",
+      "Business-to-business"
+    ],
+    "correctIndex": 3,
+    "category": "Business & Economics",
+    "difficulty": "easy",
+    "explanation": "B2B describes companies selling to other companies rather than to consumers.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which economist argued that governments should boost spending during recessions?",
+    "options": [
+      "Friedrich Hayek",
+      "John Maynard Keynes",
+      "Milton Friedman",
+      "Adam Smith"
+    ],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "hard",
+    "explanation": "Keynesian economics calls for government spending to support demand in downturns.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does a balance sheet show?",
+    "options": [
+      "Assets, liabilities and equity at a point in time",
+      "Revenue and expenses over a period",
+      "Only the cash coming in and out",
+      "Employee salaries"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "hard",
+    "explanation": "A balance sheet is a snapshot of what a company owns and owes on a given date.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the value of a country's exports minus its imports called?",
+    "options": [
+      "Balance of trade",
+      "National debt",
+      "Exchange rate",
+      "Fiscal deficit"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "hard",
+    "explanation": "A positive balance of trade is a surplus; a negative one is a deficit.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which US stock index tracks 30 large, well-known 'blue-chip' companies?",
+    "options": [
+      "S&P 500",
+      "Dow Jones Industrial Average",
+      "Russell 2000",
+      "Nasdaq Composite"
+    ],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "The Dow Jones Industrial Average follows 30 prominent US companies.",
+    "imageUrl": null
+  },
+  {
+    "text": "The euro is the official currency of every European Union country.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "Several EU members, including Denmark, Sweden and Poland, use their own currencies.",
+    "imageUrl": null
+  },
+  {
+    "text": "A recession is often defined as two consecutive quarters of falling GDP.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Business & Economics",
+    "difficulty": "medium",
+    "explanation": "That's the common rule of thumb, though official bodies use broader measures.",
+    "imageUrl": null
+  },
+  {
+    "text": "Bitcoin was created by Elon Musk.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Business & Economics",
+    "difficulty": "easy",
+    "explanation": "Bitcoin was created by the pseudonymous Satoshi Nakamoto, who published its white paper in 2008.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many bones are in the typical adult human body?",
+    "options": [
+      "300",
+      "206",
+      "212",
+      "198"
+    ],
+    "correctIndex": 1,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "Babies are born with around 300 bones, many of which fuse to make 206 in adults.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the largest organ of the human body?",
+    "options": [
+      "Liver",
+      "Skin",
+      "Brain",
+      "Lungs"
+    ],
+    "correctIndex": 1,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "The skin is the largest organ by both surface area and weight.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which vitamin does your skin make when exposed to sunlight?",
+    "options": [
+      "Vitamin A",
+      "Vitamin B12",
+      "Vitamin D",
+      "Vitamin C"
+    ],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "UVB light lets the skin produce vitamin D.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which blood cells fight infection?",
+    "options": [
+      "Plasma",
+      "Platelets",
+      "White blood cells",
+      "Red blood cells"
+    ],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "White blood cells are part of the immune system.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which part of the brain mainly controls balance and coordination?",
+    "options": [
+      "Cerebellum",
+      "Medulla oblongata",
+      "Cerebrum",
+      "Hypothalamus"
+    ],
+    "correctIndex": 0,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "The cerebellum fine-tunes movement and balance.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who developed the smallpox vaccine in 1796?",
+    "options": [
+      "Edward Jenner",
+      "Louis Pasteur",
+      "Robert Koch",
+      "Jonas Salk"
+    ],
+    "correctIndex": 0,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "Edward Jenner used cowpox to protect against smallpox.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the approximate normal body temperature of an adult?",
+    "options": [
+      "35°C",
+      "37°C",
+      "40°C",
+      "39°C"
+    ],
+    "correctIndex": 1,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "Normal body temperature is around 37°C (98.6°F), varying slightly between people.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which blood type is the universal donor for red blood cells?",
+    "options": [
+      "AB positive",
+      "B positive",
+      "A negative",
+      "O negative"
+    ],
+    "correctIndex": 3,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "O negative red cells can be given to patients of any blood type.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which organ produces bile?",
+    "options": [
+      "Gallbladder",
+      "Liver",
+      "Stomach",
+      "Pancreas"
+    ],
+    "correctIndex": 1,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "The liver makes bile; the gallbladder stores it.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the medical term for high blood pressure?",
+    "options": [
+      "Anaemia",
+      "Hypotension",
+      "Hypertension",
+      "Tachycardia"
+    ],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "Hypertension is high blood pressure; hypotension is low.",
+    "imageUrl": null
+  },
+  {
+    "text": "Antibiotics are used to treat which kind of infection?",
+    "options": [
+      "Allergies",
+      "Genetic conditions",
+      "Viral infections",
+      "Bacterial infections"
+    ],
+    "correctIndex": 3,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "Antibiotics kill or slow bacteria; they don't work on viruses.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which part of the eye controls how much light gets in?",
+    "options": [
+      "Cornea",
+      "Retina",
+      "Iris",
+      "Lens"
+    ],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "The iris widens or narrows the pupil.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which protein in red blood cells carries oxygen?",
+    "options": [
+      "Insulin",
+      "Collagen",
+      "Keratin",
+      "Haemoglobin"
+    ],
+    "correctIndex": 3,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "Haemoglobin binds oxygen in the lungs and releases it in the tissues.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many chambers does the human heart have?",
+    "options": [
+      "3",
+      "6",
+      "2",
+      "4"
+    ],
+    "correctIndex": 3,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "Two atria and two ventricles.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which disease is caused by a lack of vitamin C?",
+    "options": [
+      "Rickets",
+      "Pellagra",
+      "Scurvy",
+      "Beriberi"
+    ],
+    "correctIndex": 2,
+    "category": "Health & Medicine",
+    "difficulty": "hard",
+    "explanation": "Scurvy was common on long sea voyages before citrus was added to sailors' diets.",
+    "imageUrl": null
+  },
+  {
+    "text": "Humans use only 10% of their brains.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "A myth: brain scans show activity across virtually the whole brain.",
+    "imageUrl": null
+  },
+  {
+    "text": "The smallest bone in the human body is in the ear.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Health & Medicine",
+    "difficulty": "medium",
+    "explanation": "The stapes, in the middle ear, is the smallest bone.",
+    "imageUrl": null
+  },
+  {
+    "text": "Antibiotics can cure the common cold.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Health & Medicine",
+    "difficulty": "easy",
+    "explanation": "Colds are caused by viruses, which antibiotics don't treat.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Norse mythology, who wields the hammer Mjölnir?",
+    "options": [
+      "Odin",
+      "Freyr",
+      "Thor",
+      "Loki"
+    ],
+    "correctIndex": 2,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Mjölnir is Thor's hammer.",
+    "imageUrl": null
+  },
+  {
+    "text": "Who is king of the gods in Greek mythology?",
+    "options": [
+      "Apollo",
+      "Hades",
+      "Ares",
+      "Zeus"
+    ],
+    "correctIndex": 3,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Zeus rules the gods from Mount Olympus.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Egyptian god ruled the underworld and is often shown with green skin?",
+    "options": [
+      "Osiris",
+      "Ra",
+      "Horus",
+      "Anubis"
+    ],
+    "correctIndex": 0,
+    "category": "Religion & Mythology",
+    "difficulty": "hard",
+    "explanation": "Osiris was god of the afterlife; his green skin symbolised rebirth.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Greek hero performed twelve labours?",
+    "options": [
+      "Achilles",
+      "Heracles",
+      "Theseus",
+      "Perseus"
+    ],
+    "correctIndex": 1,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Heracles (Hercules to the Romans) completed twelve labours as penance.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the holy book of Islam?",
+    "options": [
+      "The Vedas",
+      "The Torah",
+      "The Quran",
+      "The Avesta"
+    ],
+    "correctIndex": 2,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Muslims believe the Quran was revealed to the Prophet Muhammad.",
+    "imageUrl": null
+  },
+  {
+    "text": "Siddhartha Gautama founded which religion?",
+    "options": [
+      "Jainism",
+      "Buddhism",
+      "Sikhism",
+      "Hinduism"
+    ],
+    "correctIndex": 1,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Siddhartha Gautama became known as the Buddha.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Greek myth, where was Achilles' one weak spot?",
+    "options": [
+      "His shoulder",
+      "His knee",
+      "His neck",
+      "His heel"
+    ],
+    "correctIndex": 3,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "His mother dipped him in the River Styx holding him by the heel.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the Hindu festival of lights called?",
+    "options": [
+      "Navaratri",
+      "Holi",
+      "Raksha Bandhan",
+      "Diwali"
+    ],
+    "correctIndex": 3,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Diwali celebrates the victory of light over darkness.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Norse mythology, what is the great tree that connects the nine worlds?",
+    "options": [
+      "Yggdrasil",
+      "Valhalla",
+      "Asgard",
+      "Bifröst"
+    ],
+    "correctIndex": 0,
+    "category": "Religion & Mythology",
+    "difficulty": "medium",
+    "explanation": "Yggdrasil is the world tree; Bifröst is the rainbow bridge.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Roman god is the equivalent of the Greek god Ares?",
+    "options": [
+      "Apollo",
+      "Mercury",
+      "Vulcan",
+      "Mars"
+    ],
+    "correctIndex": 3,
+    "category": "Religion & Mythology",
+    "difficulty": "medium",
+    "explanation": "Both are gods of war.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Māori tradition, which demigod fished up the North Island of New Zealand?",
+    "options": [
+      "Tāne",
+      "Tangaroa",
+      "Rūaumoko",
+      "Māui"
+    ],
+    "correctIndex": 3,
+    "category": "Religion & Mythology",
+    "difficulty": "medium",
+    "explanation": "The North Island is Te Ika-a-Māui, 'the fish of Māui'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which city is the holiest in Islam?",
+    "options": [
+      "Medina",
+      "Jerusalem",
+      "Karbala",
+      "Mecca"
+    ],
+    "correctIndex": 3,
+    "category": "Religion & Mythology",
+    "difficulty": "medium",
+    "explanation": "Mecca is home to the Kaaba and is the destination of the Hajj pilgrimage.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Greek myth, who opened a jar that released evils into the world?",
+    "options": [
+      "Psyche",
+      "Pandora",
+      "Persephone",
+      "Medusa"
+    ],
+    "correctIndex": 1,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Pandora's jar is often called 'Pandora's box'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Egyptian god is usually shown with the head of a falcon?",
+    "options": [
+      "Thoth",
+      "Sobek",
+      "Horus",
+      "Anubis"
+    ],
+    "correctIndex": 2,
+    "category": "Religion & Mythology",
+    "difficulty": "medium",
+    "explanation": "Horus is falcon-headed; Anubis is a jackal, Thoth an ibis, Sobek a crocodile.",
+    "imageUrl": null
+  },
+  {
+    "text": "In Greek mythology, Medusa's gaze could turn people to stone.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Religion & Mythology",
+    "difficulty": "easy",
+    "explanation": "Perseus used a polished shield to avoid looking at her directly.",
+    "imageUrl": null
+  },
+  {
+    "text": "Sikhism began in the Punjab region of South Asia.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Religion & Mythology",
+    "difficulty": "medium",
+    "explanation": "Guru Nanak founded Sikhism in the Punjab in the 15th century.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which animal is generally considered the largest ever to have lived?",
+    "options": [
+      "Blue whale",
+      "Whale shark",
+      "Argentinosaurus",
+      "African elephant"
+    ],
+    "correctIndex": 0,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Blue whales can reach about 30 m long and weigh up to around 190 tonnes, more than any known dinosaur.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many legs does a spider have?",
+    "options": [
+      "12",
+      "6",
+      "10",
+      "8"
+    ],
+    "correctIndex": 3,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Spiders are arachnids, which have eight legs; insects have six.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a group of crows called?",
+    "options": [
+      "A pride",
+      "A gaggle",
+      "A parliament",
+      "A murder"
+    ],
+    "correctIndex": 3,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "A 'murder' of crows; a 'parliament' is owls.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which flightless bird is a national symbol of New Zealand?",
+    "options": [
+      "Pūkeko",
+      "Tūī",
+      "Kea",
+      "Kiwi"
+    ],
+    "correctIndex": 3,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "The kiwi is a national icon, and New Zealanders are nicknamed 'Kiwis'.",
+    "imageUrl": null
+  },
+  {
+    "text": "On which continent do giraffes live in the wild?",
+    "options": [
+      "South America",
+      "Australia",
+      "Africa",
+      "Asia"
+    ],
+    "correctIndex": 2,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Wild giraffes are found only in Africa.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which land mammal has the longest pregnancy?",
+    "options": [
+      "Hippopotamus",
+      "Giraffe",
+      "African elephant",
+      "Rhinoceros"
+    ],
+    "correctIndex": 2,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "Elephant pregnancies last about 22 months.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does a tadpole grow into?",
+    "options": [
+      "A lizard",
+      "A turtle",
+      "A fish",
+      "A frog"
+    ],
+    "correctIndex": 3,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Tadpoles are the larval stage of frogs and toads.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which bird is the fastest animal when diving?",
+    "options": [
+      "Albatross",
+      "Golden eagle",
+      "Peregrine falcon",
+      "Common swift"
+    ],
+    "correctIndex": 2,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "A stooping peregrine falcon can exceed 300 km/h.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which of these mammals lays eggs?",
+    "options": [
+      "Platypus",
+      "Koala",
+      "Kangaroo",
+      "Armadillo"
+    ],
+    "correctIndex": 0,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "Platypuses and echidnas are monotremes, egg-laying mammals.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many hearts does an octopus have?",
+    "options": [
+      "4",
+      "2",
+      "3",
+      "1"
+    ],
+    "correctIndex": 2,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "Two hearts pump blood through the gills and one through the rest of the body.",
+    "imageUrl": null
+  },
+  {
+    "text": "What do giant pandas mostly eat?",
+    "options": [
+      "Eucalyptus",
+      "Fish",
+      "Bamboo",
+      "Berries"
+    ],
+    "correctIndex": 2,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Bamboo makes up about 99% of a giant panda's diet.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the largest species of shark?",
+    "options": [
+      "Hammerhead shark",
+      "Whale shark",
+      "Tiger shark",
+      "Great white shark"
+    ],
+    "correctIndex": 1,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "The whale shark is a gentle filter feeder and the largest fish alive.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a baby kangaroo called?",
+    "options": [
+      "A joey",
+      "A calf",
+      "A kit",
+      "A cub"
+    ],
+    "correctIndex": 0,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Joeys develop in their mother's pouch.",
+    "imageUrl": null
+  },
+  {
+    "text": "Dolphins are mammals.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Animals & Wildlife",
+    "difficulty": "easy",
+    "explanation": "Dolphins breathe air, are warm-blooded and feed their young milk.",
+    "imageUrl": null
+  },
+  {
+    "text": "Goldfish have a memory span of only three seconds.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "A myth: experiments show goldfish can remember things for months.",
+    "imageUrl": null
+  },
+  {
+    "text": "The kākāpō is a flightless parrot.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Animals & Wildlife",
+    "difficulty": "medium",
+    "explanation": "New Zealand's kākāpō is the world's heaviest parrot and cannot fly.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which designer popularised the 'little black dress' in the 1920s?",
+    "options": [
+      "Elsa Schiaparelli",
+      "Yves Saint Laurent",
+      "Christian Dior",
+      "Coco Chanel"
+    ],
+    "correctIndex": 3,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Vogue compared Chanel's 1926 black dress to the Ford Model T.",
+    "imageUrl": null
+  },
+  {
+    "text": "Levi Strauss patented riveted denim jeans in 1873 with which tailor?",
+    "options": [
+      "Calvin Klein",
+      "Henry Poole",
+      "Ralph Lauren",
+      "Jacob Davis"
+    ],
+    "correctIndex": 3,
+    "category": "Fashion & Design",
+    "difficulty": "hard",
+    "explanation": "Jacob Davis came up with the copper rivets and partnered with Levi Strauss on the patent.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which Italian city is a world fashion capital with a major fashion week?",
+    "options": [
+      "Rome",
+      "Milan",
+      "Naples",
+      "Turin"
+    ],
+    "correctIndex": 1,
+    "category": "Fashion & Design",
+    "difficulty": "easy",
+    "explanation": "Milan is one of the 'Big Four' fashion capitals with Paris, London and New York.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'haute couture' refer to?",
+    "options": [
+      "Second-hand clothing",
+      "Mass-produced clothing",
+      "High-end, made-to-measure fashion",
+      "Sportswear"
+    ],
+    "correctIndex": 2,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Haute couture is hand-made to fit an individual client.",
+    "imageUrl": null
+  },
+  {
+    "text": "What was Christian Dior's 1947 collection, with full skirts and cinched waists, nicknamed?",
+    "options": [
+      "The Grunge Look",
+      "The Flapper Look",
+      "The Mod Look",
+      "The New Look"
+    ],
+    "correctIndex": 3,
+    "category": "Fashion & Design",
+    "difficulty": "hard",
+    "explanation": "A fashion editor dubbed it the 'New Look'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which fabric is made from the fibres of the flax plant?",
+    "options": [
+      "Silk",
+      "Wool",
+      "Cotton",
+      "Linen"
+    ],
+    "correctIndex": 3,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Linen is woven from flax fibres.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which creature produces silk?",
+    "options": [
+      "The beetle",
+      "The honeybee",
+      "The spider",
+      "The silkworm"
+    ],
+    "correctIndex": 3,
+    "category": "Fashion & Design",
+    "difficulty": "easy",
+    "explanation": "Commercial silk comes from the cocoons of silkworm moth larvae.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which shoe designer is famous for red-soled shoes?",
+    "options": [
+      "Jimmy Choo",
+      "Christian Louboutin",
+      "Manolo Blahnik",
+      "Salvatore Ferragamo"
+    ],
+    "correctIndex": 1,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Louboutin's red soles became his trademark in the 1990s.",
+    "imageUrl": null
+  },
+  {
+    "text": "In typography, what is a 'serif'?",
+    "options": [
+      "A type of paper",
+      "A colour scale",
+      "A small stroke at the end of a letter's main strokes",
+      "A unit of font size"
+    ],
+    "correctIndex": 2,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Times New Roman has serifs; Arial is sans-serif ('without serifs').",
+    "imageUrl": null
+  },
+  {
+    "text": "Which colour model do screens use?",
+    "options": [
+      "Pantone",
+      "RGB",
+      "RYB",
+      "CMYK"
+    ],
+    "correctIndex": 1,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Screens mix red, green and blue light; printers use CMYK inks.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which English designer is credited with popularising the miniskirt in the 1960s?",
+    "options": [
+      "Alexander McQueen",
+      "Stella McCartney",
+      "Vivienne Westwood",
+      "Mary Quant"
+    ],
+    "correctIndex": 3,
+    "category": "Fashion & Design",
+    "difficulty": "hard",
+    "explanation": "Mary Quant's London boutique helped make the miniskirt a symbol of the 1960s.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is fabric cut diagonally across the grain called?",
+    "options": [
+      "Raglan",
+      "Bias cut",
+      "Selvedge",
+      "Box pleat"
+    ],
+    "correctIndex": 1,
+    "category": "Fashion & Design",
+    "difficulty": "hard",
+    "explanation": "Bias cutting makes fabric drape and cling; Madeleine Vionnet made it famous.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which sportswear brand uses the 'Swoosh' logo?",
+    "options": [
+      "Nike",
+      "Reebok",
+      "Adidas",
+      "Puma"
+    ],
+    "correctIndex": 0,
+    "category": "Fashion & Design",
+    "difficulty": "easy",
+    "explanation": "Carolyn Davidson designed the Swoosh in 1971.",
+    "imageUrl": null
+  },
+  {
+    "text": "The Bauhaus school of design was founded in which country?",
+    "options": [
+      "Switzerland",
+      "Austria",
+      "Netherlands",
+      "Germany"
+    ],
+    "correctIndex": 3,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Walter Gropius founded the Bauhaus in Weimar, Germany, in 1919.",
+    "imageUrl": null
+  },
+  {
+    "text": "In colour theory, what are colours opposite each other on the colour wheel called?",
+    "options": [
+      "Analogous",
+      "Primary",
+      "Complementary",
+      "Monochromatic"
+    ],
+    "correctIndex": 2,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Complementary pairs like blue and orange create strong contrast.",
+    "imageUrl": null
+  },
+  {
+    "text": "Cashmere wool comes from goats.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "Fashion & Design",
+    "difficulty": "medium",
+    "explanation": "Cashmere is the soft undercoat of cashmere goats.",
+    "imageUrl": null
+  },
+  {
+    "text": "Polyester is a natural fibre.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 1,
+    "category": "Fashion & Design",
+    "difficulty": "easy",
+    "explanation": "Polyester is a synthetic fibre made from petroleum-based chemicals.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'habeas corpus' protect against?",
+    "options": [
+      "Self-incrimination",
+      "Unreasonable searches",
+      "Unlawful detention",
+      "Double jeopardy"
+    ],
+    "correctIndex": 2,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "It requires that a detained person be brought before a court to test whether the detention is lawful.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is being tried twice for the same offence called, which many legal systems forbid?",
+    "options": [
+      "Double jeopardy",
+      "Perjury",
+      "Entrapment",
+      "Contempt of court"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "Protection against double jeopardy stops repeated prosecutions for the same crime.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is perjury?",
+    "options": [
+      "Lying under oath",
+      "Bribing an official",
+      "Stealing property",
+      "Escaping custody"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "easy",
+    "explanation": "Perjury is knowingly giving false evidence under oath.",
+    "imageUrl": null
+  },
+  {
+    "text": "How many jurors usually sit on a criminal jury in common-law countries such as England and New Zealand?",
+    "options": [
+      "15",
+      "9",
+      "6",
+      "12"
+    ],
+    "correctIndex": 3,
+    "category": "True Crime & Law",
+    "difficulty": "easy",
+    "explanation": "Criminal juries traditionally have 12 members.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is a jury that cannot reach a verdict called?",
+    "options": [
+      "A shadow jury",
+      "A hung jury",
+      "A grand jury",
+      "A petit jury"
+    ],
+    "correctIndex": 1,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "A hung jury usually leads to a mistrial and possibly a retrial.",
+    "imageUrl": null
+  },
+  {
+    "text": "What is the highest court in the United States?",
+    "options": [
+      "The Court of Appeals",
+      "The Federal Claims Court",
+      "The Supreme Court",
+      "The District Court"
+    ],
+    "correctIndex": 2,
+    "category": "True Crime & Law",
+    "difficulty": "easy",
+    "explanation": "The US Supreme Court has nine justices.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does the legal term 'alibi' mean?",
+    "options": [
+      "Evidence that the accused was elsewhere at the time",
+      "A formal accusation",
+      "A guilty plea",
+      "A witness's written statement"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "easy",
+    "explanation": "Alibi is Latin for 'elsewhere'.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which branch of forensic science uses insects to help estimate time of death?",
+    "options": [
+      "Forensic odontology",
+      "Forensic entomology",
+      "Serology",
+      "Toxicology"
+    ],
+    "correctIndex": 1,
+    "category": "True Crime & Law",
+    "difficulty": "hard",
+    "explanation": "Insects colonise remains in a predictable sequence.",
+    "imageUrl": null
+  },
+  {
+    "text": "Fingerprints were first used to solve a murder in 1892 in which country?",
+    "options": [
+      "Argentina",
+      "United States",
+      "United Kingdom",
+      "France"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "hard",
+    "explanation": "Juan Vucetich's fingerprint method solved the Francisca Rojas case in Argentina.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does the legal term 'actus reus' mean?",
+    "options": [
+      "The guilty act",
+      "A sentence",
+      "A defence",
+      "The guilty mind"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "A crime usually needs both actus reus (the act) and mens rea (the intent).",
+    "imageUrl": null
+  },
+  {
+    "text": "In a criminal trial, which side brings the case against the defendant?",
+    "options": [
+      "The defence",
+      "The prosecution",
+      "The jury",
+      "The bailiff"
+    ],
     "correctIndex": 1,
     "category": "True Crime & Law",
     "difficulty": "easy",
-    "explanation": "Theodore Robert Bundy was known simply as Ted Bundy, active in the 1970s.",
+    "explanation": "The prosecution, acting for the state, must prove the charge.",
+    "imageUrl": null
+  },
+  {
+    "text": "What standard of proof applies in most criminal trials in common-law countries?",
+    "options": [
+      "Prima facie",
+      "Beyond reasonable doubt",
+      "Clear and convincing evidence",
+      "On the balance of probabilities"
+    ],
+    "correctIndex": 1,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "Criminal guilt must be proven beyond reasonable doubt.",
+    "imageUrl": null
+  },
+  {
+    "text": "Which famous 1963 robbery targeted a Royal Mail train in England?",
+    "options": [
+      "The Hatton Garden heist",
+      "The Brink's-Mat robbery",
+      "The Great Train Robbery",
+      "The Securitas robbery"
+    ],
+    "correctIndex": 2,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "The gang stole about 2.6 million pounds from a Glasgow-to-London mail train.",
+    "imageUrl": null
+  },
+  {
+    "text": "What does 'FBI' stand for?",
+    "options": [
+      "Foreign Bureau of Inquiry",
+      "Federal Bureau of Investigation",
+      "Federal Board of Inspection",
+      "Federal Branch of Intelligence"
+    ],
+    "correctIndex": 1,
+    "category": "True Crime & Law",
+    "difficulty": "easy",
+    "explanation": "The FBI is the main federal law-enforcement agency of the United States.",
+    "imageUrl": null
+  },
+  {
+    "text": "In civil cases, the usual standard of proof is 'on the balance of probabilities'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "Civil claims need only be shown to be more likely than not.",
+    "imageUrl": null
+  },
+  {
+    "text": "US 'Miranda rights' are named after a 1966 Supreme Court case.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "hard",
+    "explanation": "Miranda v. Arizona (1966) required police to inform suspects of their rights.",
+    "imageUrl": null
+  },
+  {
+    "text": "DNA profiling was first used to solve a criminal case in the 1980s.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "correctIndex": 0,
+    "category": "True Crime & Law",
+    "difficulty": "medium",
+    "explanation": "Alec Jeffreys' DNA fingerprinting was first used in a UK murder investigation in 1986-87.",
     "imageUrl": null
   }
 ]

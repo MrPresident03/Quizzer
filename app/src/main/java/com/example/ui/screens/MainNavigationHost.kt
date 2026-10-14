@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import com.example.QuizApplication
+import com.example.data.repository.SessionType
 import com.example.ui.viewmodel.QuizViewModel
 import com.example.ui.viewmodel.QuizViewModelFactory
 import com.example.ui.theme.BrainBlitzTheme
@@ -238,6 +239,8 @@ fun MainNavigationHost() {
 
                 // Route C: Main Dashboard Screen Tab 1
                 composable("dashboard") {
+                    // Re-check so the daily lock clears after midnight without restarting the app.
+                    LaunchedEffect(Unit) { mainViewModel.checkDailyPlayedStatus() }
                     DashboardScreen(
                         userStats = stats,
                         dailyPlayed = dailyPlayed,
@@ -269,8 +272,8 @@ fun MainNavigationHost() {
                                 popUpTo("dashboard") { inclusive = true }
                             }
                         },
-                        onStartQuiz = { categories, difficulty, count, format ->
-                            mainViewModel.startPracticeQuiz(categories, difficulty, count, format)
+                        onStartQuiz = { categories, difficulty, count, format, timed ->
+                            mainViewModel.startPracticeQuiz(categories, difficulty, count, format, timed)
                             navController.navigate("practice_quiz")
                         }
                     )
@@ -346,6 +349,10 @@ fun MainNavigationHost() {
                     val quizEnded by mainViewModel.quizFinished.collectAsState()
                     val hiddenOpts by mainViewModel.hiddenOptions.collectAsState()
                     val audPoll by mainViewModel.audiencePoll.collectAsState()
+                    val loading by mainViewModel.isLoading.collectAsState()
+                    val error by mainViewModel.loadError.collectAsState()
+                    val timed by mainViewModel.isTimed.collectAsState()
+                    val type by mainViewModel.sessionType.collectAsState()
 
                     LaunchedEffect(quizEnded) {
                         if (quizEnded) {
@@ -370,10 +377,17 @@ fun MainNavigationHost() {
                         onUseExtraTime = { mainViewModel.useLifelineExtraTime() },
                         onUseAskAudience = { mainViewModel.useLifelineAskAudience() },
                         onQuitQuiz = {
-                            navController.navigate("dashboard") {
-                                popUpTo("daily_quiz") { inclusive = true }
+                            // Stops the timer and pending jobs. Endless runs end on a results screen instead.
+                            if (!mainViewModel.quitQuiz()) {
+                                navController.navigate("dashboard") {
+                                    popUpTo("daily_quiz") { inclusive = true }
+                                }
                             }
-                        }
+                        },
+                        isLoading = loading,
+                        loadError = error,
+                        isTimed = timed,
+                        isEndless = type == SessionType.ENDLESS
                     )
                 }
 
@@ -387,6 +401,10 @@ fun MainNavigationHost() {
                     val quizEnded by mainViewModel.quizFinished.collectAsState()
                     val hiddenOpts by mainViewModel.hiddenOptions.collectAsState()
                     val audPoll by mainViewModel.audiencePoll.collectAsState()
+                    val loading by mainViewModel.isLoading.collectAsState()
+                    val error by mainViewModel.loadError.collectAsState()
+                    val timed by mainViewModel.isTimed.collectAsState()
+                    val type by mainViewModel.sessionType.collectAsState()
 
                     LaunchedEffect(quizEnded) {
                         if (quizEnded) {
@@ -411,19 +429,30 @@ fun MainNavigationHost() {
                         onUseExtraTime = { mainViewModel.useLifelineExtraTime() },
                         onUseAskAudience = { mainViewModel.useLifelineAskAudience() },
                         onQuitQuiz = {
-                            navController.navigate("dashboard") {
-                                popUpTo("practice_quiz") { inclusive = true }
+                            // Stops the timer and pending jobs. Endless runs end on a results screen instead.
+                            if (!mainViewModel.quitQuiz()) {
+                                navController.navigate("dashboard") {
+                                    popUpTo("practice_quiz") { inclusive = true }
+                                }
                             }
-                        }
+                        },
+                        isLoading = loading,
+                        loadError = error,
+                        isTimed = timed,
+                        isEndless = type == SessionType.ENDLESS
                     )
                 }
 
                 // Route K: Daily results summary card
                 composable("daily_results") {
                     val activeQs by mainViewModel.activeQuestions.collectAsState()
+                    val xpEarned by mainViewModel.lastSessionXp.collectAsState()
+                    val type by mainViewModel.sessionType.collectAsState()
                     QuizResultsScreen(
                         questions = activeQs,
                         answers = mainViewModel.quizAnswersList,
+                        xpEarned = xpEarned,
+                        isDaily = type == SessionType.DAILY,
                         onReviewClick = { navController.navigate("review_answers") },
                         onDashboardFinish = {
                             navController.navigate("dashboard") {
@@ -436,9 +465,13 @@ fun MainNavigationHost() {
                 // Route L: Practice results summary card
                 composable("practice_results") {
                     val activeQs by mainViewModel.activeQuestions.collectAsState()
+                    val xpEarned by mainViewModel.lastSessionXp.collectAsState()
+                    val type by mainViewModel.sessionType.collectAsState()
                     QuizResultsScreen(
                         questions = activeQs,
                         answers = mainViewModel.quizAnswersList,
+                        xpEarned = xpEarned,
+                        isDaily = type == SessionType.DAILY,
                         onReviewClick = { navController.navigate("review_answers") },
                         onDashboardFinish = {
                             navController.navigate("dashboard") {
