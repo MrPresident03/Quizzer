@@ -20,11 +20,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v7
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21' # Robolectric needs Java 21 to run Android SDK 36 tests
 
       - name: Set up Gradle (with caching)
         uses: gradle/actions/setup-gradle@v6

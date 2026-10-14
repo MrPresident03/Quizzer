@@ -26,7 +26,7 @@ Locally:
 ./gradlew testDebugUnitTest    # run unit tests
 ```
 
-Or open the project in Android Studio and press Run. JDK 17 is required.
+Or open the project in Android Studio and press Run. Use JDK 21 (Robolectric needs it to run the Android 16 / SDK 36 tests).
 
 Optional: put a shared `debug.keystore` in the project root to sign debug builds with a fixed key; otherwise the default Android debug key is used.
 
