@@ -29,13 +29,11 @@ jobs:
       - name: Set up Gradle (with caching)
         uses: gradle/actions/setup-gradle@v6
 
-      # Each step gets a fresh Gradle process: KSP2 (Room/Moshi code generation) can crash with
-      # "ApplicationManager.getApplication() is null" when a reused daemon runs it a second time.
       - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest --no-daemon --stacktrace
+        run: ./gradlew testDebugUnitTest --stacktrace
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v7
