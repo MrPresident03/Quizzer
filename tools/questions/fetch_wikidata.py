@@ -179,7 +179,7 @@ def build_pairs(entries, key, category, qfmt, efmt, prefer="era", need_year=Fals
         alabel = next(iter(e["answers"].values()))
         if not valid_label(e["title"]) or not valid_label(alabel) or e.get("dead"):
             continue
-        if e["title"][-1] in "?!.":
+        if e["title"][-1] in "?!." or e["title"][0] in "'\"":
             continue  # reads badly inside "'...'?"
         if need_year and e["year"] is None:
             continue
@@ -334,27 +334,31 @@ ANIMAL_CLASSES = [  # (SPARQL taxon term, answer label)
 ANIMAL_OPTIONS = ["Mammal", "Bird", "Reptile", "Amphibian", "Insect", "Fish"]
 
 
-def animal_query(term):
+def animal_query(term, min_sl=60):
     if term.startswith("wd:"):
         link = "?item wdt:P171+ %s." % term
     else:
         link = "?item wdt:P171+ ?c. %s." % term
     return """SELECT ?item ?cn ?sl WHERE {
-  ?item wikibase:sitelinks ?sl. FILTER(?sl >= 60)
+  ?item wikibase:sitelinks ?sl. FILTER(?sl >= %d)
   ?item wdt:P105 wd:Q7432; wdt:P1843 ?cn. FILTER(LANG(?cn) = "en")
   %s
-}""" % link
+}""" % (min_sl, link)
 
 
 def t_animals(sp):
     rows = []
     for term, label in ANIMAL_CLASSES:
-        try:
-            got = sp.run(animal_query(term))
-        except BudgetExceeded:
-            raise
-        except Exception as e:
-            C.warn("animals: class %s failed: %s" % (label, e))
+        got = None
+        for min_sl in (60, 100):
+            try:
+                got = sp.run(animal_query(term, min_sl))
+                break
+            except BudgetExceeded:
+                raise
+            except Exception as e:
+                C.warn("animals: class %s failed (sitelinks>=%d): %s" % (label, min_sl, e))
+        if got is None:
             continue
         print("animals %s rows: %d" % (label, len(got)), flush=True)
         for b in got:
@@ -395,9 +399,10 @@ def t_sports_people(sp):
     def build(s):
         return """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl WHERE {
   ?item wikibase:sitelinks ?sl. FILTER(?sl >= %d)
-  ?item wdt:P641 ?ans; wdt:P31 wd:Q5.
+  ?item wdt:P641 ?ans; wdt:P31 wd:Q5; wdt:P106 ?occ.
+  VALUES ?occ { wd:Q937857 wd:Q3665646 wd:Q10833314 wd:Q2066131 wd:Q10871364 wd:Q10843402 wd:Q11338576 wd:Q12299841 }
   %s
-}""" % (80 * s, LABEL)
+}""" % (50 * s, LABEL)
     rows = sp.run_scaled(build)
     print("sports_people rows:", len(rows), flush=True)
     return build_pairs(collect(rows), "sports_people", "Sports & Recreation",
@@ -417,9 +422,9 @@ def t_events(sp):
     ]
     entries, fmt = [], {}
     for cls, prop, pattern, qf, ef in specs:
-        city = "?ans wdt:P31/wdt:P279* wd:Q515." if prop == "wdt:P276" else ""
+        city = ""
         q = """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl WHERE {
-  ?item wdt:P31 %s; %s ?ans; wikibase:sitelinks ?sl. %s
+  ?item wdt:P31/wdt:P279* %s; %s ?ans; wikibase:sitelinks ?sl. %s
   %s
 }""" % (cls, prop, city, LABEL)
         try:
