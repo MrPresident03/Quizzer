@@ -267,6 +267,26 @@ class NewHelpers(unittest.TestCase):
         self.assertIn("wd:Q486972", q)  # hosts must be settlements, not stadiums
         self.assertNotIn("wd:Q486972", W.event_query(["2018 FIFA World Cup"], "wdt:P17", "country"))
 
+
+    def test_label_groups_and_filters(self):
+        self.assertEqual(W.script_group("Gaj's Latin alphabet"), W.script_group("Latin script"))
+        self.assertEqual(W.script_group("Urdu orthography"), W.script_group("Persian alphabet"))
+        self.assertEqual(W.family_label("Uralic"), "Uralic languages")
+        self.assertEqual(W.family_label("Romance languages"), "Romance languages")
+        self.assertEqual(W.the_("Knesset"), "The Knesset")
+        self.assertEqual(W.the_("The Knesset"), "The Knesset")
+        self.assertTrue(W.GENERIC_BODY.match("Court of Cassation"))
+        self.assertFalse(W.GENERIC_BODY.match("Bundestag"))
+        self.assertTrue(W.CURRENCY_JUNK.search("All-Russian Classifier of Currencies"))
+        self.assertFalse(W.CURRENCY_JUNK.search("Euro"))
+
+    def test_astronaut_who_played_rugby_is_not_an_athlete_entry(self):
+        def row(i, occ):
+            return {"item": {"value": "http://x/entity/Q%d" % i}, "itemLabel": {"value": "P%d" % i}, "sl": {"value": "90"},
+                    "occLabel": {"value": occ}}
+        got = W.sport_entries([row(1, "rugby union player"), row(1, "astronaut"), row(2, "rugby union player")], "Q5849", "Rugby union")
+        self.assertEqual([e["id"] for e in got], ["Q2"])
+
     def test_crime_filters(self):
         self.assertTrue(W.CRIME_BLOCK.search("rape"))
         self.assertTrue(W.VICTIM_TITLE.search("Murder of Someone"))

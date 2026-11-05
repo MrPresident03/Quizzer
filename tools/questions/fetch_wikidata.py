@@ -4,6 +4,7 @@
 Every question carries an extra "template" key (stripped by build_bank.py) so a failing
 template can keep its previous items.
 """
+import collections
 import json
 import os
 import random
@@ -24,7 +25,7 @@ SHRINK_LIMIT = 0.9
 BUDGET_S = 22 * 60  # stop starting queries after this; step timeout is 26 min
 TEMPLATE_BUDGET_S = 240  # a template that keeps timing out gives up after this long
 MAX_YEAR = 2026
-DISCARD_PREV = {"sports_people"}  # earlier output included non-athletes
+DISCARD_PREV = {"sports_people", "disease_cause"}  # earlier output included non-athletes / non-diseases
 
 
 class BudgetExceeded(Exception):
@@ -140,7 +141,7 @@ class Sparql:
                 "User-Agent": C.USER_AGENT, "Accept": "application/sparql-results+json"})
             try:
                 with urllib.request.urlopen(req, timeout=60) as r:
-                    return json.load(r)["results"]["bindings"]
+                    return json.loads(r.read().decode("utf-8"), strict=False)["results"]["bindings"]  # labels may hold control chars
             except urllib.error.HTTPError as e:
                 if e.code in (429, 502, 503, 504) and attempt == 0:
                     time.sleep(30)
@@ -555,6 +556,11 @@ STRICT = dict(strict_labels=True)
 COUNTRY = dict(group_of=country_group, prefer="cont")  # country answers: no near-duplicate distractors
 
 
+def the_(title):
+    """Sentence-initial "The X" without doubling an article that is already part of the name."""
+    return title if title.lower().startswith("the ") else "The " + title
+
+
 def many(e, one, several):
     return one if e["n"] == 1 else several
 
@@ -562,9 +568,10 @@ def many(e, one, several):
 # ---- Geography
 
 GEO_KINDS = [  # (kind, class QID, sitelinks floor): small classes first, the huge ones last
-    ("desert", "Q8514", 50), ("waterfall", "Q34038", 40), ("volcano", "Q8072", 50), ("volcano", "Q169358", 50),
-    ("national park", "Q46169", 60), ("island", "Q23442", 80), ("mountain", "Q8502", 80),
-    ("lake", "Q23397", 80), ("river", "Q4022", 60),
+    ("desert", "Q8514", 30), ("waterfall", "Q34038", 25), ("volcano", "Q8072", 30), ("volcano", "Q169358", 30),
+    ("national park", "Q46169", 40), ("glacier", "Q35666", 25), ("bay", "Q39594", 40), ("peninsula", "Q34763", 40),
+    ("mountain range", "Q46831", 40), ("island", "Q23442", 50), ("mountain", "Q8502", 50),
+    ("lake", "Q23397", 50), ("river", "Q4022", 50),
 ]
 
 
@@ -589,8 +596,9 @@ def t_geography(sp):
 
 
 def t_geo_heritage(sp):
-    jobs = [dict(where="?item wdt:P1435 wd:Q9259. #SL# ?item wdt:P17 ?ans. ?ans wdt:P31 %s." % SOVEREIGN,
-                 min_sl=60, limit=1500, kind="heritage", ordered=True)]
+    jobs = [dict(where=("?item wdt:P1435 wd:Q9259. #SL# ?item wdt:P17 ?ans. ?ans wdt:P31 %s. "
+                        "FILTER NOT EXISTS { ?ans wdt:P36 ?item }" % SOVEREIGN),
+                 min_sl=50, limit=1500, kind="heritage", ordered=True)]
     return build_pairs(gather(sp, "geo_heritage", jobs), "geo_heritage", "Geography",
                        lambda e: many(e, "In which country is %s located?" % e["title"],
                                       "Which of these countries is %s located in?" % e["title"]),
@@ -638,6 +646,9 @@ NOT_ATHLETE_OCC = re.compile(r"coach|manager|referee|official|umpire|commentator
                              r"politician|president|director|owner|writer|broadcaster|actor|analyst|scout|administrator", re.I)
 
 
+NON_SPORT_PERSON = re.compile(r"astronaut|comedian|presenter|screenwriter|film director", re.I)
+
+
 def is_athlete_occupation(label):
     return bool(label) and bool(ATHLETE_OCC.search(label)) and not NOT_ATHLETE_OCC.search(label)
 
@@ -662,12 +673,14 @@ def sport_entries(rows, sport, label):
         iq = qid(val(b, "item"))
         e = items.setdefault(iq, {"id": iq, "title": val(b, "itemLabel"), "answers": {sport: label},
                                   "year": None, "sl": int(float(val(b, "sl") or 0)), "conts": set(),
-                                  "athlete": False})
+                                  "athlete": False, "other": False})
         if is_athlete_occupation(val(b, "occLabel")):
             e["athlete"] = True
+        if NON_SPORT_PERSON.search(val(b, "occLabel") or ""):
+            e["other"] = True  # e.g. an astronaut who once played rugby
         if val(b, "oth"):
             e["answers"][qid(val(b, "oth"))] = val(b, "othLabel") or "other sport"
-    return [e for e in items.values() if e["athlete"]]
+    return [e for e in items.values() if e["athlete"] and not e["other"]]
 
 
 def t_sports_people(sp):
@@ -866,7 +879,7 @@ def t_leaders_current(sp):
 def t_leaders_country(sp):
     where = ("?ans wdt:P31 %s; (wdt:P1906|wdt:P1313) ?pos. ?item wdt:P39 ?pos; wdt:P31 wd:Q5." % SOVEREIGN)
     ents = [e for e in gather(sp, "leaders_country", [dict(where=where, min_sl=90, limit=2500, kind="leader")])
-            if not any("Vatican" in l or "Holy See" in l for l in e["answers"].values())]
+            if not any("Vatican" in l or "Holy See" in l or l == "Andorra" for l in e["answers"].values())]  # co-princes of Andorra
     return build_pairs(ents, "leaders_country", "Politics & World Leaders",
                        lambda e: "%s served as head of state or head of government of which country?" % e["title"],
                        lambda e, a: "%s led %s." % (e["title"], a),
@@ -899,7 +912,7 @@ def founder_q(e):
 
 def t_company_founders(sp):
     where = "?item wdt:P112 ?ans. #SL# ?ans wdt:P31 wd:Q5. ?item wdt:P31/wdt:P279* wd:Q4830453."
-    jobs = [dict(where=where, min_sl=40, limit=3000, kind="company", optional="", extra="", ordered=True)]
+    jobs = [dict(where=where, min_sl=70, limit=2000, kind="company", optional="", extra="", ordered=True)]
     return build_pairs(gather(sp, "company_founders", jobs), "company_founders", "Business & Economics",
                        founder_q, lambda e, a: "%s was founded by %s." % (e["title"], join_and(e["alabels"])),
                        prefer=None, multi=3, leak=True, cap=400, **STRICT)
@@ -915,10 +928,16 @@ def t_company_hq(sp):
                        leak=True, cap=400, per_answer_cap=40, **COUNTRY, **STRICT)
 
 
+CURRENCY_JUNK = re.compile(r"classifier|coin|bitcoin|gold|silver|historic|former|old |\bunit\b|token", re.I)
+
+
 def t_currency(sp):
     where = ("?item wdt:P31 %s. ?item p:P38 ?st. ?st ps:P38 ?ans. FILTER NOT EXISTS { ?st pq:P582 ?e }" % SOVEREIGN)
     jobs = [dict(where=where, min_sl=100, limit=1000, kind="country", optional="", extra="")]
-    return build_pairs(gather(sp, "currency", jobs), "currency", "Business & Economics",
+    ents = gather(sp, "currency", jobs)
+    for e in ents:  # drop odd entries (coins, classifiers, historical units) from the answers and thus the pool
+        e["answers"] = {k: v for k, v in e["answers"].items() if not CURRENCY_JUNK.search(v or "")}
+    return build_pairs([e for e in ents if e["answers"]], "currency", "Business & Economics",
                        lambda e: many(e, "What is the official currency of %s?" % e["title"],
                                       "Which of these is an official currency of %s?" % e["title"]),
                        lambda e, a: "%s uses the %s." % (e["title"], join_and(e["alabels"])),
@@ -926,8 +945,11 @@ def t_currency(sp):
 
 
 def t_company_parent(sp):
-    parent = ("?ans wdt:P414 ?ex. ?item p:P749 ?st. ?st ps:P749 ?ans. #SL# FILTER NOT EXISTS { ?st pq:P582 ?e }")
-    owner = ("?item wdt:P31 wd:Q431289. ?item wdt:P127 ?ans. #SL# ?ans wdt:P31/wdt:P279* wd:Q4830453.")
+    parent = ("?item wdt:P749 ?ans. #SL# ?ans wdt:P414 ?ex. ?item p:P749 ?st. ?st ps:P749 ?ans. "
+              "FILTER NOT EXISTS { ?st pq:P582 ?e }")
+    # brands only (not companies themselves, whose "owned by" lists shareholders)
+    owner = ("?item wdt:P31 wd:Q431289. ?item wdt:P127 ?ans. #SL# ?ans wdt:P414 ?ex. "
+             "FILTER NOT EXISTS { ?item wdt:P31/wdt:P279* wd:Q4830453 }")
     jobs = [dict(where=parent, min_sl=40, limit=2500, kind="parent", optional=OPT_DEAD, extra=EXTRA_DEAD, ordered=True),
             dict(where=owner, min_sl=30, limit=2500, kind="owner", optional=OPT_DEAD, extra=EXTRA_DEAD, ordered=True)]
     return build_pairs(gather(sp, "company_parent", jobs), "company_parent", "Business & Economics",
@@ -940,9 +962,16 @@ def t_company_parent(sp):
 # ---- Health & Medicine
 
 def t_disease_cause(sp):
-    where = "?item wdt:P828 ?ans. #SL# ?ans wdt:P31 wd:Q16521."
-    jobs = [dict(where=where, min_sl=20, limit=1500, kind="disease", optional=OPT_DEAD, extra=EXTRA_DEAD, ordered=True)]
-    return build_pairs(gather(sp, "disease_cause", jobs), "disease_cause", "Health & Medicine",
+    def jobs(disease_class):
+        where = ("?item wdt:P828 ?ans. #SL# ?ans wdt:P31 wd:Q16521. "
+                 "?item (wdt:P31|wdt:P279)/wdt:P279* wd:%s." % disease_class)
+        return [dict(where=where, min_sl=20, limit=1500, kind="disease", optional=OPT_DEAD, extra=EXTRA_DEAD, ordered=True)]
+    ents = gather(sp, "disease_cause", jobs("Q18123741"))  # infectious diseases (symptoms like diarrhea have many causes)
+    if len(ents) < 25:
+        ents = gather(sp, "disease_cause", jobs("Q12136"))  # fall back to any disease
+    for e in ents:  # organism names are capitalised ("animal" is not a pathogen)
+        e["answers"] = {k: v for k, v in e["answers"].items() if (v or "")[:1].isupper()}
+    return build_pairs([e for e in ents if e["answers"]], "disease_cause", "Health & Medicine",
                        lambda e: many(e, "Which pathogen or organism causes %s?" % e["title"],
                                       "Which of these organisms can cause %s?" % e["title"]),
                        lambda e, a: "%s is caused by %s." % (cap_first(e["title"]), join_and(e["alabels"])),
@@ -950,8 +979,8 @@ def t_disease_cause(sp):
 
 
 def t_drug_discoverer(sp):
-    jobs = [dict(where="?item wdt:P31 wd:%s. ?item (wdt:P61|wdt:P178) ?ans. #SL# ?ans wdt:P31 wd:Q5." % cls,
-                 min_sl=15, limit=1500, kind="drug", optional="", extra="", ordered=True)
+    jobs = [dict(where="?item (wdt:P61|wdt:P178) ?ans. #SL# ?ans wdt:P31 wd:Q5. ?item wdt:P31/wdt:P279* wd:%s." % cls,
+                 min_sl=10, limit=1500, kind="drug", optional="", extra="", ordered=True)
             for cls in ("Q12140", "Q134808", "Q8386")]
     return build_pairs(gather(sp, "drug_discoverer", jobs), "drug_discoverer", "Health & Medicine",
                        lambda e: many(e, "Who is credited with discovering or developing %s?" % e["title"],
@@ -990,15 +1019,15 @@ def t_nobel_medicine(sp):
 
 
 def t_organ_systems(sp):
-    where = "?item wdt:P31 wd:Q712378. ?item wdt:P361 ?ans. #SL#"
-    ents = gather(sp, "organ_systems", [dict(where=where, min_sl=15, limit=800, kind="organ", optional="",
+    # anchor: the organ systems themselves (Q188193); parts that are systems themselves are skipped
+    where = "?ans wdt:P31 wd:Q188193. ?item wdt:P361 ?ans. #SL#"
+    ents = gather(sp, "organ_systems", [dict(where=where, min_sl=15, limit=1500, kind="organ", optional="",
                                              extra="", ordered=True)])
-    for e in ents:  # keep only "... system" parents (not e.g. "head" or "thorax")
-        e["answers"] = {k: v for k, v in e["answers"].items() if (v or "").lower().endswith("system")}
-    return build_pairs([e for e in ents if e["answers"]], "organ_systems", "Health & Medicine",
+    ents = [e for e in ents if not (e["title"] or "").lower().endswith("system")]
+    return build_pairs(ents, "organ_systems", "Health & Medicine",
                        lambda e: "Which body system does the %s belong to?" % e["title"],
                        lambda e, a: "The %s is part of the %s." % (e["title"], a.lower()),
-                       prefer=None, ans_fmt=cap_first, leak=True, cap=150, **STRICT)
+                       prefer=None, ans_fmt=cap_first, leak=True, group_of=first_word, cap=150, **STRICT)
 
 
 # ---- Language & Linguistics
@@ -1023,10 +1052,28 @@ def t_writing_system(sp):
                        lambda e: many(e, "Which writing system is used for the %s language?" % e["title"],
                                       "Which of these writing systems is used for the %s language?" % e["title"]),
                        lambda e, a: "%s is written in %s." % (e["title"], join_and(e["alabels"])),
-                       prefer=None, multi=2, leak=True, group_of=first_word, cap=250, per_answer_cap=30, **STRICT)
+                       prefer=None, multi=2, leak=True, group_of=script_group, cap=250, per_answer_cap=30, **STRICT)
+
+
+SCRIPT_GROUPS = [("latin", r"latin|roman"), ("cyrillic", r"cyrillic"), ("arabic", r"arab|persian|urdu|jawi|shahmukhi"),
+                 ("han", r"chinese|\bhan\b|kanji|hanzi"), ("devanagari", r"devanagari|nagari")]
+
+
+def script_group(label):
+    """Writing systems that are variants of one script must not appear together as options."""
+    low = label.lower()
+    for name, rx in SCRIPT_GROUPS:
+        if re.search(rx, low):
+            return name
+    return first_word(label)
 
 
 FAMILY_BLOCK = re.compile(r"altaic|nostratic|eurasiatic|proto|macro|isolate|creole|pidgin|sign", re.I)
+
+
+def family_label(label):
+    """One label style for all families: "Uralic" -> "Uralic languages"."""
+    return label if "language" in label.lower() or "famil" in label.lower() else label + " languages"
 
 
 def top_families(fams, has_family_parent):
@@ -1052,32 +1099,36 @@ def t_language_family(sp):
     return build_pairs(ents, "language_family", "Language & Linguistics",
                        lambda e: "To which language family does %s belong?" % e["title"],
                        lambda e, a: "%s belongs to the %s." % (e["title"], a), prefer=None, cap=250,
-                       per_answer_cap=60, **STRICT)
+                       ans_fmt=family_label, per_answer_cap=60, **STRICT)
 
 
 # ---- Fashion & Design
 
 FASHION_HOUSE = "Q1941779"
-FASHION_FIELDS = ("Q12684", "Q11828862")  # field of work: fashion, clothing industry
+FASHION_ANCHORS = [  # (property, value): organisations in the fashion / clothing / jewellery trade
+    ("wdt:P452", "Q12684"), ("wdt:P101", "Q12684"), ("wdt:P452", "Q11828862"), ("wdt:P101", "Q11828862"),
+    ("wdt:P1056", "Q11460"), ("wdt:P1056", "Q161439"),
+]
+ORG = "?item wdt:P31/wdt:P279* wd:Q43229."
 
 
 def t_fashion_founders(sp):
     jobs = [dict(where="?item wdt:P31 wd:%s. ?item wdt:P112 ?ans. #SL# ?ans wdt:P31 wd:Q5." % FASHION_HOUSE,
                  min_sl=10, limit=1500, kind="house", optional="", extra="", ordered=True)]
-    jobs += [dict(where="?item wdt:P101 wd:%s. ?item wdt:P112 ?ans. #SL# ?ans wdt:P31 wd:Q5. "
-                        "?item wdt:P31/wdt:P279* wd:Q43229." % f,
-                  min_sl=20, limit=1500, kind="brand", optional="", extra="", ordered=True) for f in FASHION_FIELDS]
+    jobs += [dict(where="?item %s wd:%s. ?item wdt:P112 ?ans. #SL# ?ans wdt:P31 wd:Q5. %s" % (p, v, ORG),
+                  min_sl=20, limit=1500, kind="brand", optional="", extra="", ordered=True) for p, v in FASHION_ANCHORS]
+    # eponymous houses ("Gucci" / "Guccio Gucci") are allowed here: leak filter off, the pool is all founders
     return build_pairs(gather(sp, "fashion_founders", jobs), "fashion_founders", "Fashion & Design",
                        founder_q, lambda e, a: "%s was founded by %s." % (e["title"], join_and(e["alabels"])),
-                       prefer=None, multi=3, leak=True, cap=300, **STRICT)
+                       prefer=None, multi=3, leak=False, cap=300, **STRICT)
 
 
 def t_fashion_country(sp):
     jobs = [dict(where="?item wdt:P31 wd:%s. #SL# ?item wdt:P17 ?ans. ?ans wdt:P31 %s." % (FASHION_HOUSE, SOVEREIGN),
                  min_sl=10, limit=1500, kind="house", ordered=True)]
-    jobs += [dict(where="?item wdt:P101 wd:%s. ?item wdt:P31/wdt:P279* wd:Q43229. #SL# "
-                        "?item (wdt:P17|wdt:P495|(wdt:P159/wdt:P17)) ?ans. ?ans wdt:P31 %s." % (f, SOVEREIGN),
-                  min_sl=20, limit=1500, kind="brand", ordered=True) for f in FASHION_FIELDS]
+    jobs += [dict(where="?item %s wd:%s. #SL# %s ?item (wdt:P17|wdt:P495|(wdt:P159/wdt:P17)) ?ans. "
+                        "?ans wdt:P31 %s." % (p, v, ORG, SOVEREIGN),
+                  min_sl=20, limit=1500, kind="brand", ordered=True) for p, v in FASHION_ANCHORS]
     return build_pairs(gather(sp, "fashion_country", jobs), "fashion_country", "Fashion & Design",
                        lambda e: "Which country is the fashion brand %s from?" % e["title"],
                        lambda e, a: "%s is a brand from %s." % (e["title"], a),
@@ -1085,8 +1136,12 @@ def t_fashion_country(sp):
 
 
 def t_fashion_designers(sp):
-    where = "?item wdt:P106 wd:Q3501317. #SL# ?item wdt:P27 ?ans. ?ans wdt:P31 %s. ?item wdt:P31 wd:Q5." % SOVEREIGN
-    jobs = [dict(where=where, min_sl=40, limit=1500, kind="designer", ordered=True)]
+    # not people who are mainly actors / singers / models (some list "fashion designer" as a side occupation)
+    celeb = ("FILTER NOT EXISTS { ?item wdt:P106 ?o. VALUES ?o { wd:Q33999 wd:Q177220 wd:Q4610556 wd:Q10800557 "
+             "wd:Q10798782 wd:Q488205 wd:Q639669 } }")
+    where = ("?item wdt:P106 wd:Q3501317. #SL# ?item wdt:P27 ?ans. ?ans wdt:P31 %s. ?item wdt:P31 wd:Q5. %s"
+             % (SOVEREIGN, celeb))
+    jobs = [dict(where=where, min_sl=50, limit=1500, kind="designer", ordered=True)]
     return build_pairs(gather(sp, "fashion_designers", jobs), "fashion_designers", "Fashion & Design",
                        lambda e: "%s is a fashion designer from which country?" % e["title"],
                        lambda e, a: "%s is a fashion designer from %s." % (e["title"], a),
@@ -1123,26 +1178,38 @@ def t_crimes(sp):
     ents = gather(sp, "crimes", [dict(where=where, min_sl=50, limit=1500, kind="person", optional="", extra="",
                                       ordered=True)])
     ents = [e for e in ents if not any(CRIME_BLOCK.search(l or "") for l in e["answers"].values())]
+    freq = collections.Counter(l.lower() for e in ents for l in e["answers"].values())
+    ents = [e for e in ents if all(freq[l.lower()] >= 2 for l in e["answers"].values())]  # common crimes only
     return build_pairs(ents, "crimes", "True Crime & Law",
                        lambda e: "What was %s convicted of?" % e["title"],
                        lambda e, a: "%s was convicted of %s." % (e["title"], a.lower()),
                        prefer=None, ans_fmt=cap_first, group_of=crime_group, cap=200, per_answer_cap=30, **STRICT)
 
 
+GENERIC_BODY = re.compile(r"^(the )?(supreme court|court of cassation|constitutional court|national assembly|senate|"
+                          r"house of representatives|parliament|congress|council of state|high court|national council|"
+                          r"federal supreme court|supreme federal court|supreme court of justice|assembly|chamber of deputies|"
+                          r"federal council|state council|court of appeal|council of the republic|house of commons)$", re.I)
+
+
 def t_legal_bodies(sp):
     jobs = [dict(where="?ans wdt:P31 %s; wdt:P194 ?item." % SOVEREIGN, min_sl=15, limit=800, kind="legislature"),
             dict(where="?ans wdt:P31 %s; wdt:P209 ?item." % SOVEREIGN, min_sl=10, limit=800, kind="court")]
-    return build_pairs(gather(sp, "legal_bodies", jobs), "legal_bodies", "True Crime & Law",
-                       lambda e: ("The %s is the national legislature of which country?" if e["kind"] == "legislature"
-                                  else "The %s is the highest court of which country?") % e["title"],
-                       lambda e, a: "The %s belongs to %s." % (e["title"], a),
+    ents = [e for e in gather(sp, "legal_bodies", jobs) if not GENERIC_BODY.match(e["title"] or "")]  # names many countries share
+    return build_pairs(ents, "legal_bodies", "True Crime & Law",
+                       lambda e: ("%s is the national legislature of which country?" if e["kind"] == "legislature"
+                                  else "%s is the highest court of which country?") % the_(e["title"]),
+                       lambda e, a: "%s belongs to %s." % (the_(e["title"]), a),
                        leak=True, cap=250, per_answer_cap=3, **COUNTRY, **STRICT)
 
 
 def t_trials(sp):
-    # legal case, decision of the Supreme Court of the United States, trial
+    # legal case, decision of the Supreme Court of the United States, trial, war crimes trial; subclasses of trial
     jobs = [dict(where="?item wdt:P31 wd:%s. #SL# ?item (wdt:P17|wdt:P1001) ?ans. ?ans wdt:P31 %s." % (cls, SOVEREIGN),
-                 min_sl=20, limit=1500, kind="case", ordered=True) for cls in ("Q2334719", "Q19692072", "Q8016240")]
+                 min_sl=10, limit=1500, kind="case", ordered=True)
+            for cls in ("Q2334719", "Q19692072", "Q8016240", "Q1265353")]
+    jobs.append(dict(where="?item wdt:P279 wd:Q8016240. #SL# ?item (wdt:P17|wdt:P1001) ?ans. ?ans wdt:P31 %s." % SOVEREIGN,
+                     min_sl=10, limit=1500, kind="case", ordered=True))
     ents = [e for e in gather(sp, "trials", jobs) if not VICTIM_TITLE.search(e["title"] or "")]
     return build_pairs(ents, "trials", "True Crime & Law",
                        lambda e: "In which country did the legal case %s take place?" % e["title"],
