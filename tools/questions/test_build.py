@@ -115,5 +115,178 @@ class WikidataDistractors(unittest.TestCase):
         self.assertTrue(W.valid_label("Hamlet"))
 
 
+def ent(i, title, answers, sl=100, year=None, conts=()):
+    return {"id": "Q%d" % i, "title": title, "answers": answers, "year": year, "sl": sl, "conts": set(conts)}
+
+
+class NewHelpers(unittest.TestCase):
+    def test_clean_label_rejects_comma_qualifiers(self):
+        self.assertFalse(W.clean_label("Springfield, Illinois"))
+        self.assertFalse(W.clean_label("Q42"))
+        self.assertFalse(W.clean_label(""))
+        self.assertTrue(W.clean_label("Paris"))
+
+    def test_leaks(self):
+        self.assertTrue(W.leaks("Mount Kenya", "Kenya"))
+        self.assertTrue(W.leaks("Hungarian goulash", "Hungary"))
+        self.assertTrue(W.leaks("Louis Vuitton", "Louis Vuitton"))
+        self.assertTrue(W.leaks("Congo River", "Democratic Republic of the Congo"))
+        self.assertFalse(W.leaks("Seine", "France"))
+        self.assertFalse(W.leaks("Instagram", "Meta Platforms"))
+        self.assertFalse(W.leaks("Lake Victoria", "United States"))
+
+    def test_multi_answer_excludes_all_valid(self):
+        people = ["Founder %d" % i for i in range(12)]
+        entries = [ent(1, "Alpha Corp", {"P0": people[0], "P1": people[1], "P2": people[2]}, sl=300)]
+        for i in range(3, 12):
+            entries.append(ent(10 + i, "Co%d" % i, {"P%d" % i: people[i]}, sl=100 - i))
+        out = W.build_pairs(entries, "t", "Business & Economics", lambda e: "Who founded %s?" % e["title"],
+                            lambda e, a: "x", multi=3)
+        alpha = [o for o in out if o["text"] == "Who founded Alpha Corp?"]
+        self.assertEqual(len(alpha), 1)
+        opts = alpha[0]["options"]
+        self.assertEqual(len(set(opts)), 4)
+        self.assertEqual(sum(o in people[:3] for o in opts), 1)  # exactly one of the three founders
+        # single-answer behaviour unchanged: 3 founders rejected without multi
+        out1 = W.build_pairs(entries, "t", "Business & Economics", lambda e: "Who founded %s?" % e["title"], lambda e, a: "x")
+        self.assertFalse([o for o in out1 if "Alpha" in o["text"]])
+
+    def test_leak_and_comma_and_cap(self):
+        entries = [ent(1, "Mount Kenya", {"A": "Kenya"}), ent(2, "Springfield, Illinois", {"A": "Kenya"}),
+                   ent(3, "Kilimanjaro", {"A": "Tanzania"})]
+        for i in range(4, 12):
+            entries.append(ent(i, "Peak %d" % i, {"C%d" % i: "Country %d" % i}, sl=50))
+        out = W.build_pairs(entries, "t", "Geography", lambda e: "Where is %s?" % e["title"], lambda e, a: "x",
+                            leak=True, strict_labels=True, prefer=None)
+        texts = {o["text"] for o in out}
+        self.assertNotIn("Where is Mount Kenya?", texts)
+        self.assertNotIn("Where is Springfield, Illinois?", texts)
+        self.assertIn("Where is Kilimanjaro?", texts)
+        same = [ent(i, "Same %d" % i, {"A": "Italy"}, sl=100 - i) for i in range(10)]
+        same += [ent(50 + i, "Other %d" % i, {"B%d" % i: "Land %d" % i}) for i in range(6)]
+        capped = W.build_pairs(same, "t", "Food & Drink", lambda e: "Where is %s?" % e["title"], lambda e, a: "x",
+                               per_answer_cap=3, prefer=None)
+        self.assertEqual(sum(1 for o in capped if "Italy" in o["options"][o["correctIndex"]]), 3)
+
+    def test_group_of_blocks_synonym_distractors(self):
+        crimes = ["Murder", "Manslaughter", "First-degree murder", "Fraud", "Treason", "Tax evasion", "Piracy", "Arson"]
+        entries = [ent(i, "Person %d" % i, {"C%d" % i: c}, sl=100 - i) for i, c in enumerate(crimes)]
+        out = W.build_pairs(entries, "t", "True Crime & Law", lambda e: "What was %s convicted of?" % e["title"],
+                            lambda e, a: "x", group_of=W.crime_group, prefer=None)
+        for o in out:
+            correct = o["options"][o["correctIndex"]]
+            if W.crime_group(correct) == "homicide":
+                others = [x for x in o["options"] if x != correct]
+                self.assertFalse([x for x in others if W.crime_group(x) == "homicide"], o)
+
+    def test_ordinal_office_ok(self):
+        self.assertTrue(W.ordinal_office_ok(range(1, 46)))
+        self.assertTrue(W.ordinal_office_ok(list(range(1, 30)) + list(range(32, 40))))
+        self.assertFalse(W.ordinal_office_ok([1, 2, 3]))
+        self.assertFalse(W.ordinal_office_ok([1, 5, 9, 14, 20, 26, 33, 41, 50, 60, 70, 80]))
+
+    def test_ordinal_rows_skip_serving_and_bad_ordinals(self):
+        def row(p, name, o, end):
+            b = {"p": {"value": "http://x/entity/" + p}, "pLabel": {"value": name}, "ord": {"value": o}, "sl": {"value": "50"}}
+            if end:
+                b["end"] = {"value": "2000-01-01"}
+            return b
+        got = W.ordinal_rows([row("Q1", "A One", "1", True), row("Q2", "B Two", "2", False), row("Q3", "C Three", "3rd", True),
+                              row("Q4", "Q55", "4", True)])
+        self.assertEqual(list(got), [1])
+
+    def test_top_families(self):
+        fams = {"Q1": "Indo-European languages", "Q2": "Germanic languages", "Q3": "Altaic languages"}
+        self.assertEqual(W.top_families(fams, {"Q2"}), {"Q1": "Indo-European languages"})
+
+    def test_sport_entries_flag_second_sport(self):
+        def row(i, oth=None):
+            b = {"item": {"value": "http://x/entity/Q%d" % i}, "itemLabel": {"value": "Player %d" % i}, "sl": {"value": "90"}}
+            if oth:
+                b["oth"] = {"value": "http://x/entity/" + oth}
+                b["othLabel"] = {"value": "Golf"}
+            return b
+        a = W.sport_entries([row(1), row(2, "Q5377")], "Q847", "Tennis")
+        merged = {e["id"]: e for e in W.merge_entries([a])}
+        self.assertEqual(len(merged["Q1"]["answers"]), 1)
+        self.assertEqual(len(merged["Q2"]["answers"]), 2)  # two sports -> dropped as ambiguous
+        b = W.sport_entries([row(1)], "Q5377", "Golf")
+        self.assertEqual(len(W.merge_entries([a, b])[0]["answers"]), 2)
+
+    def test_nobel_entries_group_by_year(self):
+        def row(i, y):
+            return {"ans": {"value": "http://x/entity/Q%d" % i}, "ansLabel": {"value": "Laureate %d" % i},
+                    "sl": {"value": "40"}, "year": {"value": str(y)}}
+        got = {e["year"]: e for e in W.nobel_entries([row(1, 1945), row(2, 1945), row(3, 1946), {"ans": {"value": "x/Q9"}}])}
+        self.assertEqual(len(got[1945]["answers"]), 2)
+        self.assertEqual(len(got[1946]["answers"]), 1)
+
+    def test_event_helpers(self):
+        specs = {s[0]: s for s in W.event_specs()}
+        summer = specs["Summer Olympics"][1]
+        self.assertNotIn("1916 Summer Olympics", summer)
+        self.assertNotIn("1940 Summer Olympics", summer)
+        self.assertNotIn("2028 Summer Olympics", summer)
+        self.assertIn("2024 Summer Olympics", summer)
+        winter = specs["Winter Olympics"][1]
+        self.assertNotIn("1940 Winter Olympics", winter)
+        self.assertNotIn("1944 Winter Olympics", winter)
+        self.assertIn("1994 Winter Olympics", winter)
+        self.assertNotIn("1942 FIFA World Cup", specs["FIFA World Cup"][1])
+        self.assertEqual(W.event_year("2016 Summer Olympics"), 2016)
+        rows = [{"item": {"value": "a"}, "pp": {"value": "http://x/prop/direct/P276"}},
+                {"item": {"value": "a"}, "pp": {"value": "http://x/prop/direct/P131"}},
+                {"item": {"value": "b"}, "pp": {"value": "http://x/prop/direct/P131"}}]
+        self.assertEqual(len(W.prefer_city_property(rows)), 2)
+
+    def test_crime_filters(self):
+        self.assertTrue(W.CRIME_BLOCK.search("rape"))
+        self.assertTrue(W.VICTIM_TITLE.search("Murder of Someone"))
+        self.assertEqual(W.crime_group("Second-degree murder"), "homicide")
+
+
+class FakeSparql(W.Sparql):
+    """No network: every query returns no rows. Checks that all templates build valid-looking queries."""
+
+    def __init__(self):
+        self.queries = []
+
+    def run(self, query):
+        self.queries.append(query)
+        return []
+
+
+class TemplateSmoke(unittest.TestCase):
+    def test_all_templates_run_on_empty_data(self):
+        sp = FakeSparql()
+        for key, fn in W.TEMPLATES:
+            self.assertEqual(fn(sp), [], key)
+        self.assertGreater(len(sp.queries), 50)
+        for q in sp.queries:
+            self.assertEqual(q.count("{"), q.count("}"), q)
+            self.assertNotIn("%s", q)
+            self.assertNotIn("%d", q)
+            if "wikibase:sitelinks" in q and "VALUES ?lab" not in q and "pq:P1545" not in q and "ps:P166" not in q and "?num" not in q:
+                self.assertRegex(q, r"FILTER\(\?sl >(=| ) ?\d+\)")
+        sports = [q for q in sp.queries if "wdt:P641 wd:" in q]
+        self.assertEqual(len(sports), len(W.SPORTS))
+        self.assertTrue(all("LIMIT" in q for q in sports))
+
+    def test_template_keys_unique_and_categories_valid(self):
+        keys = [k for k, _ in W.TEMPLATES]
+        self.assertEqual(len(keys), len(set(keys)))
+
+    def test_new_template_questions_are_valid(self):
+        entries = []
+        for i in range(30):
+            entries.append(ent(i, "Peak%d" % i, {"C%d" % (i % 8): "Country%d" % (i % 8)}, sl=200 - i, conts={"c"}))
+        out = W.build_pairs(entries, "geography", "Geography", W.geo_question if False else (lambda e: "In which country is %s located?" % e["title"]),
+                            lambda e, a: "x", prefer="cont", leak=True, strict_labels=True)
+        self.assertTrue(out)
+        for item in out:
+            self.assertIsNone(B.drop_reason(item), item)
+            self.assertIn(item["category"], C.APP_TOPICS)
+
+
 if __name__ == "__main__":
     unittest.main()
