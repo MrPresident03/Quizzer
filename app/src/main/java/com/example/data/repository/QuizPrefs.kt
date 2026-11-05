@@ -8,7 +8,7 @@ import android.content.SharedPreferences
  * which questions were recently shown, the OpenTDB session token, bundled-question seed version,
  * the daily-challenge lock and a few achievement counters.
  */
-class QuizPrefs(context: Context) : OpenTdbTokenStore {
+class QuizPrefs(context: Context) {
 
     private val prefs: SharedPreferences =
         context.applicationContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
@@ -35,12 +35,6 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
         seen().clear()
         prefs.edit().remove(KEY_SEEN).apply()
     }
-
-    // --- Open Trivia DB session token ---
-
-    override var openTdbToken: String?
-        get() = prefs.getString(KEY_TOKEN, null)
-        set(value) = prefs.edit().putString(KEY_TOKEN, value).apply()
 
     // --- Bundled question bank version ---
 
@@ -133,7 +127,6 @@ class QuizPrefs(context: Context) : OpenTdbTokenStore {
     private companion object {
         const val FILE_NAME = "quiz_prefs"
         const val KEY_SEEN = "seen_log"
-        const val KEY_TOKEN = "opentdb_token"
         const val KEY_SEED_VERSION = "bundled_seed_version"
         const val KEY_DAILY_DATE = "daily_played_date"
         const val KEY_CATEGORY_PREFIX = "category_correct_"

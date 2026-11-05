@@ -74,12 +74,4 @@ class ScoringAndProvidersTest {
             }
         }
     }
-
-    @Test
-    fun categoryMappingRoundTrips() {
-        assertEquals("Entertainment", Categories.appTopicForOpenTdbLabel("Entertainment: Video Games"))
-        assertEquals("Literature & Books", Categories.appTopicForOpenTdbLabel("Entertainment: Books"))
-        assertEquals("Technology & Computing", Categories.appTopicForOpenTdbLabel("Science: Computers"))
-        assertTrue(Categories.openTdbIdsFor("Food & Drink").isEmpty()) // offline-only topic, never "any category"
-    }
 }
