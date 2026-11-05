@@ -1,3 +1,4 @@
+import os
 import random
 import unittest
 from urllib.parse import quote
@@ -74,6 +75,17 @@ class Dedupe(unittest.TestCase):
         self.assertEqual(stats["per_source"]["wikidata"], (2, 1))
         self.assertTrue(all("template" not in k for k in kept))
         self.assertEqual(kept, sorted(kept, key=lambda k: (k["category"], k["text"])))
+
+    def test_excluded_texts_are_dropped(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as f:
+            f.write("# comment\n\nWhich sport is Agatha Christie known for?\n")
+        excluded = B.load_excluded(f.name)
+        os.unlink(f.name)
+        src = {"wikidata": [q("  which sport is AGATHA christie known for? ", template="t"), q("Which sport is Pelé known for?", template="t")]}
+        kept, stats = B.build(src, excluded)
+        self.assertEqual([k["text"] for k in kept], ["Which sport is Pelé known for?"])
+        self.assertEqual(stats["drops"]["wikidata: excluded after review"], 1)
 
 
 class WikidataDistractors(unittest.TestCase):

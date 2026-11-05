@@ -1178,6 +1178,8 @@ CRIME_GROUPS = [
     ("terror", re.compile(r"terror|bomb|hijack", re.I)),
     ("conspiracy", re.compile(r"conspir|racketeer|organi[sz]ed crime", re.I)),
     ("heresy", re.compile(r"heresy|blasphem|witch", re.I)),
+    # Nuremberg-style verdicts usually cover several of these, so they must never be each other's distractors
+    ("atrocity", re.compile(r"war crime|crimes? against (humanity|peace)|genocide|aggression|atrocit", re.I)),
 ]
 
 

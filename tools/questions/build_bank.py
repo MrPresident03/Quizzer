@@ -12,6 +12,7 @@ REPO = os.path.abspath(os.path.join(C.HERE, "..", ".."))
 BANK = os.path.join(REPO, "app", "src", "main", "assets", "questions.json")
 STATS = os.path.join(C.HERE, "STATS.md")
 CURATED = os.path.join(C.HERE, "curated.json")
+EXCLUDED = os.path.join(C.HERE, "excluded.txt")
 PRIORITY = ["curated", "opentdb", "wikidata"]  # earlier wins on duplicates
 SCHEMA = ["text", "options", "correctIndex", "category", "difficulty", "explanation", "imageUrl"]
 DIFFS = ["easy", "medium", "hard"]
@@ -56,7 +57,15 @@ def load_sources():
     return sources
 
 
-def build(sources):
+def load_excluded(path=EXCLUDED):
+    """Normalised texts of reviewed-and-rejected questions, so they stay out after every refresh."""
+    if not os.path.exists(path):
+        return frozenset()
+    with open(path, encoding="utf-8") as f:
+        return frozenset(C.normalized_text(l) for l in f if l.strip() and not l.lstrip().startswith("#"))
+
+
+def build(sources, excluded=frozenset()):
     kept, seen = [], set()
     stats = {"per_source": {}, "drops": collections.Counter(), "templates": collections.defaultdict(list)}
     for name in PRIORITY:
@@ -68,6 +77,9 @@ def build(sources):
                 stats["drops"]["%s: %s" % (name, reason)] += 1
                 continue
             key = C.normalized_text(q["text"])
+            if key in excluded:
+                stats["drops"]["%s: excluded after review" % name] += 1
+                continue
             if key in seen:
                 dup += 1
                 stats["drops"]["%s: duplicate text" % name] += 1
@@ -112,7 +124,7 @@ def render_stats(kept, stats):
 
 
 def main():
-    kept, stats = build(load_sources())
+    kept, stats = build(load_sources(), load_excluded())
     with open(BANK, "w", encoding="utf-8") as f:
         json.dump(kept, f, ensure_ascii=False, separators=(",", ":"))
         f.write("\n")
