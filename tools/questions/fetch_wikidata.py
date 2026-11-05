@@ -117,7 +117,7 @@ class Sparql:
     def run_scaled(self, build):
         """build(scale) -> query. On failure retry once with a stricter popularity threshold."""
         last = None
-        for scale in (1, 2):
+        for scale in (1, 2, 4):
             try:
                 return self.run(build(scale))
             except BudgetExceeded:
@@ -132,16 +132,15 @@ LABEL = 'SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }'
 
 
 def pair_query(where, min_sl, limit, date_prop=None):
+    """Cheap query shape: sitelinks filter first, no sorting/grouping server side (done in Python)."""
     date = "OPTIONAL { ?item %s ?d }" % date_prop if date_prop else ""
-    year = "(MIN(YEAR(?d)) AS ?year)" if date_prop else ""
-    return """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl ?year WHERE {
-  { SELECT ?item ?ans ?sl %s WHERE {
-      %s
-      ?item wikibase:sitelinks ?sl. FILTER(?sl >= %d)
-      %s
-    } GROUP BY ?item ?ans ?sl ORDER BY DESC(?sl) LIMIT %d }
+    year = "(YEAR(?d) AS ?year)" if date_prop else ""
+    return """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl %s WHERE {
+  ?item wikibase:sitelinks ?sl. FILTER(?sl >= %d)
   %s
-}""" % (year, where, min_sl, date, limit, LABEL)
+  %s
+  %s
+}""" % (year, min_sl, where, date, LABEL)
 
 
 def collect(rows):
@@ -154,16 +153,18 @@ def collect(rows):
                                   "year": None, "sl": 0, "conts": set()})
         e["answers"][qid(val(b, "ans"))] = val(b, "ansLabel")
         e["sl"] = max(e["sl"], int(float(val(b, "sl") or 0)))
+        if val(b, "dis"):
+            e["dead"] = True
         y = val(b, "year")
         if y:
             try:
                 yy = int(float(y))
-                if yy > 0:
+                if yy > 0 and (e["year"] is None or yy < e["year"]):
                     e["year"] = yy
             except ValueError:
                 pass
-        if val(b, "conts"):
-            e["conts"] |= set(c for c in val(b, "conts").split(",") if c)
+        if val(b, "cont"):
+            e["conts"].add(val(b, "cont"))
     return list(items.values())
 
 
@@ -176,8 +177,10 @@ def build_pairs(entries, key, category, qfmt, efmt, prefer="era", need_year=Fals
         if len(e["answers"]) != 1:
             continue  # ambiguous: more than one value
         alabel = next(iter(e["answers"].values()))
-        if not valid_label(e["title"]) or not valid_label(alabel):
+        if not valid_label(e["title"]) or not valid_label(alabel) or e.get("dead"):
             continue
+        if e["title"][-1] in "?!.":
+            continue  # reads badly inside "'...'?"
         if need_year and e["year"] is None:
             continue
         if len(alabel) >= 3 and alabel.lower() in e["title"].lower():
@@ -268,17 +271,16 @@ def t_architecture(sp):
 
 def t_geography(sp):
     def build(s):
-        return """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl ?conts WHERE {
-  { SELECT ?item ?ans ?sl (GROUP_CONCAT(DISTINCT ?c; separator=",") AS ?conts) WHERE {
-      VALUES ?cls { wd:Q8502 wd:Q23397 wd:Q570116 wd:Q41176 }
-      ?item wdt:P31 ?cls; wdt:P17 ?ans; wikibase:sitelinks ?sl. FILTER(?sl >= %d)
-      FILTER NOT EXISTS { ?ans wdt:P576 ?dissolved }
-      OPTIONAL { ?ans wdt:P30 ?cont }
-      BIND(STR(?cont) AS ?c)
-    } GROUP BY ?item ?ans ?sl ORDER BY DESC(?sl) LIMIT %d }
+        return """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl ?cont ?dis WHERE {
+  ?item wikibase:sitelinks ?sl. FILTER(?sl >= %d)
+  VALUES ?cls { wd:Q8502 wd:Q23397 wd:Q570116 wd:Q41176 }
+  ?item wdt:P31 ?cls; wdt:P17 ?ans.
+  OPTIONAL { ?ans wdt:P576 ?dis }
+  OPTIONAL { ?ans wdt:P30 ?cont }
   %s
-}""" % (50 * s, 8000 // s, LABEL)
+}""" % (50 * s, LABEL)
     rows = sp.run_scaled(build)
+    print("geography rows:", len(rows), flush=True)
     return build_pairs(collect(rows), "geography", "Geography",
                        lambda e: "In which country is %s?" % e["title"],
                        lambda e, a: "%s is located in %s." % (e["title"], a), prefer="cont")
@@ -325,49 +327,50 @@ def t_elements(sp):
     return out
 
 
-ANIMAL_CLASSES = {  # taxon name (P225) -> answer label
-    "Mammalia": "Mammal", "Aves": "Bird", "Reptilia": "Reptile", "Amphibia": "Amphibian",
-    "Insecta": "Insect", "Actinopterygii": "Fish", "Chondrichthyes": "Fish",
-}
+ANIMAL_CLASSES = [  # (SPARQL taxon term, answer label)
+    ("wd:Q7377", "Mammal"), ("wd:Q5113", "Bird"), ("wd:Q10811", "Reptile"), ("wd:Q10908", "Amphibian"),
+    ("wd:Q1390", "Insect"), ('?c wdt:P225 "Actinopterygii"', "Fish"), ('?c wdt:P225 "Chondrichthyes"', "Fish"),
+]
 ANIMAL_OPTIONS = ["Mammal", "Bird", "Reptile", "Amphibian", "Insect", "Fish"]
 
 
-def animal_query(taxa):
-    values = " ".join('"%s"' % t for t in taxa)
-    return """SELECT ?item ?cn ?sl ?tn WHERE {
-  { SELECT ?item ?sl (MIN(?n) AS ?cn) WHERE {
-      ?item wdt:P105 wd:Q7432; wdt:P1843 ?n; wikibase:sitelinks ?sl.
-      FILTER(?sl >= 60 && LANG(?n) = "en")
-    } GROUP BY ?item ?sl }
-  VALUES ?tn { %s }
-  ?item wdt:P171+ ?cls. ?cls wdt:P225 ?tn.
-}""" % values
+def animal_query(term):
+    if term.startswith("wd:"):
+        link = "?item wdt:P171+ %s." % term
+    else:
+        link = "?item wdt:P171+ ?c. %s." % term
+    return """SELECT ?item ?cn ?sl WHERE {
+  ?item wikibase:sitelinks ?sl. FILTER(?sl >= 60)
+  ?item wdt:P105 wd:Q7432; wdt:P1843 ?cn. FILTER(LANG(?cn) = "en")
+  %s
+}""" % link
 
 
 def t_animals(sp):
-    try:
-        rows = sp.run(animal_query(list(ANIMAL_CLASSES)))
-    except BudgetExceeded:
-        raise
-    except Exception as e:
-        C.warn("animals: combined query failed (%s); running one query per class" % e)
-        rows = []
-        for taxon in ANIMAL_CLASSES:
-            try:
-                rows += sp.run(animal_query([taxon]))
-            except BudgetExceeded:
-                raise
-            except Exception as e2:
-                C.warn("animals: class %s failed: %s" % (taxon, e2))
+    rows = []
+    for term, label in ANIMAL_CLASSES:
+        try:
+            got = sp.run(animal_query(term))
+        except BudgetExceeded:
+            raise
+        except Exception as e:
+            C.warn("animals: class %s failed: %s" % (label, e))
+            continue
+        print("animals %s rows: %d" % (label, len(got)), flush=True)
+        for b in got:
+            b["lbl"] = {"value": label}
+        rows += got
     by = {}
     for b in rows:
-        e = by.setdefault(qid(val(b, "item")), {"id": qid(val(b, "item")), "name": val(b, "cn"),
+        e = by.setdefault(qid(val(b, "item")), {"id": qid(val(b, "item")), "names": set(),
                                                 "sl": int(float(val(b, "sl"))), "cls": set()})
-        e["cls"].add(ANIMAL_CLASSES[val(b, "tn")])
+        e["names"].add(val(b, "cn"))
+        e["cls"].add(val(b, "lbl"))
     cands, seen = [], set()
     for e in by.values():
         if "Bird" in e["cls"]:
             e["cls"].discard("Reptile")  # birds also sit under Reptilia in some taxonomies
+        e["name"] = sorted(e["names"], key=lambda n: (len(n), n))[0]
         if len(e["cls"]) != 1 or not valid_label(e["name"]) or e["name"].lower() in seen:
             continue
         seen.add(e["name"].lower())
@@ -391,13 +394,12 @@ def t_animals(sp):
 def t_sports_people(sp):
     def build(s):
         return """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl WHERE {
-  { SELECT ?item ?ans ?sl WHERE {
-      ?item wdt:P641 ?ans; wikibase:sitelinks ?sl. FILTER(?sl >= %d)
-      ?item wdt:P31 wd:Q5.
-    } ORDER BY DESC(?sl) LIMIT %d }
+  ?item wikibase:sitelinks ?sl. FILTER(?sl >= %d)
+  ?item wdt:P641 ?ans; wdt:P31 wd:Q5.
   %s
-}""" % (80 * s, 8000 // s, LABEL)
+}""" % (80 * s, LABEL)
     rows = sp.run_scaled(build)
+    print("sports_people rows:", len(rows), flush=True)
     return build_pairs(collect(rows), "sports_people", "Sports & Recreation",
                        lambda e: "Which sport is %s known for?" % e["title"],
                        lambda e, a: "%s is best known for %s." % (e["title"], a[:1].lower() + a[1:]),
@@ -415,10 +417,11 @@ def t_events(sp):
     ]
     entries, fmt = [], {}
     for cls, prop, pattern, qf, ef in specs:
+        city = "?ans wdt:P31/wdt:P279* wd:Q515." if prop == "wdt:P276" else ""
         q = """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl WHERE {
-  { SELECT ?item ?ans ?sl WHERE { ?item wdt:P31 %s; %s ?ans; wikibase:sitelinks ?sl. } }
+  ?item wdt:P31 %s; %s ?ans; wikibase:sitelinks ?sl. %s
   %s
-}""" % (cls, prop, LABEL)
+}""" % (cls, prop, city, LABEL)
         try:
             rows = sp.run(q)
         except BudgetExceeded:
@@ -426,6 +429,7 @@ def t_events(sp):
         except Exception as e:
             C.warn("events: %s failed: %s" % (cls, e))
             continue
+        print("events %s rows: %d" % (cls, len(rows)), flush=True)
         for e in collect(rows):
             m = re.match(pattern, e["title"] or "")
             if not m:
