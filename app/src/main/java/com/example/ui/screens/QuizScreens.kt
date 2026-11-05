@@ -419,20 +419,12 @@ fun QuizPlayScreen(
 
                                 if (currentQ.category.contains("Flag to Country")) {
                                     // Massive central flag
-                                    Box(
-                                        modifier = Modifier
-                                            .size(130.dp)
-                                            .clip(RoundedCornerShape(24.dp))
-                                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                                            .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), RoundedCornerShape(24.dp)),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            text = value,
-                                            style = androidx.compose.ui.text.TextStyle(fontSize = 72.sp),
-                                            textAlign = TextAlign.Center
-                                        )
-                                    }
+                                    FlagStage(
+                                        flag = value,
+                                        height = 170.dp,
+                                        cornerRadius = 24.dp,
+                                        modifier = Modifier.fillMaxWidth(0.85f)
+                                    )
                                 } else {
                                     // Country name with global/map visual frame
                                     Surface(
@@ -520,6 +512,23 @@ fun QuizPlayScreen(
                             }
                         }
 
+                        if (currentQ.category == "Flags: Country to Flag") {
+                            FlagOptionsGrid(
+                                options = currentQ.optionsList,
+                                correctIndex = currentQ.correctIndex,
+                                hiddenOptions = hiddenOptions,
+                                selectedOption = selectedOption,
+                                isRevealed = isRevealed,
+                                onPick = { index ->
+                                    if (!isRevealed && isActiveSlide) {
+                                        if (userStats.isHapticFeedbackEnabled) {
+                                            haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                                        }
+                                        onSelectOption(index)
+                                    }
+                                }
+                            )
+                        } else
                         // Options vertical panel
                         Column(
                             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -599,15 +608,9 @@ fun QuizPlayScreen(
                                                 }
                                             }
 
-                                            val isSingleFlagEmoji = currentQ.category == "Flags: Country to Flag"
-
                                             Text(
                                                 text = option,
-                                                style = if (isSingleFlagEmoji) {
-                                                    MaterialTheme.typography.bodyLarge.copy(fontSize = 32.sp)
-                                                } else {
-                                                    MaterialTheme.typography.bodyLarge
-                                                },
+                                                style = MaterialTheme.typography.bodyLarge,
                                                 fontWeight = if (isPickedByMe) FontWeight.ExtraBold else FontWeight.Medium,
                                                 modifier = Modifier.weight(1f)
                                             )
@@ -1054,12 +1057,26 @@ fun ReviewAnswersScreen(
                             )
                         }
 
-                        // Question Topic Label
-                        Text(
-                            text = q.text,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Bold
-                        )
+                        // Question Topic Label (a flag question's flag gets its own frame, not inline emoji)
+                        if (q.category == "Flags: Flag to Country") {
+                            Text(
+                                text = q.text.substringBefore("\n\n"),
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                            FlagStage(
+                                flag = q.text.substringAfter("\n\n"),
+                                height = 80.dp,
+                                cornerRadius = 12.dp,
+                                modifier = Modifier.width(130.dp)
+                            )
+                        } else {
+                            Text(
+                                text = q.text,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
 
                         // Highlight Pick vs Right
                         val myPickIdx = selectedIndices.getOrNull(idx)
@@ -1106,17 +1123,20 @@ fun ReviewAnswersScreen(
                                             }
                                         }
 
-                                        val isSingleFlagEmoji = q.category == "Flags: Country to Flag"
-
-                                        Text(
-                                            text = option,
-                                            style = if (isSingleFlagEmoji) {
-                                                MaterialTheme.typography.bodySmall.copy(fontSize = 20.sp)
-                                            } else {
-                                                MaterialTheme.typography.bodySmall
-                                            },
-                                            fontWeight = if (isMySelection) FontWeight.Bold else FontWeight.Normal
-                                        )
+                                        if (q.category == "Flags: Country to Flag") {
+                                            FlagStage(
+                                                flag = option,
+                                                height = 48.dp,
+                                                cornerRadius = 8.dp,
+                                                modifier = Modifier.width(76.dp)
+                                            )
+                                        } else {
+                                            Text(
+                                                text = option,
+                                                style = MaterialTheme.typography.bodySmall,
+                                                fontWeight = if (isMySelection) FontWeight.Bold else FontWeight.Normal
+                                            )
+                                        }
                                     }
                                 }
                             }
