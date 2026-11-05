@@ -183,7 +183,8 @@ fun SettingsScreen(
                 ) {
                     Text("Quizzer", fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.bodyLarge)
                     Text("Version ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall)
-                    Text("Online questions from the Open Trivia Database (opentdb.com), licensed CC BY-SA 4.0.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                    Text("Credits", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodySmall)
+                    Text("Trivia questions include material from Open Trivia DB (opentdb.com), licensed CC BY-SA 4.0, and facts from Wikidata (CC0).", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
                 }
             }
         }

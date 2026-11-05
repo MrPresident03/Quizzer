@@ -6,7 +6,7 @@ A trivia app for Android built with Kotlin, Jetpack Compose and Room.
 
 ## Features
 
-- **Questions that don't repeat.** The app remembers what you've seen and always serves unseen questions first. Online it uses Open Trivia DB with a session token; everything fetched is cached so the offline bank keeps growing. 399 hand-checked questions ship with the app across 20 topics, plus flag quizzes (185 countries) and capital-city quizzes (98 countries).
+- **Questions that don't repeat.** The app remembers what you've seen and always serves unseen questions first. All questions are bundled with the app (material from Open Trivia DB and Wikidata, see Credits), so it works fully offline, across 20 topics, plus flag quizzes (185 countries) and capital-city quizzes (98 countries).
 - **Learn from every answer.** After each answer you see why it's right, and a **Next** button lets you move on at your own pace.
 - **Review your mistakes.** Every question you miss is saved and comes back in a review session until you get it right.
 - **Shared Daily Challenge.** Everyone gets the same 10 questions each day (easy → hard, works offline). Share your score as a 🟩🟥 grid without spoiling the answers.
@@ -36,7 +36,6 @@ Privacy policy: [PRIVACY.md](PRIVACY.md).
 ## Project layout
 
 - `data/repository/QuestionPicker.kt` — freshness-first selection, option shuffling, topic balancing
-- `data/repository/OpenTdbRemoteSource.kt` — Open Trivia DB client (token, rate limit, retries)
 - `data/repository/LearningTools.kt` — mistakes book, shared daily challenge, share text
 - `data/repository/QuizRepository.kt` — builds quizzes and records progress
 - `ui/viewmodel/QuizViewModel.kt` — quiz engine (timer, lifelines, endless refills)
