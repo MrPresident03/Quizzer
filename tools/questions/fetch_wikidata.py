@@ -23,6 +23,7 @@ MIN_ITEMS = 20
 SHRINK_LIMIT = 0.9
 BUDGET_S = 17 * 60  # stop starting queries after this; step timeout is 20 min
 MAX_YEAR = 2026
+DISCARD_PREV = {"sports_people"}  # earlier output included non-athletes
 
 
 class BudgetExceeded(Exception):
@@ -32,7 +33,7 @@ class BudgetExceeded(Exception):
 # --------------------------------------------------------------------------- helpers
 
 def valid_label(s):
-    return bool(s) and s == s.strip() and 0 < len(s) <= 80 and "\n" not in s and not re.fullmatch(r"Q\d+", s)
+    return bool(s) and "http" not in s[:5].lower() and "genid" not in s and s == s.strip() and 0 < len(s) <= 80 and "\n" not in s and not re.fullmatch(r"Q\d+", s)
 
 
 def cap_first(s):
@@ -278,7 +279,7 @@ def t_geography(sp):
   OPTIONAL { ?ans wdt:P576 ?dis }
   OPTIONAL { ?ans wdt:P30 ?cont }
   %s
-}""" % (50 * s, LABEL)
+}""" % (120 * s, LABEL)
     rows = sp.run_scaled(build)
     print("geography rows:", len(rows), flush=True)
     return build_pairs(collect(rows), "geography", "Geography",
@@ -402,7 +403,7 @@ def t_sports_people(sp):
   ?item wdt:P641 ?ans; wdt:P31 wd:Q5; wdt:P106 ?occ.
   VALUES ?occ { wd:Q937857 wd:Q3665646 wd:Q10833314 wd:Q2066131 wd:Q10871364 wd:Q10843402 wd:Q11338576 wd:Q12299841 }
   %s
-}""" % (50 * s, LABEL)
+}""" % (120 * s, LABEL)
     rows = sp.run_scaled(build)
     print("sports_people rows:", len(rows), flush=True)
     return build_pairs(collect(rows), "sports_people", "Sports & Recreation",
@@ -413,9 +414,9 @@ def t_sports_people(sp):
 
 def t_events(sp):
     specs = [
-        ("wd:Q159821", "wdt:P276", r"^(\d{4}) (Summer Olympics)$", "Which city hosted the %d %s?",
+        ("wd:Q159821", "wdt:P276|wdt:P131", r"^(\d{4}) (Summer Olympics)$", "Which city hosted the %d %s?",
          "The %d %s were held in %s."),
-        ("wd:Q82414", "wdt:P276", r"^(\d{4}) (Winter Olympics)$", "Which city hosted the %d %s?",
+        ("wd:Q82414", "wdt:P276|wdt:P131", r"^(\d{4}) (Winter Olympics)$", "Which city hosted the %d %s?",
          "The %d %s were held in %s."),
         ("wd:Q19317", "wdt:P17", r"^(\d{4}) (FIFA World Cup)$", "Which country hosted the %d %s?",
          "The %d %s was hosted by %s."),
@@ -424,7 +425,8 @@ def t_events(sp):
     for cls, prop, pattern, qf, ef in specs:
         city = ""
         q = """SELECT ?item ?itemLabel ?ans ?ansLabel ?sl WHERE {
-  ?item wdt:P31/wdt:P279* %s; %s ?ans; wikibase:sitelinks ?sl. %s
+  ?item wdt:P31|wdt:P179 ?kind. ?kind wdt:P279* %s.
+  ?item %s ?ans; wikibase:sitelinks ?sl. %s
   %s
 }""" % (cls, prop, city, LABEL)
         try:
@@ -517,6 +519,8 @@ def main():
     prev = C.load_json(OUT, []) or []
     prev_by = {}
     for q in prev:
+        if q.get("template") in DISCARD_PREV:
+            continue
         prev_by.setdefault(q.get("template"), []).append(q)
     final = []
     for key, fn in TEMPLATES:
