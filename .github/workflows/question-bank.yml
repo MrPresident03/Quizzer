@@ -34,7 +34,7 @@ jobs:
         run: python3 tools/questions/fetch_opentdb.py
 
       - name: Fetch Wikidata
-        timeout-minutes: 30
+        timeout-minutes: 26
         run: python3 tools/questions/fetch_wikidata.py
 
       - name: Build bank

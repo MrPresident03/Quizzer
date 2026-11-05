@@ -180,34 +180,63 @@ class NewHelpers(unittest.TestCase):
                 self.assertFalse([x for x in others if W.crime_group(x) == "homicide"], o)
 
     def test_ordinal_office_ok(self):
-        self.assertTrue(W.ordinal_office_ok(range(1, 46)))
-        self.assertTrue(W.ordinal_office_ok(list(range(1, 30)) + list(range(32, 40))))
-        self.assertFalse(W.ordinal_office_ok([1, 2, 3]))
-        self.assertFalse(W.ordinal_office_ok([1, 5, 9, 14, 20, 26, 33, 41, 50, 60, 70, 80]))
+        self.assertTrue(W.ordinal_office_ok({n: 1800 + 4 * n for n in range(1, 30)}))
+        self.assertTrue(W.ordinal_office_ok({n: 1800 + n for n in range(1, 30, 3)}))  # sparse but ordered
+        self.assertFalse(W.ordinal_office_ok({1: 1800, 2: 1804, 3: 1808}))  # too few
+        bad = {n: 1800 + 4 * n for n in range(1, 30)}
+        bad[10] = 1700  # ordinal 10 started before ordinal 9
+        self.assertFalse(W.ordinal_office_ok(bad))
+        self.assertFalse(W.ordinal_office_ok({n: None for n in range(1, 30)}))  # no dates: cannot verify
 
     def test_ordinal_rows_skip_serving_and_bad_ordinals(self):
-        def row(p, name, o, end):
+        def row(p, name, o, end, start=None):
             b = {"p": {"value": "http://x/entity/" + p}, "pLabel": {"value": name}, "ord": {"value": o}, "sl": {"value": "50"}}
             if end:
                 b["end"] = {"value": "2000-01-01"}
+            if start:
+                b["start"] = {"value": start}
             return b
-        got = W.ordinal_rows([row("Q1", "A One", "1", True), row("Q2", "B Two", "2", False), row("Q3", "C Three", "3rd", True),
-                              row("Q4", "Q55", "4", True)])
+        got, starts = W.ordinal_rows([row("Q1", "A One", "1", True, "1990-01-01T00:00:00Z"), row("Q2", "B Two", "2", False),
+                                      row("Q3", "C Three", "3rd", True), row("Q4", "Q55", "4", True)])
         self.assertEqual(list(got), [1])
+        self.assertEqual(starts, {1: 1990})
+
+    def test_country_group(self):
+        self.assertEqual(W.country_group("Kingdom of the Netherlands"), W.country_group("Netherlands"))
+        self.assertEqual(W.country_group("Democratic Republic of the Congo"), W.country_group("Republic of the Congo"))
+        self.assertEqual(W.country_group("Republic of Ireland"), "ireland")
+        self.assertNotEqual(W.country_group("United States"), W.country_group("United Kingdom"))
+        self.assertEqual(W.country_group("Czech Republic"), "czech republic")
+
+    def test_ordered_query_puts_sitelinks_after_anchor(self):
+        q = W.ordered_query("?item wdt:P31 wd:Q8502. #SL# ?item wdt:P17 ?ans.", 80, 100)
+        self.assertLess(q.index("wdt:P31 wd:Q8502"), q.index("wikibase:sitelinks"))
+        self.assertLess(q.index("wikibase:sitelinks"), q.index("wdt:P17"))
+        self.assertIn('hint:optimizer "None"', q)
+        self.assertTrue(q.rstrip().endswith("LIMIT 100"))
+        self.assertGreater(W.ordered_query("?item wdt:P1 ?ans.", 5, 9).index("sitelinks"), 0)
+
+    def test_athlete_occupation(self):
+        for ok in ("association football player", "tennis player", "Formula One driver", "cricketer", "golfer"):
+            self.assertTrue(W.is_athlete_occupation(ok), ok)
+        for bad in ("football manager", "association football referee", "sports commentator", "politician", "", None):
+            self.assertFalse(W.is_athlete_occupation(bad), bad)
 
     def test_top_families(self):
         fams = {"Q1": "Indo-European languages", "Q2": "Germanic languages", "Q3": "Altaic languages"}
         self.assertEqual(W.top_families(fams, {"Q2"}), {"Q1": "Indo-European languages"})
 
     def test_sport_entries_flag_second_sport(self):
-        def row(i, oth=None):
-            b = {"item": {"value": "http://x/entity/Q%d" % i}, "itemLabel": {"value": "Player %d" % i}, "sl": {"value": "90"}}
+        def row(i, oth=None, occ="tennis player"):
+            b = {"item": {"value": "http://x/entity/Q%d" % i}, "itemLabel": {"value": "Player %d" % i}, "sl": {"value": "90"},
+                 "occLabel": {"value": occ}}
             if oth:
                 b["oth"] = {"value": "http://x/entity/" + oth}
                 b["othLabel"] = {"value": "Golf"}
             return b
-        a = W.sport_entries([row(1), row(2, "Q5377")], "Q847", "Tennis")
+        a = W.sport_entries([row(1), row(2, "Q5377"), row(3, occ="tennis coach")], "Q847", "Tennis")
         merged = {e["id"]: e for e in W.merge_entries([a])}
+        self.assertNotIn("Q3", merged)  # a coach is not an athlete
         self.assertEqual(len(merged["Q1"]["answers"]), 1)
         self.assertEqual(len(merged["Q2"]["answers"]), 2)  # two sports -> dropped as ambiguous
         b = W.sport_entries([row(1)], "Q5377", "Golf")
@@ -234,10 +263,9 @@ class NewHelpers(unittest.TestCase):
         self.assertIn("1994 Winter Olympics", winter)
         self.assertNotIn("1942 FIFA World Cup", specs["FIFA World Cup"][1])
         self.assertEqual(W.event_year("2016 Summer Olympics"), 2016)
-        rows = [{"item": {"value": "a"}, "pp": {"value": "http://x/prop/direct/P276"}},
-                {"item": {"value": "a"}, "pp": {"value": "http://x/prop/direct/P131"}},
-                {"item": {"value": "b"}, "pp": {"value": "http://x/prop/direct/P131"}}]
-        self.assertEqual(len(W.prefer_city_property(rows)), 2)
+        q = W.event_query(["1996 Summer Olympics"], "wdt:P276", "city")
+        self.assertIn("wd:Q486972", q)  # hosts must be settlements, not stadiums
+        self.assertNotIn("wd:Q486972", W.event_query(["2018 FIFA World Cup"], "wdt:P17", "country"))
 
     def test_crime_filters(self):
         self.assertTrue(W.CRIME_BLOCK.search("rape"))
@@ -266,6 +294,7 @@ class TemplateSmoke(unittest.TestCase):
             self.assertEqual(q.count("{"), q.count("}"), q)
             self.assertNotIn("%s", q)
             self.assertNotIn("%d", q)
+            self.assertNotIn("#SL#", q)
             if "wikibase:sitelinks" in q and "VALUES ?lab" not in q and "pq:P1545" not in q and "ps:P166" not in q and "?num" not in q:
                 self.assertRegex(q, r"FILTER\(\?sl >(=| ) ?\d+\)")
         sports = [q for q in sp.queries if "wdt:P641 wd:" in q]
