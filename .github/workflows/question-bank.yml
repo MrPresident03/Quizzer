@@ -1,9 +1,6 @@
 name: Question bank
 
 on:
-  push:
-    branches: [feature/question-bank]
-    paths: ['tools/questions/**', '.github/workflows/question-bank.yml']
   workflow_dispatch:
   schedule:
     - cron: '17 3 1 * *'
@@ -42,19 +39,6 @@ jobs:
 
       - name: Job summary
         run: cat tools/questions/STATS.md >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Commit outputs to branch
-        if: github.ref == 'refs/heads/feature/question-bank'
-        run: |
-          git add tools/questions/sources app/src/main/assets/questions.json tools/questions/STATS.md
-          if git diff --cached --quiet; then
-            echo "No changes"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update generated question bank"
-          git push origin HEAD:feature/question-bank
 
       - name: Open or update pull request
         if: github.ref == 'refs/heads/main'

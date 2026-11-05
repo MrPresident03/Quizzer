@@ -25,7 +25,7 @@ SHRINK_LIMIT = 0.9
 BUDGET_S = 22 * 60  # stop starting queries after this; step timeout is 26 min
 TEMPLATE_BUDGET_S = 240  # a template that keeps timing out gives up after this long
 MAX_YEAR = 2026
-DISCARD_PREV = {"sports_people", "disease_cause"}  # earlier output included non-athletes / non-diseases
+DISCARD_PREV = {"sports_people", "disease_cause", "crimes", "fashion_designers"}  # earlier output included non-athletes / non-diseases
 
 
 class BudgetExceeded(Exception):
@@ -556,6 +556,18 @@ STRICT = dict(strict_labels=True)
 COUNTRY = dict(group_of=country_group, prefer="cont")  # country answers: no near-duplicate distractors
 
 
+CONTESTED = re.compile(r"crimea|simferopol|sevastopol|yalta|jerusalem|mount of olives|gaza|west bank|al-aqsa|"
+                       r"dome of the rock|church of the nativity|donetsk|luhansk|abkhaz|south ossetia", re.I)
+
+
+def uncontested(ents):
+    """Drop places whose country is disputed (the app should not take a side)."""
+    return [e for e in ents if not CONTESTED.search(e["title"] or "") and "Palestine" not in e["answers"].values()]
+
+
+FASHION_NOT_BRAND = re.compile(r"model management|toys|harley|intersport|samsung|art deco", re.I)
+
+
 def the_(title):
     """Sentence-initial "The X" without doubling an article that is already part of the name."""
     return title if title.lower().startswith("the ") else "The " + title
@@ -591,7 +603,7 @@ def geo_expl(e, ans):
 def t_geography(sp):
     jobs = [dict(where="?item wdt:P31 wd:%s. #SL# ?item wdt:P17 ?ans. ?ans wdt:P31 %s." % (cls, SOVEREIGN),
                  min_sl=sl, limit=1200, kind=kind, ordered=True) for kind, cls, sl in GEO_KINDS]
-    return build_pairs(gather(sp, "geography", jobs), "geography", "Geography", geo_question, geo_expl,
+    return build_pairs(uncontested(gather(sp, "geography", jobs)), "geography", "Geography", geo_question, geo_expl,
                        multi=2, leak=True, cap=700, per_answer_cap=70, **COUNTRY, **STRICT)
 
 
@@ -599,7 +611,7 @@ def t_geo_heritage(sp):
     jobs = [dict(where=("?item wdt:P1435 wd:Q9259. #SL# ?item wdt:P17 ?ans. ?ans wdt:P31 %s. "
                         "FILTER NOT EXISTS { ?ans wdt:P36 ?item }" % SOVEREIGN),
                  min_sl=50, limit=1500, kind="heritage", ordered=True)]
-    return build_pairs(gather(sp, "geo_heritage", jobs), "geo_heritage", "Geography",
+    return build_pairs(uncontested(gather(sp, "geo_heritage", jobs)), "geo_heritage", "Geography",
                        lambda e: many(e, "In which country is %s located?" % e["title"],
                                       "Which of these countries is %s located in?" % e["title"]),
                        lambda e, a: "%s is a UNESCO World Heritage Site in %s." % (e["title"], join_and(e["alabels"])),
@@ -611,7 +623,7 @@ def t_geo_cities(sp):
     where = ("?item wdt:P31 wd:Q1549591. #SL# ?item wdt:P17 ?ans. ?ans wdt:P31 %s. "
              "FILTER NOT EXISTS { ?ans wdt:P36 ?item }" % SOVEREIGN)
     jobs = [dict(where=where, min_sl=100, limit=1500, kind="city", ordered=True)]
-    return build_pairs(gather(sp, "geo_cities", jobs), "geo_cities", "Geography",
+    return build_pairs(uncontested(gather(sp, "geo_cities", jobs)), "geo_cities", "Geography",
                        lambda e: "In which country is the city of %s?" % e["title"],
                        lambda e, a: "%s is a city in %s." % (e["title"], a),
                        leak=True, cap=300, per_answer_cap=12, **COUNTRY, **STRICT)
@@ -646,7 +658,8 @@ NOT_ATHLETE_OCC = re.compile(r"coach|manager|referee|official|umpire|commentator
                              r"politician|president|director|owner|writer|broadcaster|actor|analyst|scout|administrator", re.I)
 
 
-NON_SPORT_PERSON = re.compile(r"astronaut|comedian|presenter|screenwriter|film director", re.I)
+NON_SPORT_PERSON = re.compile(r"astronaut|comedian|presenter|screenwriter|film director|politician|monarch|poet|writer|"
+                              r"diplomat|rapper|president|prime minister|businessperson|entrepreneur", re.I)
 
 
 def is_athlete_occupation(label):
@@ -890,7 +903,7 @@ def t_leaders_country(sp):
 
 FOOD_KINDS = [  # (class QID, noun phrase, sitelinks floor): direct instances only (the classes are small)
     ("Q746549", "the dish", 20), ("Q10943", "the cheese", 10), ("Q134768", "the cocktail", 10),
-    ("Q40050", "the drink", 20), ("Q154410", "the drink", 15), ("Q7802", "the bread", 15),
+    ("Q40050", "the drink", 20), ("Q7802", "the bread", 15),
     ("Q182940", "the dessert", 15), ("Q41415", "the soup", 15),
 ]
 
@@ -898,7 +911,9 @@ FOOD_KINDS = [  # (class QID, noun phrase, sitelinks floor): direct instances on
 def t_food_origin(sp):
     jobs = [dict(where="?item wdt:P31 wd:%s. ?item wdt:P495 ?ans. #SL# ?ans wdt:P31 %s." % (cls, SOVEREIGN),
                  min_sl=sl, limit=1500, kind=noun, ordered=True) for cls, noun, sl in FOOD_KINDS]
-    return build_pairs(gather(sp, "food_origin", jobs), "food_origin", "Food & Drink",
+    ents = [e for e in gather(sp, "food_origin", jobs)  # not "the cheese Comté cheese"
+            if (e["kind"] or "").split()[-1] not in (e["title"] or "").lower().split()]
+    return build_pairs(ents, "food_origin", "Food & Drink",
                        lambda e: "Which country does %s %s originate from?" % (e["kind"], e["title"]),
                        lambda e, a: "%s %s originates from %s." % (cap_first(e["kind"]), e["title"], a),
                        leak=True, cap=450, per_answer_cap=25, **COUNTRY, **STRICT)
@@ -1129,7 +1144,8 @@ def t_fashion_country(sp):
     jobs += [dict(where="?item %s wd:%s. #SL# %s ?item (wdt:P17|wdt:P495|(wdt:P159/wdt:P17)) ?ans. "
                         "?ans wdt:P31 %s." % (p, v, ORG, SOVEREIGN),
                   min_sl=20, limit=1500, kind="brand", ordered=True) for p, v in FASHION_ANCHORS]
-    return build_pairs(gather(sp, "fashion_country", jobs), "fashion_country", "Fashion & Design",
+    ents = [e for e in gather(sp, "fashion_country", jobs) if not FASHION_NOT_BRAND.search(e["title"] or "")]
+    return build_pairs(ents, "fashion_country", "Fashion & Design",
                        lambda e: "Which country is the fashion brand %s from?" % e["title"],
                        lambda e, a: "%s is a brand from %s." % (e["title"], a),
                        leak=True, cap=300, per_answer_cap=40, **COUNTRY, **STRICT)
@@ -1151,7 +1167,8 @@ def t_fashion_designers(sp):
 # ---- True Crime & Law
 
 VICTIM_TITLE = re.compile(r"\b(murder|killing|death|disappearance|rape|assassination|massacre|abduction) of\b", re.I)
-CRIME_BLOCK = re.compile(r"rape|sexual|child|abuse|indecen|molest|pedoph|incest|sodomy|prostitut|traffick|assault|kidnap", re.I)
+CRIME_BLOCK = re.compile(r"rape|sexual|child|abuse|indecen|molest|pedoph|incest|sodomy|prostitut|traffick|assault|kidnap|"
+                         r"heresy|blasphem|witch|political activity|l.se.majest", re.I)  # also religious condemnations
 CRIME_GROUPS = [
     ("homicide", re.compile(r"murder|homicide|manslaughter|killing|assassin", re.I)),
     ("fraud", re.compile(r"fraud|embezzl|forger|swindl|deception|counterfeit", re.I)),
@@ -1189,7 +1206,9 @@ def t_crimes(sp):
 GENERIC_BODY = re.compile(r"^(the )?(supreme court|court of cassation|constitutional court|national assembly|senate|"
                           r"house of representatives|parliament|congress|council of state|high court|national council|"
                           r"federal supreme court|supreme federal court|supreme court of justice|assembly|chamber of deputies|"
-                          r"federal council|state council|court of appeal|council of the republic|house of commons)$", re.I)
+                          r"federal council|state council|court of appeal|council of the republic|house of commons|court of audit|"
+                          r"national parliament|supreme council|supreme assembly|conseil d'état|supreme court of cassation|"
+                          r"federal administrative court|bundesrat)$", re.I)
 
 
 def t_legal_bodies(sp):
@@ -1210,9 +1229,10 @@ def t_trials(sp):
             for cls in ("Q2334719", "Q19692072", "Q8016240", "Q1265353")]
     jobs.append(dict(where="?item wdt:P279 wd:Q8016240. #SL# ?item (wdt:P17|wdt:P1001) ?ans. ?ans wdt:P31 %s." % SOVEREIGN,
                      min_sl=10, limit=1500, kind="case", ordered=True))
-    ents = [e for e in gather(sp, "trials", jobs) if not VICTIM_TITLE.search(e["title"] or "")]
+    ents = [e for e in gather(sp, "trials", jobs)
+            if not VICTIM_TITLE.search(e["title"] or "") and not CRIME_BLOCK.search(e["title"] or "")]
     return build_pairs(ents, "trials", "True Crime & Law",
-                       lambda e: "In which country did the legal case %s take place?" % e["title"],
+                       lambda e: "In which country did %s take place?" % e["title"],
                        lambda e, a: "%s took place in %s." % (e["title"], a),
                        leak=True, cap=250, per_answer_cap=30, **COUNTRY, **STRICT)
 

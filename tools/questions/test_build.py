@@ -280,6 +280,16 @@ class NewHelpers(unittest.TestCase):
         self.assertTrue(W.CURRENCY_JUNK.search("All-Russian Classifier of Currencies"))
         self.assertFalse(W.CURRENCY_JUNK.search("Euro"))
 
+    def test_contested_places_and_non_brands(self):
+        ents = [ent(1, "Simferopol", {"A": "Ukraine"}), ent(2, "Al-Aqsa Mosque", {"A": "Ukraine"}), ent(3, "Hamburg", {"A": "Germany"}),
+                ent(4, "Rome", {"A": "Palestine"})]
+        self.assertEqual([e["title"] for e in W.uncontested(ents)], ["Hamburg"])
+        self.assertTrue(W.FASHION_NOT_BRAND.search("Elite Model Management"))
+        self.assertFalse(W.FASHION_NOT_BRAND.search("Gucci"))
+        self.assertTrue(W.CRIME_BLOCK.search("Heresy"))
+        self.assertTrue(W.GENERIC_BODY.match("Bundesrat"))
+        self.assertTrue(W.NON_SPORT_PERSON.search("politician"))
+
     def test_astronaut_who_played_rugby_is_not_an_athlete_entry(self):
         def row(i, occ):
             return {"item": {"value": "http://x/entity/Q%d" % i}, "itemLabel": {"value": "P%d" % i}, "sl": {"value": "90"},
