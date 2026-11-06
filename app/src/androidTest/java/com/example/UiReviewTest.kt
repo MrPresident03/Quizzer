@@ -267,6 +267,8 @@ class UiReviewTest {
     step("90_daily_quiz") {
       clickTag("nav_tab_home")
       settle(600)
+      // Home keeps its scroll position across tabs now, so the daily card may be off-screen (lazy list).
+      scrollToTop()
       clickTag("daily_challenge_card")
       awaitTag("start_daily_challenge_button", 15_000)
       clickTag("start_daily_challenge_button")
