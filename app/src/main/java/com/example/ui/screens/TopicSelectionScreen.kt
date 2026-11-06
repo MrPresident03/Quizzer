@@ -280,15 +280,15 @@ private fun TopicTile(
             .testTag(tag)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Icon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
+            Icon(icon, contentDescription = null, modifier = Modifier.size(20.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
@@ -329,10 +329,10 @@ private fun OptionRow(
                         .selectable(selected = isSelected, role = Role.RadioButton, onClick = { onSelect(value) })
                         .testTag("opt_${group}_$value")
                 ) {
-                    Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)) {
+                    Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(horizontal = 2.dp, vertical = 8.dp)) {
                         Text(
                             text = text,
-                            style = MaterialTheme.typography.labelLarge,
+                            style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )

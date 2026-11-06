@@ -118,8 +118,6 @@ fun DashboardScreen(
                         Text(
                             text = quickPlaySummary,
                             style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 3,
-                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f)
                         )
                         Button(
@@ -141,7 +139,7 @@ fun DashboardScreen(
                             .heightIn(min = 48.dp)
                             .testTag("quick_play_settings_button")
                     ) {
-                        Text("Change", fontWeight = FontWeight.Bold)
+                        Text("Change", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
                 }
             }
@@ -214,14 +212,14 @@ private fun Header(
                 text = "Hi, ${userStats.displayName}!",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = "$userTitle · Level ${userStats.currentLevel}",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
