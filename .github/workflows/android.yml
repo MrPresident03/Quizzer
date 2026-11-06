@@ -34,11 +34,16 @@ jobs:
           set -o pipefail
           ./gradlew assembleDebug --stacktrace 2>&1 | tee build-output.txt
 
-      # TEMP: print the generated Room schema so it can be committed (removed again afterwards).
-      - name: Print Room schema
-        if: always()
+      # Room regenerates app/schemas on every build. If that changes the committed files, the
+      # database schema changed: bump the version, add a Migration and commit the new schema JSON.
+      - name: Check Room schema is committed
         run: |
-          for f in app/schemas/*/*.json; do echo "SCHEMA_FILE_BEGIN $f"; cat "$f"; echo; echo "SCHEMA_FILE_END"; done
+          if [ -n "$(git status --porcelain app/schemas)" ]; then
+            echo "::error title=Room schema changed::The build changed app/schemas. Players' data must survive updates: bump the database version, add a Migration, and commit the regenerated schema files."
+            git status --porcelain app/schemas
+            git diff app/schemas | head -60
+            exit 1
+          fi
 
       - name: Run unit tests
         run: |
