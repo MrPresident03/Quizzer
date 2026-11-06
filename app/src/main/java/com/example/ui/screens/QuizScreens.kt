@@ -923,12 +923,18 @@ fun QuizResultsScreen(
     isDaily: Boolean,
     onReviewClick: () -> Unit,
     onDashboardFinish: () -> Unit,
-    onShare: (() -> Unit)? = null
+    onShare: (() -> Unit)? = null,
+    // False for runs too short (or the wrong mode) to count as perfect, so 1/1 isn't "Blitz Perfect!".
+    perfectEligible: Boolean = true,
+    // Why the run ended, e.g. an Endless topic running out of questions.
+    endMessage: String? = null
 ) {
     val correctCount = answers.count { it }
     val totalCount = questions.size
     val accuracy = if (totalCount == 0) 0f else (correctCount.toFloat() / totalCount * 100)
-    val tier = resultTier(correctCount, totalCount)
+    val tier = resultTier(correctCount, totalCount).let {
+        if (it == ResultTier.PERFECT && !perfectEligible) ResultTier.GREAT else it
+    }
     val isPerfect = tier == ResultTier.PERFECT
     val celebrate = tier == ResultTier.PERFECT || tier == ResultTier.GREAT
 
@@ -1024,6 +1030,15 @@ fun QuizResultsScreen(
                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
                 textAlign = TextAlign.Center
             )
+
+            endMessage?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center
+                )
+            }
 
             if (tier == ResultTier.PRACTISE) {
                 Text(
