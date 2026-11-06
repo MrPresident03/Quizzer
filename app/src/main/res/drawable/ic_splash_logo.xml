@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lightning bolt for the system splash; kept inside the central circle the splash API masks to. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+    <group
+        android:scaleX="1.8"
+        android:scaleY="1.8"
+        android:translateX="14.4"
+        android:translateY="14.4">
+        <path
+            android:fillColor="#FF4F46E5"
+            android:pathData="M7,2v11h3v9l7,-12h-4l4,-8z" />
+    </group>
+</vector>

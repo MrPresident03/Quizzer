@@ -46,6 +46,16 @@ class QuizPrefs(context: Context) {
         prefs.edit().remove(KEY_SEEN).apply()
     }
 
+    // --- First-run onboarding ---
+
+    /** True once the player has been through (or skipped) onboarding, or was migrated as an existing player. */
+    var onboardingDone: Boolean
+        get() = prefs.getBoolean(KEY_ONBOARDING_DONE, false)
+        set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
+
+    /** False until [onboardingDone] has been written once; lets startup tell "never decided" from "decided no". */
+    val onboardingDecided: Boolean get() = prefs.contains(KEY_ONBOARDING_DONE)
+
     // --- Bundled question bank version ---
 
     var bundledSeedVersion: Int
@@ -137,6 +147,7 @@ class QuizPrefs(context: Context) {
     private companion object {
         const val FILE_NAME = "quiz_prefs"
         const val KEY_SEEN = "seen_log"
+        const val KEY_ONBOARDING_DONE = "onboarding_done"
         const val KEY_SEED_VERSION = "bundled_seed_version"
         const val KEY_DAILY_DATE = "daily_played_date"
         const val KEY_CATEGORY_PREFIX = "category_correct_"

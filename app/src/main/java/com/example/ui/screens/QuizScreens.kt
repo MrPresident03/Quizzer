@@ -895,6 +895,26 @@ private fun QuizLoadingOrError(isLoading: Boolean, loadError: String?, onBack: (
 }
 
 // --- 3. RESULTS SCREEN ---
+
+/** How the results screen frames a score: only a good score gets a trophy, and 0/10 never gets a tick. */
+internal enum class ResultTier(val headline: String, val icon: ImageVector) {
+    PERFECT("Blitz Perfect!", Icons.Default.EmojiEvents),
+    GREAT("Great run!", Icons.Default.EmojiEvents),
+    GOOD("Nice work!", Icons.Default.CheckCircle),
+    PRACTISE("Keep practising", Icons.Default.School)
+}
+
+internal fun resultTier(correct: Int, total: Int): ResultTier {
+    if (total <= 0) return ResultTier.PRACTISE
+    if (correct >= total) return ResultTier.PERFECT
+    val percent = correct * 100 / total
+    return when {
+        percent >= 80 -> ResultTier.GREAT
+        percent >= 50 -> ResultTier.GOOD
+        else -> ResultTier.PRACTISE
+    }
+}
+
 @Composable
 fun QuizResultsScreen(
     questions: List<Question>,
@@ -908,18 +928,68 @@ fun QuizResultsScreen(
     val correctCount = answers.count { it }
     val totalCount = questions.size
     val accuracy = if (totalCount == 0) 0f else (correctCount.toFloat() / totalCount * 100)
-    val isPerfect = totalCount > 0 && correctCount == totalCount
+    val tier = resultTier(correctCount, totalCount)
+    val isPerfect = tier == ResultTier.PERFECT
+    val celebrate = tier == ResultTier.PERFECT || tier == ResultTier.GREAT
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
-    ) {
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = {
+            // Pinned actions: min height (not fixed) so large text grows the buttons instead of clipping them.
+            Surface(color = MaterialTheme.colorScheme.background) {
+                Column(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .padding(horizontal = 24.dp, vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    if (onShare != null) {
+                        Button(
+                            onClick = onShare,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 52.dp)
+                                .testTag("share_result_button"),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Share your score", fontWeight = FontWeight.Bold)
+                        }
+                    }
+
+                    Button(
+                        onClick = onReviewClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 52.dp)
+                            .testTag("review_answers_button"),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Text("Review Question Explanations", fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                    }
+
+                    Button(
+                        onClick = onDashboardFinish,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 52.dp)
+                            .testTag("results_back_to_dashboard_button"),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Text("Return to Dashboard", fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                    }
+                }
+            }
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
@@ -928,24 +998,41 @@ fun QuizResultsScreen(
                     .size(100.dp)
                     .clip(CircleShape)
                     .background(
-                        if (isPerfect) GoldYellow.copy(alpha = 0.2f)
-                        else MaterialTheme.colorScheme.primaryContainer
+                        when {
+                            celebrate -> GoldYellow.copy(alpha = 0.2f)
+                            tier == ResultTier.GOOD -> MaterialTheme.colorScheme.primaryContainer
+                            else -> MaterialTheme.colorScheme.surfaceVariant
+                        }
                     ),
                 contentAlignment = Alignment.Center
             ) {
+                // Decorative: the headline below says the same thing in words.
                 Icon(
-                    imageVector = if (isPerfect) Icons.Default.EmojiEvents else Icons.Default.CheckCircle,
-                    contentDescription = "Success",
-                    tint = if (isPerfect) GoldYellow else MaterialTheme.colorScheme.primary,
+                    imageVector = tier.icon,
+                    contentDescription = null,
+                    tint = when {
+                        celebrate -> GoldYellow
+                        tier == ResultTier.GOOD -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    },
                     modifier = Modifier.size(56.dp)
                 )
             }
 
             Text(
-                text = if (isPerfect) "Blitz Perfect!" else "Session Complete!",
+                text = tier.headline,
                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
                 textAlign = TextAlign.Center
             )
+
+            if (tier == ResultTier.PRACTISE) {
+                Text(
+                    text = "Review the explanations to lock in what you missed.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center
+                )
+            }
 
             // Special badge if perfect score (the Daily Champion badge only exists for the Daily Challenge)
             if (isPerfect) {
@@ -968,8 +1055,6 @@ fun QuizResultsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
             // Score breakdown cards
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -983,47 +1068,6 @@ fun QuizResultsScreen(
                     ResultRow("Accuracy Rate", "${accuracy.roundToInt()}%", MaterialTheme.colorScheme.primary)
                     ResultRow("XP Earned", "+$xpEarned XP", GoldYellow)
                 }
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            if (onShare != null) {
-                Button(
-                    onClick = onShare,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp)
-                        .testTag("share_result_button"),
-                    shape = RoundedCornerShape(14.dp)
-                ) {
-                    Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Share your score", fontWeight = FontWeight.Bold)
-                }
-            }
-
-            // Options
-            Button(
-                onClick = onReviewClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .testTag("review_answers_button"),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                Text("Review Question Explanations", fontWeight = FontWeight.Bold)
-            }
-
-            Button(
-                onClick = onDashboardFinish,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .testTag("results_back_to_dashboard_button"),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                Text("Return to Dashboard", fontWeight = FontWeight.Bold)
             }
         }
     }
