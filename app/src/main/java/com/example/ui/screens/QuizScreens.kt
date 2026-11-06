@@ -40,6 +40,14 @@ import com.example.ui.SoundEffects
 import com.example.ui.theme.CorrectGreen
 import com.example.ui.theme.GoldYellow
 import com.example.ui.theme.WrongRed
+import com.example.ui.theme.semantic
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.foundation.progressSemantics
 
 // --- 1. DAILY LOBBY SCREEN ---
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,9 +127,9 @@ fun DailyChallengeLobbyScreen(
                             textAlign = TextAlign.Center
                         )
                         Text(
-                            text = "Finished in ${todayResult.seconds / 60}m ${todayResult.seconds % 60}s · Streak: ${userStats.currentStreak} day${if (userStats.currentStreak == 1) "" else "s"}",
+                            text = "Finished in ${todayResult.seconds / 60}m ${todayResult.seconds % 60}s · Streak: ${streakLabel(userStats.currentStreak)}",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Button(
                             onClick = onShare,
@@ -138,12 +146,12 @@ fun DailyChallengeLobbyScreen(
                     } else if (dailyPlayed) {
                         Text(
                             text = "✓ Attempt used today",
-                            style = MaterialTheme.typography.titleMedium.copy(color = CorrectGreen, fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.semantic.successText, fontWeight = FontWeight.Bold)
                         )
                         Text(
                             text = "A new challenge unlocks at midnight.",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     } else {
                         Text(
@@ -155,7 +163,7 @@ fun DailyChallengeLobbyScreen(
                             text = "10 questions, easy to hard. Everyone gets the same set today, so you can compare scores with friends.",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Button(
                             onClick = onStartDailyQuiz,
@@ -203,13 +211,45 @@ private fun LobbyRule(icon: ImageVector, text: String) {
 }
 
 // --- 2. IN-QUIZ ENGINE SCREEN ---
+
+/** The depleting bar. The only place that reads the countdown, so only it recomposes each second. */
+@Composable
+internal fun QuizTimerBar(timeLeft: () -> Int, timerSeconds: Int, modifier: Modifier = Modifier) {
+    val left = timeLeft()
+    val fraction = left / timerSeconds.toFloat()
+    // Green -> amber -> red as time runs down
+    val color = when {
+        fraction > 0.5f -> MaterialTheme.semantic.success
+        fraction > 0.25f -> MaterialTheme.semantic.warning
+        else -> MaterialTheme.semantic.error
+    }
+    val progress = fraction.coerceIn(0f, 1f) // +15s lifeline can push past the full bar
+    val secondsLeft = left.coerceAtLeast(0)
+    LinearProgressIndicator(
+        progress = { progress },
+        color = color,
+        trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f),
+        strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(8.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .testTag("quiz_timer_bar")
+            .progressSemantics(progress)
+            .semantics {
+                contentDescription = "Time remaining"
+                stateDescription = if (secondsLeft == 1) "1 second left" else "$secondsLeft seconds left"
+            }
+    )
+}
 @Composable
 fun QuizPlayScreen(
     questions: List<Question>,
     currentIndex: Int,
     selectedOption: Int?,
     isRevealed: Boolean,
-    timeLeft: Int,
+    /** Read only inside the timer bar, so the per-second tick doesn't recompose the whole screen. */
+    timeLeft: () -> Int,
     hiddenOptions: Set<Int>,
     audiencePoll: List<Int>?,
     userStats: UserStats,
@@ -301,15 +341,6 @@ fun QuizPlayScreen(
         }
     }
 
-    // Visual Timer bar depleting color logic (Green -> Yellow -> Red)
-    val timerFraction = timeLeft / timerSeconds.toFloat()
-    val timerColor = when {
-        timerFraction > 0.5f -> CorrectGreen
-        timerFraction > 0.25f -> GoldYellow
-        else -> WrongRed
-    }
-    val timerProgress = timerFraction.coerceIn(0f, 1f) // +15s lifeline can push past the full bar
-
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
@@ -337,27 +368,12 @@ fun QuizPlayScreen(
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.ExtraBold
                     )
-                    IconButton(onClick = {}) { // Placeholder balance space
-                        Icon(
-                            imageVector = Icons.Default.HelpOutline,
-                            contentDescription = "Details",
-                            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
-                        )
-                    }
+                    Spacer(modifier = Modifier.size(48.dp)) // keeps the title centred opposite the Quit button
                 }
 
                 // Dynamic Progress Bar (hidden when "Timed Questions" is switched off)
                 if (isTimed) {
-                    LinearProgressIndicator(
-                        progress = { timerProgress },
-                        color = timerColor,
-                        trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                        strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(8.dp)
-                            .clip(RoundedCornerShape(4.dp))
-                    )
+                    QuizTimerBar(timeLeft = timeLeft, timerSeconds = timerSeconds)
                 }
                 if (notice != null) {
                     Surface(
@@ -423,27 +439,28 @@ fun QuizPlayScreen(
                         ) {
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
+                                color = MaterialTheme.colorScheme.primaryContainer
                             ) {
                                 Text(
                                     text = currentQ.category.uppercase(),
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                                     style = MaterialTheme.typography.labelSmall.copy(
                                         fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.primary
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 )
                             }
+                            val chip = MaterialTheme.semantic.difficulty(currentQ.difficulty)
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
-                                color = if (currentQ.difficulty == "hard") WrongRed.copy(alpha = 0.15f) else GoldYellow.copy(alpha = 0.15f)
+                                color = chip.container
                             ) {
                                 Text(
                                     text = currentQ.difficulty.uppercase(),
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                                     style = MaterialTheme.typography.labelSmall.copy(
                                         fontWeight = FontWeight.Bold,
-                                        color = if (currentQ.difficulty == "hard") WrongRed else Color(0xFF6B4B00)
+                                        color = chip.content
                                     )
                                 )
                             }
@@ -705,14 +722,14 @@ fun QuizPlayScreen(
                         text = "LIFELINES · ONE USE EACH PER QUIZ",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.Top
                     ) {
                         LifelineButton(
                             label = "50/50",
@@ -720,7 +737,8 @@ fun QuizPlayScreen(
                             icon = Icons.Default.FilterAlt, // standard representation
                             isActive = !isRevealed && hiddenOptions.isEmpty() && currentQ.optionsList.size >= 4,
                             onClick = onUse5050,
-                            tag = "fifty_fifty_lifeline"
+                            tag = "fifty_fifty_lifeline",
+                            modifier = Modifier.weight(1f)
                         )
                         LifelineButton(
                             label = "Skip",
@@ -728,7 +746,8 @@ fun QuizPlayScreen(
                             icon = Icons.Default.SkipNext,
                             isActive = !isRevealed,
                             onClick = onUseSkip,
-                            tag = "skip_lifeline"
+                            tag = "skip_lifeline",
+                            modifier = Modifier.weight(1f)
                         )
                         LifelineButton(
                             label = "+15s",
@@ -736,7 +755,8 @@ fun QuizPlayScreen(
                             icon = Icons.Default.Timer,
                             isActive = !isRevealed && isTimed,
                             onClick = onUseExtraTime,
-                            tag = "extra_time_lifeline"
+                            tag = "extra_time_lifeline",
+                            modifier = Modifier.weight(1f)
                         )
                         LifelineButton(
                             label = "Audience",
@@ -744,7 +764,8 @@ fun QuizPlayScreen(
                             icon = Icons.Default.Poll,
                             isActive = !isRevealed && audiencePoll == null,
                             onClick = onUseAskAudience,
-                            tag = "ask_audience_lifeline"
+                            tag = "ask_audience_lifeline",
+                            modifier = Modifier.weight(1f)
                         )
                     }
                 }
@@ -760,75 +781,85 @@ fun LifelineButton(
     icon: ImageVector,
     isActive: Boolean,
     onClick: () -> Unit,
-    tag: String
+    tag: String,
+    modifier: Modifier = Modifier
 ) {
+    val usable = isActive && count > 0
+    val scheme = MaterialTheme.colorScheme
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        IconButton(
-            onClick = { if (isActive && count > 0) onClick() },
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .background(
-                    if (isActive && count > 0) MaterialTheme.colorScheme.primaryContainer
-                    else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f)
+        Box {
+            // Disabled (not just dimmed) once used, so TalkBack says so and taps do nothing.
+            IconButton(
+                onClick = onClick,
+                enabled = usable,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(if (usable) scheme.primaryContainer else scheme.onSurface.copy(alpha = 0.08f))
+                    .testTag(tag)
+                    .semantics { contentDescription = if (count > 0) label else "$label, used" }
+            ) {
+                // The button's own description carries the name; the icon is decorative.
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = if (usable) scheme.onPrimaryContainer else scheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    modifier = Modifier.size(20.dp)
                 )
-                .testTag(tag)
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = label,
-                tint = if (isActive && count > 0) MaterialTheme.colorScheme.onPrimaryContainer
-                else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-                modifier = Modifier.size(20.dp)
-            )
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Bold,
-                fontSize = 11.sp
-            )
+            }
             Box(
                 modifier = Modifier
-                    .size(16.dp)
+                    .align(Alignment.TopEnd)
+                    .size(18.dp)
                     .background(
-                        color = if (count > 0) MaterialTheme.colorScheme.secondary else Color.Gray,
+                        color = if (count > 0) scheme.secondary else scheme.surfaceVariant,
                         shape = CircleShape
-                    ),
+                    )
+                    .clearAndSetSemantics { },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "$count",
-                    color = Color.White,
+                    color = if (count > 0) scheme.onSecondary else scheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = 10.sp,
+                        fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
-                        lineHeight = 10.sp
+                        lineHeight = 11.sp
                     )
                 )
             }
         }
+        // Wraps (or shrinks) at large font instead of pushing the row off a narrow screen.
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            color = scheme.onSurface,
+            modifier = Modifier.clearAndSetSemantics { }
+        )
     }
 }
 
 @Composable
 private fun AnswerExplanation(question: Question, selectedOption: Int?) {
     val gotItRight = selectedOption == question.correctIndex
-    val accent = if (gotItRight) CorrectGreen else WrongRed
+    val accent = if (gotItRight) MaterialTheme.semantic.success else MaterialTheme.semantic.error
+    val accentText = if (gotItRight) MaterialTheme.semantic.successText else MaterialTheme.semantic.errorText
     Surface(
         shape = RoundedCornerShape(16.dp),
         color = accent.copy(alpha = 0.10f),
         modifier = Modifier
             .fillMaxWidth()
             .testTag("answer_explanation")
+            // Read the verdict out as soon as the answer is revealed.
+            .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite }
     ) {
         Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
@@ -839,7 +870,7 @@ private fun AnswerExplanation(question: Question, selectedOption: Int?) {
                 },
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
-                color = accent
+                color = accentText
             )
             Text(
                 text = question.explanation,
@@ -886,7 +917,7 @@ private fun QuizLoadingOrError(isLoading: Boolean, loadError: String?, onBack: (
                 Text(
                     text = "Finding fresh questions…",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 TextButton(onClick = onBack) { Text("Cancel") }
             }
@@ -1017,7 +1048,7 @@ fun QuizResultsScreen(
                     imageVector = tier.icon,
                     contentDescription = null,
                     tint = when {
-                        celebrate -> GoldYellow
+                        celebrate -> MaterialTheme.semantic.xpText
                         tier == ResultTier.GOOD -> MaterialTheme.colorScheme.primary
                         else -> MaterialTheme.colorScheme.onSurfaceVariant
                     },
@@ -1044,7 +1075,7 @@ fun QuizResultsScreen(
                 Text(
                     text = "Review the explanations to lock in what you missed.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
             }
@@ -1064,7 +1095,7 @@ fun QuizResultsScreen(
                             text = if (isDaily) "👑 Daily Champion!" else "🎯 Perfect score: +${com.example.data.repository.Scoring.PERFECT_BONUS} XP bonus",
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFFE65100)
+                            color = MaterialTheme.semantic.xpText
                         )
                     }
                 }
@@ -1079,9 +1110,9 @@ fun QuizResultsScreen(
                     modifier = Modifier.padding(18.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    ResultRow("Correct Answers", "$correctCount / $totalCount", CorrectGreen)
+                    ResultRow("Correct Answers", "$correctCount / $totalCount", MaterialTheme.semantic.successText)
                     ResultRow("Accuracy Rate", "${accuracy.roundToInt()}%", MaterialTheme.colorScheme.primary)
-                    ResultRow("XP Earned", "+$xpEarned XP", GoldYellow)
+                    ResultRow("XP Earned", "+$xpEarned XP", MaterialTheme.semantic.xpText)
                 }
             }
         }
@@ -1095,7 +1126,7 @@ fun ResultRow(label: String, value: String, valueColor: Color) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+        Text(text = label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(text = value, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold), color = valueColor)
     }
 }
@@ -1162,9 +1193,9 @@ fun ReviewAnswersScreen(
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = when {
-                                    wasCorrect -> CorrectGreen
-                                    noAnswer -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                                    else -> WrongRed
+                                    wasCorrect -> MaterialTheme.semantic.successText
+                                    noAnswer -> MaterialTheme.colorScheme.onSurfaceVariant
+                                    else -> MaterialTheme.semantic.errorText
                                 }
                             )
                         }
@@ -1266,7 +1297,7 @@ fun ReviewAnswersScreen(
                                         text = "Explanation:",
                                         style = MaterialTheme.typography.labelSmall,
                                         fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.primary
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Spacer(modifier = Modifier.height(2.dp))
                                     Text(

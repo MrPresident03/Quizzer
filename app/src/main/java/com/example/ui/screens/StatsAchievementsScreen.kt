@@ -24,6 +24,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import com.example.ui.theme.semantic
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.testTag
@@ -78,14 +83,14 @@ fun StatsAndAchievementsScreen(
                     selected = activeTab == 0,
                     onClick = { activeTab = 0 },
                     text = { Text("Analytics & Stats", fontWeight = FontWeight.Bold) },
-                    icon = { Icon(imageVector = Icons.Default.BarChart, contentDescription = "Stats") },
+                    icon = { Icon(imageVector = Icons.Default.BarChart, contentDescription = null) },
                     modifier = Modifier.testTag("stats_tab_button")
                 )
                 Tab(
                     selected = activeTab == 1,
                     onClick = { activeTab = 1 },
                     text = { Text("Badges (${achievementList.count { it.isUnlocked }}/${achievementList.size})", fontWeight = FontWeight.Bold) },
-                    icon = { Icon(imageVector = Icons.Default.Grade, contentDescription = "Achievements") },
+                    icon = { Icon(imageVector = Icons.Default.Grade, contentDescription = null) },
                     modifier = Modifier.testTag("achievements_tab_button")
                 )
             }
@@ -144,20 +149,20 @@ fun PerformanceStatsTab(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Timeline,
-                            contentDescription = "No stats",
-                            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                             modifier = Modifier.size(56.dp)
                         )
                         Text(
                             text = "No Games Recorded Yet",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             text = "Complete a practice quiz or enter a daily challenge to begin tracking analytical metrics.",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -217,7 +222,7 @@ fun PerformanceStatsTab(
                             Text(
                                 text = "Answered ${userStats.correctAnswersCount} out of ${userStats.totalQuestionsAnswered} total quiz prompts.",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -324,7 +329,7 @@ fun PerformanceStatsTab(
                             Text(
                                 text = "$dateStr | Difficulty: ${history.difficulty.uppercase()}",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
 
@@ -339,7 +344,7 @@ fun PerformanceStatsTab(
                                 text = "+${history.xpEarned} XP",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = Color(0xFFE65100)
+                                color = MaterialTheme.semantic.xpText
                             )
                         }
                     }
@@ -389,15 +394,15 @@ private fun TopicMasteryCard(topicStats: List<TopicStat>, onPracticeTopic: (Stri
                         Text(
                             text = "$percent% · ${stat.correct}/${stat.answered}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     LinearProgressIndicator(
                         progress = { stat.accuracy },
                         color = when {
-                            percent >= 80 -> Color(0xFF2E7D32)
+                            percent >= 80 -> MaterialTheme.semantic.successText
                             percent >= 50 -> MaterialTheme.colorScheme.primary
-                            else -> Color(0xFFC62828)
+                            else -> MaterialTheme.semantic.errorText
                         },
                         trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
                         strokeCap = StrokeCap.Round,
@@ -443,25 +448,30 @@ fun BadgesAchievementsTab(achievementList: List<Achievement>) {
         contentPadding = PaddingValues(bottom = 90.dp)
     ) {
         items(achievementList) { ach ->
+            // Brighter tones on dark surfaces, deeper ones on light, so the icon reads on both.
+            val darkSurface = MaterialTheme.colorScheme.surface.luminance() < 0.5f
             val unlockedColor = when (ach.iconName) {
-                "ic_badge_1", "ic_badge_5" -> Color(0xFF1E88E5) // blue
-                "ic_badge_2", "ic_badge_10", "ic_badge_18" -> Color(0xFFFDD835) // gold
-                "ic_badge_3", "ic_badge_7" -> Color(0xFFF4511E) // orange
-                else -> Color(0xFF43A047) // green
+                "ic_badge_1", "ic_badge_5" -> if (darkSurface) Color(0xFF90CAF9) else Color(0xFF1565C0) // blue
+                "ic_badge_2", "ic_badge_10", "ic_badge_18" -> if (darkSurface) Color(0xFFFFD54F) else Color(0xFF8D6200) // gold
+                "ic_badge_3", "ic_badge_7" -> if (darkSurface) Color(0xFFFFAB91) else Color(0xFFC63D12) // orange
+                else -> if (darkSurface) Color(0xFFA5D6A7) else Color(0xFF2E7D32) // green
             }
+            val badgeDescription = "${ach.title}. ${ach.description}. ${if (ach.isUnlocked) "Unlocked" else "Locked"}"
 
             Card(
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = if (ach.isUnlocked) MaterialTheme.colorScheme.surface
-                    else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                    else MaterialTheme.colorScheme.surfaceVariant
                 ),
                 elevation = CardDefaults.cardElevation(if (ach.isUnlocked) 2.dp else 0.dp),
-                modifier = Modifier.height(150.dp)
+                modifier = Modifier
+                    .heightIn(min = 150.dp)
+                    .clearAndSetSemantics { contentDescription = badgeDescription }
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -478,8 +488,8 @@ fun BadgesAchievementsTab(achievementList: List<Achievement>) {
                     ) {
                         Icon(
                             imageVector = if (ach.isUnlocked) Icons.Default.Grade else Icons.Default.Lock,
-                            contentDescription = ach.title,
-                            tint = if (ach.isUnlocked) unlockedColor else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            contentDescription = null, // decorative: the card's description says Locked / Unlocked
+                            tint = if (ach.isUnlocked) unlockedColor else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(24.dp)
                         )
                     }
@@ -490,9 +500,7 @@ fun BadgesAchievementsTab(achievementList: List<Achievement>) {
                         text = ach.title,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        textAlign = TextAlign.Center
                     )
 
                     Spacer(modifier = Modifier.height(2.dp))
@@ -501,10 +509,8 @@ fun BadgesAchievementsTab(achievementList: List<Achievement>) {
                         text = ach.description,
                         style = MaterialTheme.typography.bodySmall,
                         textAlign = TextAlign.Center,
-                        maxLines = 2,
                         lineHeight = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                        overflow = TextOverflow.Ellipsis
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
