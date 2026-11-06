@@ -1,0 +1,52 @@
+1---------- beginning of main
+2-11-06 18:16:37.053  5190  6766 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 524 [CONTEXT service_id=218 ]
+3-11-06 18:16:37.058  5190  6766 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 10 uptime_millis: 10 exec_start_elapsed_seconds: 524 [CONTEXT service_id=218 ]
+4:11-06 18:16:37.089  6952  6952 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+5:11-06 18:16:37.093  6952  6952 I AndroidRuntime: Using default boot image
+6:11-06 18:16:37.093  6952  6952 I AndroidRuntime: Leaving lock profiling enabled
+7-11-06 18:16:37.095  6952  6952 I app_process: Core platform API reporting enabled, enforcing=false
+8-11-06 18:16:37.095  6952  6952 I app_process: Using CollectorTypeCC GC.
+9-11-06 18:16:37.144  6952  6952 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-11-06 18:16:37.151  6952  6952 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-11-06 18:16:37.151  6952  6952 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+12-11-06 18:16:37.156  6952  6952 W app_process: Unexpected CPU variant for x86: x86_64.
+13-11-06 18:16:37.156  6952  6952 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+14-11-06 18:16:37.169  6952  6952 W libc    : Access denied finding property "ro.product.name_for_attestation"
+15-11-06 18:16:37.169  6952  6952 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+16-11-06 18:16:37.169  6952  6952 W libc    : Access denied finding property "ro.product.model_for_attestation"
+17:11-06 18:16:37.170  6952  6952 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+18-11-06 18:16:37.165  6952  6952 W main    : type=1400 audit(0.0:68): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+19-11-06 18:16:37.172  6952  6952 D UiAutomationConnection: Created on user UserHandle{0}
+20---------- beginning of system
+21-11-06 18:16:37.172   519  1409 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+22-11-06 18:16:37.169  6952  6952 W main    : type=1400 audit(0.0:69): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+23-11-06 18:16:37.175   519  1409 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+24-11-06 18:16:37.175   519   550 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+25-11-06 18:16:37.169  6952  6952 W main    : type=1400 audit(0.0:70): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+26-11-06 18:16:37.179   519   601 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+27-11-06 18:16:37.180   337   337 D Zygote  : Forked child process 6967
+28-11-06 18:16:37.180   519   550 I ActivityManager: Start proc 6967:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+29-11-06 18:16:37.203  6967  6967 I s.quizzer.debug: Late-enabling -Xcheck:jni
+30-11-06 18:16:37.212  6967  6967 I s.quizzer.debug: Using CollectorTypeCC GC.
+31-11-06 18:16:37.213  6967  6967 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+32-11-06 18:16:37.213  6967  6967 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+--
+2632-11-06 18:20:11.271  1106  1119 W System  : A resource failed to call release. 
+2633-11-06 18:20:11.281   398   989 D audioserver: -129
+2634-11-06 18:20:11.287  6952  6952 I app_process: System.exit called, status: 0
+2635:11-06 18:20:11.287  6952  6952 I AndroidRuntime: VM exiting with result code 0.
+2636-11-06 18:20:11.362  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2637-11-06 18:20:11.362  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2638-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2639-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2640-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2641-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2642-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2643-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2644-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2645-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2646-11-06 18:20:11.363  1717  2154 I A       : onOpaVisibilityChanged: false
+2647-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2648-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2649-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+2650-11-06 18:20:11.363  1717  2154 W A       : Disposing empty manager. Did you forgot to subscribe observables?

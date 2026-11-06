@@ -1,0 +1,52 @@
+1---------- beginning of main
+2-11-06 18:14:57.601  5039  6570 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 408 [CONTEXT service_id=218 ]
+3-11-06 18:14:57.604  5039  6628 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 7 uptime_millis: 7 exec_start_elapsed_seconds: 408 [CONTEXT service_id=218 ]
+4:11-06 18:14:57.622  6766  6766 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+5:11-06 18:14:57.625  6766  6766 I AndroidRuntime: Using default boot image
+6:11-06 18:14:57.625  6766  6766 I AndroidRuntime: Leaving lock profiling enabled
+7-11-06 18:14:57.626  6766  6766 I app_process: Core platform API reporting enabled, enforcing=false
+8-11-06 18:14:57.626  6766  6766 I app_process: Using CollectorTypeCC GC.
+9-11-06 18:14:57.661  6766  6766 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-11-06 18:14:57.666  6766  6766 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-11-06 18:14:57.666  6766  6766 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+12-11-06 18:14:57.670  6766  6766 W app_process: Unexpected CPU variant for x86: x86_64.
+13-11-06 18:14:57.670  6766  6766 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+14-11-06 18:14:57.679  6766  6766 W libc    : Access denied finding property "ro.product.name_for_attestation"
+15-11-06 18:14:57.679  6766  6766 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+16-11-06 18:14:57.679  6766  6766 W libc    : Access denied finding property "ro.product.model_for_attestation"
+17:11-06 18:14:57.679  6766  6766 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+18-11-06 18:14:57.681  6766  6766 D UiAutomationConnection: Created on user UserHandle{0}
+19---------- beginning of system
+20-11-06 18:14:57.681   524   905 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+21-11-06 18:14:57.677  6766  6766 W main    : type=1400 audit(0.0:64): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+22-11-06 18:14:57.677  6766  6766 W main    : type=1400 audit(0.0:65): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+23-11-06 18:14:57.686   524   905 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+24-11-06 18:14:57.686   524   552 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+25-11-06 18:14:57.690   524   602 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+26-11-06 18:14:57.690   337   337 D Zygote  : Forked child process 6779
+27-11-06 18:14:57.691   524   552 I ActivityManager: Start proc 6779:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+28-11-06 18:14:57.677  6766  6766 W main    : type=1400 audit(0.0:66): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+29-11-06 18:14:57.707  6779  6779 I s.quizzer.debug: Late-enabling -Xcheck:jni
+30-11-06 18:14:57.716  6779  6779 I s.quizzer.debug: Using CollectorTypeCC GC.
+31-11-06 18:14:57.717  6779  6779 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+32-11-06 18:14:57.717  6779  6779 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+--
+2408-11-06 18:17:21.199   524  2282 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: finished inst
+2409-11-06 18:17:21.199  1804  2293 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+2410-11-06 18:17:21.200  6766  6766 I app_process: System.exit called, status: 0
+2411:11-06 18:17:21.200  6766  6766 I AndroidRuntime: VM exiting with result code 0.
+2412-11-06 18:17:21.230   524  1773 I ImeTracker: com.google.android.apps.nexuslauncher:dfaaff20: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_SAME_WINDOW_FOCUSED_WITHOUT_EDITOR
+2413-11-06 18:17:21.230   524  1773 I ImeTracker: com.google.android.apps.nexuslauncher:dfaaff20: onCancelled at PHASE_SERVER_SHOULD_HIDE
+2414-11-06 18:17:21.230  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227 
+2415-11-06 18:17:21.231  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+2416-11-06 18:17:21.231  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.google.android.apps.nexuslauncher fieldId=0 fieldName=null extras=null}, false)
+2417-11-06 18:17:21.231  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+2418-11-06 18:17:21.231  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+2419-11-06 18:17:21.421     0     0 I binder  : 524:2282 ioctl 400c620e 7efd5ccfb930 returned -11
+2420-11-06 18:17:21.422     0     0 I binder  : 524:2282 ioctl 400c620e 7efd5ccfb930 returned -11
+2421-11-06 18:17:21.254  1631  2031 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+2422-11-06 18:17:21.254  1631  2031 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+2423-11-06 18:17:21.254   524  2282 E ActivityManager: Unable to freeze binder for 6779: -11
+2424-11-06 18:17:21.255   524  2282 I ActivityManager: Killing 6779:nz.durbs.quizzer.debug/u0a192 (adj 0): stop nz.durbs.quizzer.debug due to finished inst
+2425-11-06 18:17:21.261   524   542 D DisplayManagerService: Drop pending events for gone uid 10192
+2426-11-06 18:17:21.267   830   861 W Looper  : Slow dispatch took 63ms wmshell.main h=android.os.Handler c=com.android.wm.shell.common.ShellExecutor$$ExternalSyntheticLambda1@bc0dad1 m=0

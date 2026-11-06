@@ -1,0 +1,70 @@
+22-11-06 18:22:26.936  1717  1717 I GsaVoiceInteractionSrv: Handling ACTION_START_HOTWORD
+23-11-06 18:22:26.937  1717  2145 I GsaVoiceInteractionSrv: disregardVoiceMatch: false
+24-11-06 18:22:26.937  1717  2145 I GsaVoiceInteractionSrv: Cannot start hotword, hotword has been explicitly disabled.
+25:11-06 18:22:26.966  7948  7948 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+26:11-06 18:22:26.977  7948  7948 I AndroidRuntime: Using default boot image
+27:11-06 18:22:26.979  7948  7948 I AndroidRuntime: Leaving lock profiling enabled
+28-11-06 18:22:26.992  7948  7948 I app_process: Core platform API reporting enabled, enforcing=false
+29-11-06 18:22:26.995   519   537 V WindowManager: Sent Transition #61 createdAt=11-06 18:22:26.617 via request=TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=23 displayId=0 isRunning=false baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=nz.durbs.quizzer.debug/com.example.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{nz.durbs.quizzer.debug/com.example.MainActivity} numActivities=0 lastActiveTime=797375 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{bc291fa Task{7557c84 #23 type=standard A=10192:nz.durbs.quizzer.debug}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+30-11-06 18:22:26.996   519   537 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+31-11-06 18:22:26.998   831   865 V WindowManagerShell: onTransitionReady android.os.BinderProxy@60cd99d: {id=61 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@c7f213f} m=CLOSE f=NONE leash=Surface(name=Task=23)/@0x963c9e3 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@3fc8a0c} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xf924fe0 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{dceb318 token=android.os.Binder@9c356fb})/@0xce27299 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+32-11-06 18:22:26.999  7948  7948 I app_process: Using CollectorTypeCC GC.
+33-11-06 18:22:27.001   831   865 V WindowManagerShell: Playing animation for (#61)android.os.BinderProxy@60cd99d@0
+34-11-06 18:22:27.002   831   865 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@90698d7
+35-11-06 18:22:27.002   831   865 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@7aac5c4
+36-11-06 18:22:27.002   831   865 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@5901cad
+37-11-06 18:22:27.002   831   865 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@1e71be2
+38-11-06 18:22:27.003   831   865 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+39-11-06 18:22:27.003   831   865 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@cb1eb73
+40-11-06 18:22:27.003   831   865 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@b707a30
+41-11-06 18:22:27.003   831   865 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@53ed6a9
+42-11-06 18:22:27.003   519   537 V WindowManager:     info={id=61 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{bc291fa Task{7557c84 #23 type=standard A=10192:nz.durbs.quizzer.debug}}} m=CLOSE f=NONE leash=Surface(name=Task=23)/@0x8dd81c sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{RemoteToken{9508f03 Task{65d21c6 #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x47e7a5e sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{dceb318 token=android.os.Binder@9c356fb})/@0xf49fd98 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+--
+114-11-06 18:22:27.357  7948  7948 W libc    : Access denied finding property "ro.product.name_for_attestation"
+115-11-06 18:22:27.363  7948  7948 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+116-11-06 18:22:27.363  7948  7948 W libc    : Access denied finding property "ro.product.model_for_attestation"
+117:11-06 18:22:27.364  7948  7948 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+118-11-06 18:22:27.366  7948  7948 W Monkey  : args: [-p, nz.durbs.quizzer.debug, --pct-syskeys, 0, --throttle, 40, -s, 202, -v, 4000]
+119-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "-p"
+120-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "nz.durbs.quizzer.debug"
+121-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "--pct-syskeys"
+122-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "0"
+123-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "--throttle"
+124-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "40"
+125-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "-s"
+126-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "202"
+127-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "-v"
+128-11-06 18:22:27.366  7948  7948 W Monkey  :  arg: "4000"
+129-11-06 18:22:27.366  7948  7948 W Monkey  : data="nz.durbs.quizzer.debug"
+130-11-06 18:22:27.372  7948  7948 W Monkey  : arg="--pct-syskeys" mCurArgData="null" mNextArg=3 argwas="--pct-syskeys" nextarg="0"
+131-11-06 18:22:27.372  7948  7948 W Monkey  : data="0"
+132-11-06 18:22:27.373  7948  7948 W Monkey  : arg="--throttle" mCurArgData="null" mNextArg=5 argwas="--throttle" nextarg="40"
+--
+2184-11-06 18:23:28.459   398   989 D audioserver: FGS Logger Transaction failed
+2185-11-06 18:23:28.459   398   989 D audioserver: -129
+2186-11-06 18:23:28.474   398   503 D AudioFlinger: mixer(0x7e6c42441930) throttle end: throttle time(20)
+2187:11-06 18:23:28.531  7965  7965 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+2188-11-06 18:23:28.750   398   503 D audioserver: FGS Logger Transaction failed
+2189-11-06 18:23:28.750   398   503 D audioserver: -129
+2190-11-06 18:23:28.755  1554  1554 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():159 Tooltip with id spell_check_add_to_dictionary not found in tooltipManager.
+2191-11-06 18:23:28.756   398   989 D audioserver: FGS Logger Transaction failed
+2192-11-06 18:23:28.756   398   989 D audioserver: -129
+2193-11-06 18:23:28.808   398   503 D AudioFlinger: mixer(0x7e6c42441930) throttle end: throttle time(19)
+2194-11-06 18:23:28.808  7948  7948 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(1.0,2.0)
+2195-11-06 18:23:28.864  1554  1564 I putmethod.latin: Background young concurrent copying GC freed 249250(10MB) AllocSpace objects, 78(3484KB) LOS objects, 41% free, 20MB/35MB, paused 27us,23us total 261.512ms
+2196-11-06 18:23:28.888  7948  7948 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-5.0,0.0)
+2197-11-06 18:23:28.890  7948  7948 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(963.0,1558.0)
+2198-11-06 18:23:28.891  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=963.0, y[0]=1558.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=936494, downTime=936494, deviceId=-1, source=0x1002, displayId=0, eventId=-267149595 }
+2199-11-06 18:23:28.894  7948  7948 I Monkey  : :Sending Touch (ACTION_UP): 0:(949.458,1503.1855)
+2200-11-06 18:23:28.895  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=949.458, y[0]=1503.1855, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=936498, downTime=936494, deviceId=-1, source=0x1002, displayId=0, eventId=-467935406 }
+2201-11-06 18:23:28.940  1554  1667 D EGL_emulation: app_time_stats: avg=80.22ms min=37.43ms max=148.66ms count=13
+2202-11-06 18:23:28.942   398   503 D audioserver: FGS Logger Transaction failed
+--
+7607-11-06 18:24:26.053  7948  7948 I Monkey  : ## Network stats: elapsed time=118607ms (0ms mobile, 0ms wifi, 118607ms not connected)
+7608-11-06 18:24:26.053  7948  7948 I Monkey  : // Monkey finished
+7609-11-06 18:24:26.055  7948  7948 I app_process: System.exit called, status: 0
+7610:11-06 18:24:26.056  7948  7948 I AndroidRuntime: VM exiting with result code 0.
+7611-11-06 18:24:26.078  1554  1554 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():159 Tooltip with id spell_check_add_to_dictionary not found in tooltipManager.
+7612-11-06 18:24:26.097  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3483 setKeyboardViewShown() : type = HEADER, shownType = SHOW_MANDATORY_WITH_ANIMATION
+7613-11-06 18:24:26.101  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3530 setKeyboardViewShown() : shouldShow = true
+7614-11-06 18:24:26.360     0     0 I logd    : logdr: UID=2000 GID=2000 PID=8267 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns

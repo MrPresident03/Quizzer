@@ -1,0 +1,976 @@
+  bash arg: -p
+  bash arg: nz.durbs.quizzer.debug
+  bash arg: --pct-syskeys
+  bash arg: 0
+  bash arg: --throttle
+  bash arg: 40
+  bash arg: -s
+  bash arg: 202
+  bash arg: -v
+  bash arg: 4000
+args: [-p, nz.durbs.quizzer.debug, --pct-syskeys, 0, --throttle, 40, -s, 202, -v, 4000]
+ arg: "-p"
+ arg: "nz.durbs.quizzer.debug"
+ arg: "--pct-syskeys"
+ arg: "0"
+ arg: "--throttle"
+ arg: "40"
+ arg: "-s"
+ arg: "202"
+ arg: "-v"
+ arg: "4000"
+data="nz.durbs.quizzer.debug"
+arg="--pct-syskeys" mCurArgData="null" mNextArg=3 argwas="--pct-syskeys" nextarg="0"
+data="0"
+arg="--throttle" mCurArgData="null" mNextArg=5 argwas="--throttle" nextarg="40"
+data="40"
+data="202"
+:Monkey: seed=202 count=4000
+:AllowPackage: nz.durbs.quizzer.debug
+:IncludeCategory: android.intent.category.LAUNCHER
+:IncludeCategory: android.intent.category.MONKEY
+// Event percentages:
+//   0: 15.306122%
+//   1: 10.204082%
+//   2: 2.0408163%
+//   3: 15.306122%
+//   4: -0.0%
+//   5: -0.0%
+//   6: 25.510204%
+//   7: 15.306122%
+//   8: -0.0%
+//   9: 2.0408163%
+//   10: 1.0204082%
+//   11: 13.265306%
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(549.0,325.0)
+:Sending Touch (ACTION_UP): 0:(551.07324,322.6963)
+:Sending Touch (ACTION_DOWN): 0:(12.0,2134.0)
+:Sending Touch (ACTION_UP): 0:(16.36621,2143.2217)
+:Sending Touch (ACTION_DOWN): 0:(430.0,682.0)
+:Sending Touch (ACTION_UP): 0:(420.6338,674.458)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(609.0,1948.0)
+:Sending Touch (ACTION_UP): 0:(597.9541,1959.5146)
+:Sending Touch (ACTION_DOWN): 0:(742.0,198.0)
+:Sending Touch (ACTION_UP): 0:(764.45703,198.05566)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,4.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,1.0)
+:Sending Flip keyboardOpen=false
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Touch (ACTION_DOWN): 0:(439.0,470.0)
+:Sending Touch (ACTION_UP): 0:(557.8672,372.55957)
+:Sending Touch (ACTION_DOWN): 0:(555.0,889.0)
+:Sending Touch (ACTION_UP): 0:(459.8623,850.17676)
+    // Injection Failed
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+:Sending Touch (ACTION_DOWN): 0:(369.0,2178.0)
+:Sending Touch (ACTION_UP): 0:(369.2422,2190.255)
+    //[calendar_time:2026-11-06 18:22:35.324  system_uptime:882940]
+    // Sending event #100
+    //[calendar_time:2026-11-06 18:22:35.381  system_uptime:882985]
+    // Sending event #100
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(31.0,1731.0)
+:Sending Touch (ACTION_UP): 0:(0.0,1707.2051)
+:Sending Touch (ACTION_DOWN): 0:(517.0,2184.0)
+:Sending Touch (ACTION_UP): 0:(513.1543,2191.0195)
+:Sending Touch (ACTION_DOWN): 0:(1058.0,874.0)
+:Sending Touch (ACTION_UP): 0:(1051.7842,884.1621)
+:Sending Touch (ACTION_DOWN): 0:(195.0,566.0)
+:Sending Touch (ACTION_UP): 0:(211.27637,576.1465)
+:Sending Touch (ACTION_DOWN): 0:(1019.0,1522.0)
+:Sending Touch (ACTION_UP): 0:(1016.5957,1530.1973)
+:Sending Touch (ACTION_DOWN): 0:(636.0,2151.0)
+:Sending Touch (ACTION_UP): 0:(655.1992,2147.1367)
+:Sending Touch (ACTION_DOWN): 0:(382.0,1050.0)
+:Sending Touch (ACTION_UP): 0:(339.10742,1029.7275)
+:Sending Touch (ACTION_DOWN): 0:(414.0,969.0)
+:Sending Touch (ACTION_UP): 0:(483.33984,936.76855)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,3.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-1.0)
+:Sending Touch (ACTION_DOWN): 0:(994.0,1665.0)
+:Sending Touch (ACTION_UP): 0:(996.14844,1670.6094)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,1.0)
+    //[calendar_time:2026-11-06 18:22:42.464  system_uptime:890068]
+    // Sending event #200
+:Sending Touch (ACTION_DOWN): 0:(964.0,75.0)
+:Sending Touch (ACTION_UP): 0:(888.49316,70.291016)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(590.0,1973.0)
+:Sending Touch (ACTION_UP): 0:(593.7754,1935.6338)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-3.0)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,1.0)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,-2.0)
+:Sending Touch (ACTION_DOWN): 0:(38.0,982.0)
+:Sending Touch (ACTION_UP): 0:(23.987305,1018.98047)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(631.0,1978.0)
+:Sending Touch (ACTION_UP): 0:(629.6875,1960.4736)
+:Sending Touch (ACTION_DOWN): 0:(69.0,1866.0)
+:Sending Touch (ACTION_UP): 0:(63.370117,1864.8516)
+    // Rejecting start of Intent { act=android.intent.action.EDIT dat=content://media/... typ=image/png cmp=com.google.android.markup/.AnnotateActivity } in package com.google.android.markup
+:Sending Touch (ACTION_DOWN): 0:(687.0,1308.0)
+:Sending Touch (ACTION_UP): 0:(688.49805,1290.3555)
+    //[calendar_time:2026-11-06 18:22:44.118  system_uptime:891722]
+    // Sending event #300
+    //[calendar_time:2026-11-06 18:22:44.160  system_uptime:891764]
+    // Sending event #300
+:Sending Touch (ACTION_DOWN): 0:(975.0,674.0)
+:Sending Touch (ACTION_UP): 0:(974.13184,653.27734)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-4.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,2.0)
+:Sending Touch (ACTION_DOWN): 0:(150.0,716.0)
+:Sending Touch (ACTION_UP): 0:(148.02539,714.29395)
+:Sending Touch (ACTION_DOWN): 0:(470.0,1919.0)
+:Sending Touch (ACTION_UP): 0:(468.4629,1930.5537)
+:Sending Touch (ACTION_DOWN): 0:(904.0,304.0)
+:Sending Touch (ACTION_UP): 0:(944.1006,296.95703)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-2.0)
+:Sending Touch (ACTION_DOWN): 0:(95.0,1392.0)
+:Sending Touch (ACTION_UP): 0:(102.75195,1403.0049)
+:Sending Touch (ACTION_DOWN): 0:(223.0,167.0)
+:Sending Touch (ACTION_UP): 0:(219.44434,170.00879)
+:Sending Touch (ACTION_DOWN): 0:(541.0,277.0)
+:Sending Touch (ACTION_UP): 0:(441.4043,367.56445)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,-4.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,3.0)
+    //[calendar_time:2026-11-06 18:22:46.690  system_uptime:894294]
+    // Sending event #400
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-1.0)
+:Sending Touch (ACTION_DOWN): 0:(604.0,2017.0)
+:Sending Touch (ACTION_UP): 0:(615.7822,2014.2471)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,2.0)
+:Sending Touch (ACTION_DOWN): 0:(959.0,979.0)
+:Sending Touch (ACTION_UP): 0:(954.8174,990.0332)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-1.0)
+    // Rejecting start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.google.android.contacts/com.android.contacts.activities.PeopleActivity } in package com.google.android.contacts
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(753.0,117.0)
+:Sending Touch (ACTION_UP): 0:(743.6338,135.42773)
+:Sending Touch (ACTION_DOWN): 0:(646.0,873.0)
+:Sending Touch (ACTION_UP): 0:(640.6328,867.76855)
+:Sending Touch (ACTION_DOWN): 0:(1015.0,1308.0)
+:Sending Touch (ACTION_UP): 0:(862.9961,1271.4961)
+:Sending Touch (ACTION_DOWN): 0:(590.0,737.0)
+:Sending Touch (ACTION_UP): 0:(587.2197,745.6924)
+:Sending Touch (ACTION_DOWN): 0:(1048.0,1975.0)
+:Sending Touch (ACTION_UP): 0:(1051.2383,1973.7617)
+:Sending Touch (ACTION_DOWN): 0:(362.0,53.0)
+:Sending Touch (ACTION_UP): 0:(361.85352,59.026367)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-2.0)
+    //[calendar_time:2026-11-06 18:22:49.352  system_uptime:896956]
+    // Sending event #500
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(39.0,1979.0)
+:Sending Touch (ACTION_UP): 0:(52.015625,1959.4307)
+:Sending Touch (ACTION_DOWN): 0:(303.0,942.0)
+:Sending Touch (ACTION_UP): 0:(302.60645,951.3154)
+:Sending Touch (ACTION_DOWN): 0:(82.0,1778.0)
+:Sending Touch (ACTION_UP): 0:(86.13574,1790.5459)
+:Sending Touch (ACTION_DOWN): 0:(52.0,1034.0)
+:Sending Touch (ACTION_UP): 0:(77.87891,1085.1201)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,0.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(704.0,852.0)
+:Sending Touch (ACTION_UP): 0:(705.5703,849.458)
+:Sending Touch (ACTION_DOWN): 0:(923.0,212.0)
+:Sending Touch (ACTION_UP): 0:(1007.76074,226.78516)
+:Sending Touch (ACTION_DOWN): 0:(1078.0,1828.0)
+:Sending Touch (ACTION_UP): 0:(1078.5205,1829.502)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+:Sending Touch (ACTION_DOWN): 0:(380.0,2004.0)
+:Sending Touch (ACTION_UP): 0:(373.70605,2011.9062)
+:Sending Touch (ACTION_DOWN): 0:(283.0,1374.0)
+:Sending Touch (ACTION_UP): 0:(293.28125,1373.2559)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-1.0)
+    //[calendar_time:2026-11-06 18:22:51.203  system_uptime:898807]
+    // Sending event #600
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(598.0,1839.0)
+:Sending Touch (ACTION_UP): 0:(590.43066,1798.6328)
+:Sending Touch (ACTION_DOWN): 0:(83.0,338.0)
+:Sending Touch (ACTION_UP): 0:(81.21973,324.74805)
+:Sending Touch (ACTION_DOWN): 0:(364.0,746.0)
+:Sending Touch (ACTION_UP): 0:(359.59668,745.7705)
+:Sending Touch (ACTION_DOWN): 0:(500.0,983.0)
+:Sending Touch (ACTION_UP): 0:(498.958,979.4717)
+:Sending Touch (ACTION_DOWN): 0:(683.0,2076.0)
+:Sending Touch (ACTION_UP): 0:(666.02344,2081.0342)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(393.0,1235.0)
+:Sending Touch (ACTION_UP): 0:(371.43555,1180.5)
+:Sending Touch (ACTION_DOWN): 0:(1045.0,896.0)
+:Sending Touch (ACTION_UP): 0:(1051.2422,892.6543)
+:Sending Touch (ACTION_DOWN): 0:(599.0,1308.0)
+:Sending Touch (ACTION_UP): 0:(528.47266,1236.0986)
+:Sending Touch (ACTION_DOWN): 0:(560.0,1261.0)
+:Sending Touch (ACTION_UP): 0:(561.0078,1273.331)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,4.0)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,2.0)
+    //[calendar_time:2026-11-06 18:22:54.274  system_uptime:901878]
+    // Sending event #700
+:Sending Trackball (ACTION_MOVE): 0:(3.0,2.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(246.0,1281.0)
+:Sending Touch (ACTION_UP): 0:(167.68262,1158.9277)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-4.0)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,2.0)
+:Sending Touch (ACTION_DOWN): 0:(927.0,25.0)
+:Sending Touch (ACTION_UP): 0:(926.39746,16.87793)
+:Sending Touch (ACTION_DOWN): 0:(436.0,2180.0)
+:Sending Touch (ACTION_UP): 0:(432.17188,2201.7314)
+:Sending Touch (ACTION_DOWN): 0:(638.0,1127.0)
+:Sending Touch (ACTION_UP): 0:(550.875,1130.0576)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+    //[calendar_time:2026-11-06 18:22:55.806  system_uptime:903410]
+    // Sending event #800
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-4.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(865.0,2139.0)
+:Sending Touch (ACTION_UP): 0:(863.0088,2119.6514)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(719.0,964.0)
+:Sending Touch (ACTION_UP): 0:(733.3867,986.58594)
+:Sending Touch (ACTION_DOWN): 0:(345.0,48.0)
+:Sending Touch (ACTION_UP): 0:(347.9375,52.691406)
+:Sending Touch (ACTION_DOWN): 0:(732.0,1583.0)
+:Sending Touch (ACTION_UP): 0:(732.5127,1573.5928)
+:Sending Touch (ACTION_DOWN): 0:(674.0,1093.0)
+:Sending Touch (ACTION_UP): 0:(690.4863,1099.9932)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(918.0,1178.0)
+:Sending Touch (ACTION_UP): 0:(886.5674,1249.9961)
+:Sending Touch (ACTION_DOWN): 0:(946.0,1042.0)
+:Sending Touch (ACTION_UP): 0:(903.0586,1053.3203)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+    //[calendar_time:2026-11-06 18:22:59.315  system_uptime:906920]
+    // Sending event #900
+:Sending Touch (ACTION_DOWN): 0:(439.0,1750.0)
+:Sending Touch (ACTION_UP): 0:(475.73145,1726.7998)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,4.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(457.0,2073.0)
+:Sending Touch (ACTION_UP): 0:(398.1289,2121.8281)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(369.0,945.0)
+:Sending Touch (ACTION_UP): 0:(366.53418,934.21875)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,2.0)
+:Sending Touch (ACTION_DOWN): 0:(69.0,1149.0)
+:Sending Touch (ACTION_UP): 0:(66.68848,1149.1465)
+    //[calendar_time:2026-11-06 18:23:03.390  system_uptime:910995]
+    // Sending event #1000
+    //[calendar_time:2026-11-06 18:23:03.431  system_uptime:911035]
+    // Sending event #1000
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-1.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(600.0,1225.0)
+:Sending Touch (ACTION_UP): 0:(612.5205,1213.7227)
+:Sending Touch (ACTION_DOWN): 0:(655.0,1314.0)
+:Sending Touch (ACTION_UP): 0:(649.7256,1328.7295)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(330.0,1567.0)
+:Sending Touch (ACTION_UP): 0:(334.68457,1602.5771)
+:Sending Touch (ACTION_DOWN): 0:(116.0,280.0)
+:Sending Touch (ACTION_UP): 0:(117.08203,268.64648)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,1.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(700.0,1484.0)
+:Sending Touch (ACTION_UP): 0:(703.31934,1473.8008)
+:Sending Touch (ACTION_DOWN): 0:(513.0,1911.0)
+:Sending Touch (ACTION_UP): 0:(510.03027,1898.6191)
+    //[calendar_time:2026-11-06 18:23:06.189  system_uptime:913793]
+    // Sending event #1100
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,2.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(665.0,2099.0)
+:Sending Touch (ACTION_UP): 0:(664.4248,2098.917)
+:Sending Touch (ACTION_DOWN): 0:(192.0,1328.0)
+:Sending Touch (ACTION_UP): 0:(180.19629,1335.7227)
+:Sending Touch (ACTION_DOWN): 0:(764.0,1871.0)
+:Sending Touch (ACTION_UP): 0:(763.9658,1864.8633)
+:Sending Touch (ACTION_DOWN): 0:(571.0,2205.0)
+:Sending Touch (ACTION_UP): 0:(616.4824,2209.0)
+:Sending Touch (ACTION_DOWN): 0:(777.0,342.0)
+:Sending Touch (ACTION_UP): 0:(796.6221,399.13672)
+:Sending Touch (ACTION_DOWN): 0:(646.0,1488.0)
+:Sending Touch (ACTION_UP): 0:(637.67676,1492.7588)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-2.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(347.0,111.0)
+:Sending Touch (ACTION_UP): 0:(377.59766,96.93945)
+:Sending Flip keyboardOpen=true
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Touch (ACTION_DOWN): 0:(563.0,676.0)
+:Sending Touch (ACTION_UP): 0:(567.1074,777.292)
+:Sending Touch (ACTION_DOWN): 0:(452.0,470.0)
+:Sending Touch (ACTION_UP): 0:(421.85547,445.2119)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,1.0)
+    //[calendar_time:2026-11-06 18:23:09.871  system_uptime:917478]
+    // Sending event #1200
+:Sending Touch (ACTION_DOWN): 0:(730.0,823.0)
+:Sending Touch (ACTION_UP): 0:(694.45703,815.87695)
+:Sending Touch (ACTION_DOWN): 0:(150.0,2157.0)
+:Sending Touch (ACTION_UP): 0:(161.5664,2145.08)
+:Sending Touch (ACTION_DOWN): 0:(665.0,1393.0)
+:Sending Touch (ACTION_UP): 0:(665.18066,1376.9258)
+:Sending Touch (ACTION_DOWN): 0:(31.0,1831.0)
+:Sending Touch (ACTION_UP): 0:(14.488281,1878.1572)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(343.0,2136.0)
+:Sending Touch (ACTION_UP): 0:(332.34082,2093.787)
+:Sending Touch (ACTION_DOWN): 0:(152.0,1169.0)
+:Sending Touch (ACTION_UP): 0:(151.03027,1169.085)
+:Sending Touch (ACTION_DOWN): 0:(563.0,1343.0)
+:Sending Touch (ACTION_UP): 0:(546.3252,1287.4648)
+:Sending Touch (ACTION_DOWN): 0:(352.0,1535.0)
+:Sending Touch (ACTION_UP): 0:(377.7627,1536.5391)
+:Sending Touch (ACTION_DOWN): 0:(137.0,2200.0)
+:Sending Touch (ACTION_UP): 0:(140.85938,2199.7822)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-1.0)
+    //[calendar_time:2026-11-06 18:23:11.864  system_uptime:919469]
+    // Sending event #1300
+:Sending Touch (ACTION_DOWN): 0:(367.0,652.0)
+:Sending Touch (ACTION_UP): 0:(362.83984,657.25)
+:Sending Touch (ACTION_DOWN): 0:(237.0,191.0)
+:Sending Touch (ACTION_UP): 0:(219.41504,185.13379)
+:Sending Touch (ACTION_DOWN): 0:(635.0,2016.0)
+:Sending Touch (ACTION_UP): 0:(633.3779,2016.3936)
+:Sending Touch (ACTION_DOWN): 0:(370.0,1648.0)
+:Sending Touch (ACTION_UP): 0:(376.4043,1657.8428)
+:Sending Touch (ACTION_DOWN): 0:(89.0,1570.0)
+:Sending Touch (ACTION_UP): 0:(147.67871,1537.5586)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(644.0,704.0)
+:Sending Touch (ACTION_UP): 0:(657.7822,704.69434)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,2.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,1.0)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+:Sending Touch (ACTION_DOWN): 0:(667.0,535.0)
+:Sending Touch (ACTION_UP): 0:(735.83105,461.0127)
+:Sending Touch (ACTION_DOWN): 0:(916.0,1920.0)
+    //[calendar_time:2026-11-06 18:23:13.615  system_uptime:921219]
+    // Sending event #1400
+:Sending Touch (ACTION_UP): 0:(884.8623,1881.6133)
+:Sending Touch (ACTION_DOWN): 0:(201.0,357.0)
+:Sending Touch (ACTION_UP): 0:(191.91309,362.04297)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,-1.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-3.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(985.0,714.0)
+:Sending Touch (ACTION_UP): 0:(986.99316,715.45996)
+:Sending Touch (ACTION_DOWN): 0:(492.0,551.0)
+:Sending Touch (ACTION_UP): 0:(484.31738,533.2715)
+:Sending Touch (ACTION_DOWN): 0:(36.0,1076.0)
+:Sending Touch (ACTION_UP): 0:(36.34082,1070.2627)
+:Sending Flip keyboardOpen=false
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Touch (ACTION_DOWN): 0:(536.0,616.0)
+:Sending Touch (ACTION_UP): 0:(540.77246,610.84863)
+:Sending Touch (ACTION_DOWN): 0:(67.0,1311.0)
+:Sending Touch (ACTION_UP): 0:(68.606445,1307.0645)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-5.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(322.0,340.0)
+:Sending Touch (ACTION_UP): 0:(317.88477,325.10742)
+    //[calendar_time:2026-11-06 18:23:17.555  system_uptime:925159]
+    // Sending event #1500
+    //[calendar_time:2026-11-06 18:23:17.595  system_uptime:925199]
+    // Sending event #1500
+:Sending Touch (ACTION_DOWN): 0:(667.0,1913.0)
+:Sending Touch (ACTION_UP): 0:(662.417,1903.1631)
+:Sending Touch (ACTION_DOWN): 0:(351.0,759.0)
+:Sending Touch (ACTION_UP): 0:(308.96777,787.5869)
+:Sending Touch (ACTION_DOWN): 0:(419.0,28.0)
+:Sending Touch (ACTION_UP): 0:(412.08984,23.210938)
+:Sending Touch (ACTION_DOWN): 0:(314.0,2071.0)
+:Sending Touch (ACTION_UP): 0:(233.33789,2135.1006)
+:Sending Touch (ACTION_DOWN): 0:(165.0,1967.0)
+:Sending Touch (ACTION_UP): 0:(172.2998,1958.706)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-2.0)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(356.0,1511.0)
+:Sending Touch (ACTION_UP): 0:(346.9922,1509.7383)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-1.0)
+:Sending Touch (ACTION_DOWN): 0:(473.0,241.0)
+:Sending Touch (ACTION_UP): 0:(479.15332,245.77246)
+:Sending Touch (ACTION_DOWN): 0:(670.0,798.0)
+:Sending Touch (ACTION_UP): 0:(654.3965,800.20996)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,2.0)
+:Sending Touch (ACTION_DOWN): 0:(27.0,1939.0)
+    //[calendar_time:2026-11-06 18:23:20.541  system_uptime:928145]
+    // Sending event #1600
+:Sending Touch (ACTION_UP): 0:(29.09082,1933.418)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,1.0)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(1044.0,1749.0)
+:Sending Touch (ACTION_UP): 0:(1043.542,1752.3389)
+:Sending Touch (ACTION_DOWN): 0:(917.0,1125.0)
+:Sending Touch (ACTION_UP): 0:(917.126,1105.5391)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(535.0,1126.0)
+:Sending Touch (ACTION_UP): 0:(452.17578,995.50684)
+:Sending Touch (ACTION_DOWN): 0:(266.0,1536.0)
+:Sending Touch (ACTION_UP): 0:(263.42578,1538.0332)
+:Sending Touch (ACTION_DOWN): 0:(25.0,2157.0)
+:Sending Touch (ACTION_UP): 0:(32.47461,2160.0762)
+:Sending Flip keyboardOpen=true
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Touch (ACTION_DOWN): 0:(342.0,1011.0)
+:Sending Touch (ACTION_UP): 0:(344.4619,1001.05664)
+:Sending Touch (ACTION_DOWN): 0:(81.0,1749.0)
+:Sending Touch (ACTION_UP): 0:(86.18359,1735.2334)
+:Sending Touch (ACTION_DOWN): 0:(413.0,195.0)
+:Sending Touch (ACTION_UP): 0:(487.10547,156.59375)
+    //[calendar_time:2026-11-06 18:23:23.801  system_uptime:931406]
+    // Sending event #1700
+:Sending Touch (ACTION_DOWN): 0:(89.0,1504.0)
+:Sending Touch (ACTION_UP): 0:(100.00781,1481.6562)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-3.0)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-5.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(1051.0,800.0)
+:Sending Touch (ACTION_UP): 0:(1055.3633,807.78125)
+:Sending Touch (ACTION_DOWN): 0:(278.0,2112.0)
+:Sending Touch (ACTION_UP): 0:(230.70898,2162.5508)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(160.0,148.0)
+:Sending Touch (ACTION_UP): 0:(159.69531,147.43555)
+:Sending Touch (ACTION_DOWN): 0:(410.0,430.0)
+:Sending Touch (ACTION_UP): 0:(393.35156,390.83105)
+:Sending Touch (ACTION_DOWN): 0:(783.0,2165.0)
+:Sending Touch (ACTION_UP): 0:(784.4717,2167.4346)
+:Sending Touch (ACTION_DOWN): 0:(320.0,1425.0)
+    //[calendar_time:2026-11-06 18:23:27.438  system_uptime:935042]
+    // Sending event #1800
+:Sending Touch (ACTION_UP): 0:(344.78613,1337.0273)
+:Sending Flip keyboardOpen=false
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Touch (ACTION_DOWN): 0:(136.0,341.0)
+:Sending Touch (ACTION_UP): 0:(133.61133,348.33105)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,2.0)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(963.0,1558.0)
+:Sending Touch (ACTION_UP): 0:(949.458,1503.1855)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(118.0,32.0)
+:Sending Touch (ACTION_UP): 0:(119.368164,31.283203)
+:Sending Touch (ACTION_DOWN): 0:(805.0,1662.0)
+:Sending Touch (ACTION_UP): 0:(822.45215,1674.7637)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-3.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(714.0,436.0)
+:Sending Touch (ACTION_UP): 0:(700.6416,454.1172)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,2.0)
+    //[calendar_time:2026-11-06 18:23:29.324  system_uptime:936928]
+    // Sending event #1900
+:Sending Touch (ACTION_DOWN): 0:(231.0,1306.0)
+:Sending Touch (ACTION_UP): 0:(229.41602,1305.915)
+:Sending Touch (ACTION_DOWN): 0:(735.0,1296.0)
+:Sending Touch (ACTION_UP): 0:(736.4707,1296.167)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-4.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-3.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,3.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(555.0,1746.0)
+:Sending Touch (ACTION_UP): 0:(549.6533,1693.3711)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-1.0)
+:Sending Touch (ACTION_DOWN): 0:(192.0,1233.0)
+:Sending Touch (ACTION_UP): 0:(235.10938,1275.2871)
+:Sending Touch (ACTION_DOWN): 0:(207.0,1960.0)
+:Sending Touch (ACTION_UP): 0:(173.23145,1972.3291)
+:Sending Touch (ACTION_DOWN): 0:(432.0,710.0)
+:Sending Touch (ACTION_UP): 0:(440.02734,710.92285)
+    //[calendar_time:2026-11-06 18:23:31.534  system_uptime:939138]
+    // Sending event #2000
+    //[calendar_time:2026-11-06 18:23:31.594  system_uptime:939198]
+    // Sending event #2000
+:Sending Touch (ACTION_DOWN): 0:(619.0,617.0)
+:Sending Touch (ACTION_UP): 0:(621.02637,612.6787)
+:Sending Touch (ACTION_DOWN): 0:(766.0,295.0)
+:Sending Touch (ACTION_UP): 0:(692.24805,348.92773)
+:Sending Touch (ACTION_DOWN): 0:(822.0,979.0)
+:Sending Touch (ACTION_UP): 0:(821.93164,979.7988)
+:Sending Touch (ACTION_DOWN): 0:(919.0,1485.0)
+:Sending Touch (ACTION_UP): 0:(920.76074,1486.8301)
+:Sending Touch (ACTION_DOWN): 0:(138.0,2206.0)
+:Sending Touch (ACTION_UP): 0:(137.53027,2209.0)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(542.0,2144.0)
+:Sending Touch (ACTION_UP): 0:(552.5156,2140.8057)
+:Sending Touch (ACTION_DOWN): 0:(571.0,1636.0)
+:Sending Touch (ACTION_UP): 0:(536.1787,1720.1113)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(56.0,1130.0)
+:Sending Touch (ACTION_UP): 0:(60.242188,1107.3408)
+:Sending Touch (ACTION_DOWN): 0:(181.0,326.0)
+:Sending Touch (ACTION_UP): 0:(232.07812,297.56836)
+    //[calendar_time:2026-11-06 18:23:35.981  system_uptime:943585]
+    // Sending event #2100
+:Sending Touch (ACTION_DOWN): 0:(719.0,615.0)
+:Sending Touch (ACTION_UP): 0:(720.81934,599.66406)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,1.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-3.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(173.0,553.0)
+:Sending Touch (ACTION_UP): 0:(187.18066,555.833)
+:Sending Touch (ACTION_DOWN): 0:(733.0,351.0)
+:Sending Touch (ACTION_UP): 0:(732.4121,350.86035)
+    // Rejecting start of Intent { act=android.content.pm.action.REQUEST_PERMISSIONS pkg=com.google.android.permissioncontroller cmp=com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity } in package com.google.android.permissioncontroller
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-4.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(876.0,644.0)
+:Sending Touch (ACTION_UP): 0:(869.6172,634.66113)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(681.0,181.0)
+:Sending Touch (ACTION_UP): 0:(681.52246,174.82031)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-4.0)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-2.0)
+:Sending Touch (ACTION_DOWN): 0:(142.0,1086.0)
+:Sending Touch (ACTION_UP): 0:(143.55078,1086.9385)
+    //[calendar_time:2026-11-06 18:23:37.530  system_uptime:945135]
+    // Sending event #2200
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-2.0)
+:Sending Flip keyboardOpen=true
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Flip keyboardOpen=false
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Trackball (ACTION_MOVE): 0:(3.0,0.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(923.0,1351.0)
+:Sending Touch (ACTION_UP): 0:(927.43945,1364.3076)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-2.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,0.0)
+    //[calendar_time:2026-11-06 18:23:39.062  system_uptime:946666]
+    // Sending event #2300
+:Sending Touch (ACTION_DOWN): 0:(416.0,129.0)
+:Sending Touch (ACTION_UP): 0:(353.7754,209.20898)
+:Sending Touch (ACTION_DOWN): 0:(431.0,976.0)
+:Sending Touch (ACTION_UP): 0:(430.2412,976.3086)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(582.0,1662.0)
+:Sending Touch (ACTION_UP): 0:(583.9785,1671.2227)
+:Sending Touch (ACTION_DOWN): 0:(514.0,1756.0)
+:Sending Touch (ACTION_UP): 0:(504.51074,1762.9268)
+:Sending Touch (ACTION_DOWN): 0:(354.0,2086.0)
+:Sending Touch (ACTION_UP): 0:(350.9131,2095.5127)
+:Sending Touch (ACTION_DOWN): 0:(644.0,1658.0)
+:Sending Touch (ACTION_UP): 0:(647.1543,1664.1484)
+:Sending Flip keyboardOpen=true
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Touch (ACTION_DOWN): 0:(372.0,673.0)
+:Sending Touch (ACTION_UP): 0:(363.27246,658.58105)
+:Sending Touch (ACTION_DOWN): 0:(630.0,1595.0)
+:Sending Touch (ACTION_UP): 0:(642.5508,1582.9043)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(958.0,176.0)
+:Sending Touch (ACTION_UP): 0:(948.376,172.65039)
+:Sending Touch (ACTION_DOWN): 0:(328.0,551.0)
+:Sending Touch (ACTION_UP): 0:(390.94434,509.2119)
+:Sending Touch (ACTION_DOWN): 0:(239.0,1098.0)
+:Sending Touch (ACTION_UP): 0:(247.63379,1101.9678)
+    // Rejecting start of Intent { act=android.content.pm.action.REQUEST_PERMISSIONS pkg=com.google.android.permissioncontroller cmp=com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity } in package com.google.android.permissioncontroller
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(834.0,759.0)
+:Sending Touch (ACTION_UP): 0:(837.9287,758.9824)
+    //[calendar_time:2026-11-06 18:23:41.729  system_uptime:949333]
+    // Sending event #2400
+    //[calendar_time:2026-11-06 18:23:41.770  system_uptime:949374]
+    // Sending event #2400
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(931.0,1990.0)
+:Sending Touch (ACTION_UP): 0:(937.91406,1986.3926)
+:Sending Touch (ACTION_DOWN): 0:(155.0,509.0)
+:Sending Touch (ACTION_UP): 0:(166.56543,496.07617)
+:Sending Touch (ACTION_DOWN): 0:(367.0,2142.0)
+:Sending Touch (ACTION_UP): 0:(360.4619,2141.9639)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-2.0)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(992.0,1900.0)
+:Sending Touch (ACTION_UP): 0:(991.06055,1916.9219)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(82.0,1912.0)
+:Sending Touch (ACTION_UP): 0:(80.27344,1918.0674)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,3.0)
+    //[calendar_time:2026-11-06 18:23:46.292  system_uptime:953896]
+    // Sending event #2500
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(118.0,53.0)
+:Sending Touch (ACTION_UP): 0:(110.07715,59.14746)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(425.0,2163.0)
+:Sending Touch (ACTION_UP): 0:(384.90234,2172.6006)
+:Sending Touch (ACTION_DOWN): 0:(820.0,850.0)
+:Sending Touch (ACTION_UP): 0:(792.1299,793.33887)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,2.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(330.0,218.0)
+:Sending Touch (ACTION_UP): 0:(343.27637,218.9873)
+    //[calendar_time:2026-11-06 18:23:48.139  system_uptime:955744]
+    // Sending event #2600
+:Sending Touch (ACTION_DOWN): 0:(711.0,176.0)
+:Sending Touch (ACTION_UP): 0:(731.1338,177.13184)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(489.0,703.0)
+:Sending Touch (ACTION_UP): 0:(483.90137,700.00684)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-1.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-2.0)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(300.0,1472.0)
+:Sending Touch (ACTION_UP): 0:(300.1543,1466.6934)
+:Sending Touch (ACTION_DOWN): 0:(407.0,922.0)
+:Sending Touch (ACTION_UP): 0:(406.6875,920.8965)
+:Sending Touch (ACTION_DOWN): 0:(88.0,925.0)
+:Sending Touch (ACTION_UP): 0:(0.0,936.7656)
+:Sending Touch (ACTION_DOWN): 0:(403.0,1594.0)
+:Sending Touch (ACTION_UP): 0:(408.62012,1608.9131)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,2.0)
+    //[calendar_time:2026-11-06 18:23:49.125  system_uptime:956729]
+    // Sending event #2700
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-2.0)
+:Sending Touch (ACTION_DOWN): 0:(313.0,319.0)
+:Sending Touch (ACTION_UP): 0:(301.5,388.2832)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-1.0)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+:Sending Touch (ACTION_DOWN): 0:(831.0,401.0)
+:Sending Touch (ACTION_UP): 0:(826.4082,397.54785)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,3.0)
+    //[calendar_time:2026-11-06 18:23:50.858  system_uptime:958463]
+    // Sending event #2800
+:Sending Trackball (ACTION_MOVE): 0:(1.0,2.0)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-1.0)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(266.0,1642.0)
+:Sending Touch (ACTION_UP): 0:(266.03516,1634.6094)
+:Sending Touch (ACTION_DOWN): 0:(415.0,97.0)
+:Sending Touch (ACTION_UP): 0:(461.23926,61.11035)
+:Sending Touch (ACTION_DOWN): 0:(994.0,572.0)
+:Sending Touch (ACTION_UP): 0:(1015.2969,564.76465)
+:Sending Touch (ACTION_DOWN): 0:(1054.0,610.0)
+:Sending Touch (ACTION_UP): 0:(1010.8926,577.834)
+:Sending Touch (ACTION_DOWN): 0:(1026.0,1165.0)
+:Sending Touch (ACTION_UP): 0:(1024.7568,1156.1123)
+:Sending Touch (ACTION_DOWN): 0:(798.0,1374.0)
+:Sending Touch (ACTION_UP): 0:(787.0049,1374.0996)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,3.0)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-5.0)
+    // Rejecting start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.android.chrome/com.google.android.apps.chrome.Main } in package com.android.chrome
+    //[calendar_time:2026-11-06 18:23:52.536  system_uptime:960140]
+    // Sending event #2900
+:Sending Touch (ACTION_DOWN): 0:(914.0,132.0)
+:Sending Touch (ACTION_UP): 0:(904.0654,129.52832)
+:Sending Touch (ACTION_DOWN): 0:(166.0,1506.0)
+:Sending Touch (ACTION_UP): 0:(158.0664,1492.8408)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(485.0,1873.0)
+:Sending Touch (ACTION_UP): 0:(487.62402,1863.1211)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(717.0,1217.0)
+:Sending Touch (ACTION_UP): 0:(713.39355,1215.1816)
+:Sending Flip keyboardOpen=false
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.HOME] cmp=com.google.android.apps.nexuslauncher/.NexusLauncherActivity } in package com.google.android.apps.nexuslauncher
+:Sending Touch (ACTION_DOWN): 0:(1026.0,310.0)
+:Sending Touch (ACTION_UP): 0:(1017.5166,300.88965)
+:Sending Touch (ACTION_DOWN): 0:(920.0,949.0)
+:Sending Touch (ACTION_UP): 0:(909.7197,938.01465)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+:Sending Flip keyboardOpen=true
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-2.0)
+    //[calendar_time:2026-11-06 18:23:56.032  system_uptime:963636]
+    // Sending event #3000
+:Sending Touch (ACTION_DOWN): 0:(125.0,1295.0)
+:Sending Touch (ACTION_UP): 0:(127.87695,1292.1475)
+:Sending Touch (ACTION_DOWN): 0:(53.0,37.0)
+:Sending Touch (ACTION_UP): 0:(65.57715,36.976562)
+:Sending Touch (ACTION_DOWN): 0:(396.0,1430.0)
+:Sending Touch (ACTION_UP): 0:(396.90918,1447.7451)
+:Sending Touch (ACTION_DOWN): 0:(47.0,2065.0)
+:Sending Touch (ACTION_UP): 0:(57.291992,2053.2607)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,2.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-4.0)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+:Sending Touch (ACTION_DOWN): 0:(423.0,681.0)
+:Sending Touch (ACTION_UP): 0:(444.22168,708.25684)
+:Sending Touch (ACTION_DOWN): 0:(161.0,1651.0)
+    //[calendar_time:2026-11-06 18:24:00.694  system_uptime:968298]
+    // Sending event #3100
+:Sending Touch (ACTION_UP): 0:(93.68555,1702.0176)
+:Sending Touch (ACTION_DOWN): 0:(627.0,1736.0)
+:Sending Touch (ACTION_UP): 0:(650.35156,1796.1729)
+:Sending Touch (ACTION_DOWN): 0:(759.0,2082.0)
+:Sending Touch (ACTION_UP): 0:(757.7715,2056.3037)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-3.0)
+    // Rejecting start of Intent { dat=ga:/... cmp=com.google.android.googlequicksearchbox/com.google.android.apps.search.googleapp.activity.GoogleAppActivity } in package com.google.android.googlequicksearchbox
+    // Rejecting start of Intent { dat=ga:/... cmp=com.google.android.googlequicksearchbox/com.google.android.apps.search.googleapp.activity.GoogleAppActivity } in package com.google.android.googlequicksearchbox
+:Sending Touch (ACTION_DOWN): 0:(238.0,327.0)
+:Sending Touch (ACTION_UP): 0:(224.77246,297.80664)
+:Sending Touch (ACTION_DOWN): 0:(215.0,1139.0)
+:Sending Touch (ACTION_UP): 0:(303.9209,1058.9092)
+:Sending Touch (ACTION_DOWN): 0:(592.0,390.0)
+:Sending Touch (ACTION_UP): 0:(550.9209,417.18262)
+:Sending Touch (ACTION_DOWN): 0:(520.0,1216.0)
+:Sending Touch (ACTION_UP): 0:(510.87305,1204.8828)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(361.0,528.0)
+:Sending Touch (ACTION_UP): 0:(330.0957,511.79102)
+    //[calendar_time:2026-11-06 18:24:04.441  system_uptime:972045]
+    // Sending event #3200
+    //[calendar_time:2026-11-06 18:24:04.481  system_uptime:972085]
+    // Sending event #3200
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(212.0,281.0)
+:Sending Touch (ACTION_UP): 0:(209.54297,271.93457)
+:Sending Touch (ACTION_DOWN): 0:(186.0,2.0)
+:Sending Touch (ACTION_UP): 0:(215.71582,66.41016)
+:Sending Touch (ACTION_DOWN): 0:(1053.0,899.0)
+:Sending Touch (ACTION_UP): 0:(1080.0,882.32227)
+:Sending Touch (ACTION_DOWN): 0:(600.0,1647.0)
+:Sending Touch (ACTION_UP): 0:(619.4834,1594.374)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(884.0,2163.0)
+:Sending Touch (ACTION_UP): 0:(881.6846,2162.5244)
+:Sending Touch (ACTION_DOWN): 0:(23.0,1480.0)
+:Sending Touch (ACTION_UP): 0:(42.347656,1471.8018)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(842.0,2111.0)
+:Sending Touch (ACTION_UP): 0:(921.08594,2107.1816)
+:Sending Touch (ACTION_DOWN): 0:(577.0,670.0)
+:Sending Touch (ACTION_UP): 0:(563.9717,662.0801)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+    //[calendar_time:2026-11-06 18:24:07.948  system_uptime:975552]
+    // Sending event #3300
+    //[calendar_time:2026-11-06 18:24:07.988  system_uptime:975593]
+    // Sending event #3300
+:Sending Trackball (ACTION_MOVE): 0:(3.0,-2.0)
+:Sending Touch (ACTION_DOWN): 0:(344.0,908.0)
+:Sending Touch (ACTION_UP): 0:(358.07715,904.94727)
+:Sending Touch (ACTION_DOWN): 0:(956.0,1929.0)
+:Sending Touch (ACTION_UP): 0:(954.1846,1941.9199)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(745.0,703.0)
+:Sending Touch (ACTION_UP): 0:(745.0459,691.4219)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,1.0)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,3.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(44.0,1792.0)
+:Sending Touch (ACTION_UP): 0:(29.388672,1842.3633)
+:Sending Touch (ACTION_DOWN): 0:(578.0,1132.0)
+:Sending Touch (ACTION_UP): 0:(566.55176,1140.0996)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(262.0,396.0)
+:Sending Touch (ACTION_UP): 0:(266.3369,392.9746)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(438.0,924.0)
+:Sending Touch (ACTION_UP): 0:(454.04492,859.5205)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-4.0)
+    //[calendar_time:2026-11-06 18:24:10.579  system_uptime:978183]
+    // Sending event #3400
+:Sending Touch (ACTION_DOWN): 0:(485.0,1279.0)
+:Sending Touch (ACTION_UP): 0:(482.87305,1278.376)
+:Sending Touch (ACTION_DOWN): 0:(344.0,153.0)
+:Sending Touch (ACTION_UP): 0:(323.65332,120.07617)
+:Sending Touch (ACTION_DOWN): 0:(673.0,1545.0)
+:Sending Touch (ACTION_UP): 0:(666.0918,1538.0059)
+:Sending Touch (ACTION_DOWN): 0:(273.0,1958.0)
+:Sending Touch (ACTION_UP): 0:(293.8623,1967.127)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(697.0,274.0)
+:Sending Touch (ACTION_UP): 0:(704.16113,262.77832)
+:Sending Touch (ACTION_DOWN): 0:(139.0,171.0)
+:Sending Touch (ACTION_UP): 0:(144.2207,158.875)
+:Sending Touch (ACTION_DOWN): 0:(191.0,152.0)
+:Sending Touch (ACTION_UP): 0:(241.4668,110.19531)
+:Sending Touch (ACTION_DOWN): 0:(462.0,388.0)
+:Sending Touch (ACTION_UP): 0:(394.7334,342.13867)
+:Sending Touch (ACTION_DOWN): 0:(84.0,1050.0)
+:Sending Touch (ACTION_UP): 0:(82.16797,1038.2109)
+:Sending Touch (ACTION_DOWN): 0:(166.0,1830.0)
+:Sending Touch (ACTION_UP): 0:(163.0,1840.6543)
+:Sending Flip keyboardOpen=false
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+    //[calendar_time:2026-11-06 18:24:13.438  system_uptime:981043]
+    // Sending event #3500
+    //[calendar_time:2026-11-06 18:24:13.480  system_uptime:981085]
+    // Sending event #3500
+:Sending Touch (ACTION_DOWN): 0:(48.0,1837.0)
+:Sending Touch (ACTION_UP): 0:(48.688477,1834.2598)
+:Sending Touch (ACTION_DOWN): 0:(883.0,640.0)
+:Sending Touch (ACTION_UP): 0:(981.6387,696.3877)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(941.0,1324.0)
+:Sending Touch (ACTION_UP): 0:(954.0381,1307.1797)
+:Sending Touch (ACTION_DOWN): 0:(1059.0,1696.0)
+:Sending Touch (ACTION_UP): 0:(1058.9053,1700.3799)
+:Sending Touch (ACTION_DOWN): 0:(1054.0,1293.0)
+:Sending Touch (ACTION_UP): 0:(974.9219,1320.6914)
+:Sending Touch (ACTION_DOWN): 0:(16.0,1335.0)
+:Sending Touch (ACTION_UP): 0:(15.356445,1332.4395)
+:Sending Touch (ACTION_DOWN): 0:(820.0,1028.0)
+:Sending Touch (ACTION_UP): 0:(819.18555,1028.6787)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(66.0,1301.0)
+:Sending Touch (ACTION_UP): 0:(66.024414,1296.6338)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(742.0,172.0)
+:Sending Touch (ACTION_UP): 0:(739.46094,193.57227)
+:Sending Touch (ACTION_DOWN): 0:(725.0,620.0)
+:Sending Touch (ACTION_UP): 0:(676.5674,661.0205)
+:Sending Touch (ACTION_DOWN): 0:(951.0,2159.0)
+:Sending Touch (ACTION_UP): 0:(1008.9912,2134.745)
+    //[calendar_time:2026-11-06 18:24:16.626  system_uptime:984230]
+    // Sending event #3600
+    //[calendar_time:2026-11-06 18:24:16.666  system_uptime:984270]
+    // Sending event #3600
+:Sending Touch (ACTION_DOWN): 0:(266.0,1875.0)
+:Sending Touch (ACTION_UP): 0:(310.8711,1945.3252)
+:Sending Touch (ACTION_DOWN): 0:(643.0,832.0)
+:Sending Touch (ACTION_UP): 0:(647.0508,800.82227)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(4.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(667.0,2013.0)
+:Sending Touch (ACTION_UP): 0:(666.80273,1993.1279)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(494.0,1438.0)
+:Sending Touch (ACTION_UP): 0:(547.3457,1405.6006)
+:Sending Touch (ACTION_DOWN): 0:(1039.0,1981.0)
+:Sending Touch (ACTION_UP): 0:(1038.8975,1991.251)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(909.0,2007.0)
+:Sending Touch (ACTION_UP): 0:(914.76855,2004.6221)
+:Sending Touch (ACTION_DOWN): 0:(443.0,434.0)
+:Sending Touch (ACTION_UP): 0:(427.1631,437.51953)
+:Sending Touch (ACTION_DOWN): 0:(534.0,1553.0)
+    //[calendar_time:2026-11-06 18:24:19.113  system_uptime:986718]
+    // Sending event #3700
+:Sending Touch (ACTION_UP): 0:(557.99316,1608.5889)
+:Sending Touch (ACTION_DOWN): 0:(947.0,953.0)
+:Sending Touch (ACTION_UP): 0:(947.02246,952.6875)
+:Sending Touch (ACTION_DOWN): 0:(554.0,1569.0)
+:Sending Touch (ACTION_UP): 0:(422.92676,1690.583)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(743.0,813.0)
+:Sending Touch (ACTION_UP): 0:(744.209,814.1416)
+:Sending Touch (ACTION_DOWN): 0:(310.0,540.0)
+:Sending Touch (ACTION_UP): 0:(313.64844,540.77734)
+:Sending Touch (ACTION_DOWN): 0:(793.0,616.0)
+:Sending Touch (ACTION_UP): 0:(777.08105,696.0166)
+:Sending Touch (ACTION_DOWN): 0:(513.0,746.0)
+:Sending Touch (ACTION_UP): 0:(502.22754,757.29785)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,-1.0)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(431.0,287.0)
+:Sending Touch (ACTION_UP): 0:(427.50195,293.19922)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-4.0)
+    //[calendar_time:2026-11-06 18:24:22.774  system_uptime:990379]
+    // Sending event #3800
+:Sending Touch (ACTION_DOWN): 0:(393.0,267.0)
+:Sending Touch (ACTION_UP): 0:(402.2207,247.4414)
+:Sending Touch (ACTION_DOWN): 0:(662.0,977.0)
+:Sending Touch (ACTION_UP): 0:(665.209,900.4619)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-2.0)
+:Sending Touch (ACTION_DOWN): 0:(133.0,1152.0)
+:Sending Touch (ACTION_UP): 0:(141.13477,1151.5156)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(711.0,2079.0)
+:Sending Touch (ACTION_UP): 0:(711.22656,2080.2656)
+:Sending Touch (ACTION_DOWN): 0:(445.0,1785.0)
+:Sending Touch (ACTION_UP): 0:(442.70703,1785.1836)
+:Sending Touch (ACTION_DOWN): 0:(229.0,882.0)
+:Sending Touch (ACTION_UP): 0:(229.0459,882.9092)
+:Sending Trackball (ACTION_MOVE): 0:(3.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,3.0)
+:Sending Touch (ACTION_DOWN): 0:(676.0,1504.0)
+:Sending Touch (ACTION_UP): 0:(676.69434,1502.5967)
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Trackball (ACTION_MOVE): 0:(3.0,4.0)
+    //[calendar_time:2026-11-06 18:24:24.965  system_uptime:992570]
+    // Sending event #3900
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+:Sending Touch (ACTION_DOWN): 0:(601.0,1688.0)
+:Sending Touch (ACTION_UP): 0:(699.8877,1677.8945)
+:Sending Touch (ACTION_DOWN): 0:(217.0,851.0)
+:Sending Touch (ACTION_UP): 0:(238.35156,837.8672)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(3.0,555.0)
+:Sending Touch (ACTION_UP): 0:(0.0,576.8672)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(647.0,838.0)
+:Sending Touch (ACTION_UP): 0:(645.8613,851.2051)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-3.0)
+:Sending Trackball (ACTION_MOVE): 0:(2.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(625.0,330.0)
+:Sending Touch (ACTION_UP): 0:(554.4297,214.90332)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,2.0)
+Events injected: 4000
+:Sending rotation degree=0, persist=false
+:Dropped: keys=1 pointers=0 trackballs=0 flips=11 rotations=0
+## Network stats: elapsed time=118607ms (0ms mobile, 0ms wifi, 118607ms not connected)
+// Monkey finished
+monkey exit=0

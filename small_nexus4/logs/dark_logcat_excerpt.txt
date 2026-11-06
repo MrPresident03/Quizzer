@@ -1,0 +1,52 @@
+19-11-06 18:12:31.517   524   908 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10084. pid: 6388
+20-11-06 18:12:31.547  5039  6227 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 262 [CONTEXT service_id=218 ]
+21-11-06 18:12:31.552  5039  6227 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 10 uptime_millis: 10 exec_start_elapsed_seconds: 262 [CONTEXT service_id=218 ]
+22:11-06 18:12:31.572  6405  6405 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+23:11-06 18:12:31.574  6405  6405 I AndroidRuntime: Using default boot image
+24:11-06 18:12:31.574  6405  6405 I AndroidRuntime: Leaving lock profiling enabled
+25-11-06 18:12:31.576  6405  6405 I app_process: Core platform API reporting enabled, enforcing=false
+26-11-06 18:12:31.576  6405  6405 I app_process: Using CollectorTypeCC GC.
+27-11-06 18:12:31.615  6405  6405 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+28-11-06 18:12:31.621  6405  6405 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+29-11-06 18:12:31.621  6405  6405 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+30-11-06 18:12:31.624  6405  6405 W app_process: Unexpected CPU variant for x86: x86_64.
+31-11-06 18:12:31.624  6405  6405 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+32-11-06 18:12:31.634  6405  6405 W libc    : Access denied finding property "ro.product.name_for_attestation"
+33-11-06 18:12:31.634  6405  6405 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+34-11-06 18:12:31.634  6405  6405 W libc    : Access denied finding property "ro.product.model_for_attestation"
+35:11-06 18:12:31.634  6405  6405 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+36-11-06 18:12:31.633  6405  6405 W main    : type=1400 audit(0.0:59): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+37-11-06 18:12:31.638  6405  6405 D UiAutomationConnection: Created on user UserHandle{0}
+38-11-06 18:12:31.639   524  2264 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+39-11-06 18:12:31.641   524  2264 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+40-11-06 18:12:31.633  6405  6405 W main    : type=1400 audit(0.0:60): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+41-11-06 18:12:31.642   524   552 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+42-11-06 18:12:31.645   524   602 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+43-11-06 18:12:31.633  6405  6405 W main    : type=1400 audit(0.0:61): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+44-11-06 18:12:31.647   337   337 D Zygote  : Forked child process 6423
+45-11-06 18:12:31.648   524   552 I ActivityManager: Start proc 6423:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+46-11-06 18:12:31.667  6423  6423 I s.quizzer.debug: Late-enabling -Xcheck:jni
+47-11-06 18:12:31.677  6423  6423 I s.quizzer.debug: Using CollectorTypeCC GC.
+48-11-06 18:12:31.677  6423  6423 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+49-11-06 18:12:31.677  6423  6423 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+50-11-06 18:12:31.698   413   425 I adbd    : jdwp connection from 6423
+--
+3606-11-06 18:14:53.669  1631  2031 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+3607-11-06 18:14:53.671  1631  2031 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+3608-11-06 18:14:53.675  6405  6405 I app_process: System.exit called, status: 0
+3609:11-06 18:14:53.675  6405  6405 I AndroidRuntime: VM exiting with result code 0.
+3610-11-06 18:14:53.686   524   541 V WindowManager: Finish Transition #25: created at 11-06 18:14:53.190 collect-started=0.026ms request-sent=0.058ms started=10.038ms ready=10.023ms sent=54.83ms finished=495.873ms
+3611-11-06 18:14:53.700  1804  2293 I A       : NGA enabled in interactor.
+3612-11-06 18:14:53.709   830   861 V WindowManagerShell: Track 0 became idle
+3613-11-06 18:14:53.712  1804  2293 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+3614-11-06 18:14:53.712   830   861 V WindowManagerShell: All active transition animations finished
+3615-11-06 18:14:53.712   830   861 W Looper  : Slow dispatch took 48ms wmshell.main h=android.os.Handler c=com.android.wm.shell.transition.RemoteTransitionHandler$1$$ExternalSyntheticLambda0@b0adde8 m=0
+3616-11-06 18:14:53.716  1679  3164 I A       : Initializing all components
+3617-11-06 18:14:53.717  1679  3164 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+3618-11-06 18:14:53.717  1679  3164 I A       : [Memory] eligibility: StashEligibility{6}
+3619-11-06 18:14:53.719  1679  2215 I A       : onIsEnabledChanged, isEnabled: false
+3620-11-06 18:14:53.719  1679  2215 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3621-11-06 18:14:53.719  1679  2215 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3622-11-06 18:14:53.719  1679  2215 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3623-11-06 18:14:53.719  1679  2215 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3624-11-06 18:14:53.719  1679  2215 W A       : Disposing empty manager. Did you forgot to subscribe observables?

@@ -1,0 +1,106 @@
+409133 START prefix='font15_' out=/storage/emulated/0/Android/media/nz.durbs.quizzer.debug
+411298 shot font15_00_splash.png
+411299 activity launched 2163ms
+411301 STEP 01_onboarding begin
+412109 shot font15_01_onboarding_1.png
+413802 shot font15_02_onboarding_2.png
+415388 shot font15_03_onboarding_3.png
+416072 STEP 01_onboarding ok
+416073 STEP 04_dashboard begin
+418426 shot font15_04_dashboard.png
+419531 shot font15_04_dashboard_s1.png
+420569 STEP 04_dashboard ok
+420570 STEP 05_daily_lobby begin
+423306 shot font15_05_daily_lobby.png
+424337 shot font15_05_daily_lobby_s1.png
+426125 STEP 05_daily_lobby ok
+426126 STEP 06_stats_empty begin
+427988 shot font15_06_stats_empty.png
+429079 shot font15_06_stats_empty_s1.png
+431963 shot font15_07_achievements_empty.png
+432874 shot font15_07_achievements_empty_s1.png
+433660 shot font15_07_achievements_empty_s2.png
+434460 shot font15_07_achievements_empty_s3.png
+435518 shot font15_07_achievements_empty_s4.png
+436500 STEP 06_stats_empty ok
+436501 STEP 08_practice begin
+438466 shot font15_08_practice_top.png
+439253 shot font15_09_practice_flags_selected.png
+440129 shot font15_10_practice_flags_options_and_start.png
+444115 shot font15_11_practice_options_and_start.png
+444949 shot font15_12_practice_topics_selected.png
+447304 STEP 08_practice ok
+447305 STEP 20_mc_quiz begin
+449625 shot font15_19_quiz_loading.png
+449626 saw loading spinner at 303ms
+449953 quiz ready after 630ms
+450879 shot font15_20_quiz_mc_question.png
+452226 shot font15_21_quiz_mc_5050.png
+453816 shot font15_22_quiz_mc_audience.png
+456024 shot font15_23_quiz_mc_lifelines_used.png
+457372 shot font15_25_quiz_mc_wrong.png
+461411 shot font15_24_quiz_mc_correct.png
+474553 shot font15_26_results.png
+475267 shot font15_26_results_s1.png
+475979 shot font15_26_results_s2.png
+476748 shot font15_26_results_s3.png
+477480 shot font15_26_results_s4.png
+479404 shot font15_27_review.png
+480134 shot font15_27_review_s1.png
+480851 shot font15_27_review_s2.png
+481576 shot font15_27_review_s3.png
+482301 shot font15_27_review_s4.png
+483065 shot font15_27_review_s5.png
+483798 shot font15_27_review_s6.png
+485489 STEP 20_mc_quiz ok
+485490 STEP 30_tf_quiz begin
+487735 quiz ready after 2ms
+488652 shot font15_30_quiz_tf_question.png
+489904 shot font15_31_quiz_tf_correct.png
+491946 shot font15_32_quiz_tf_wrong.png
+493861 STEP 30_tf_quiz ok
+493862 STEP 40_capitals_quiz begin
+496404 shot font15_39_practice_capitals_only.png
+496947 quiz ready after 2ms
+497870 shot font15_40_quiz_capitals_question.png
+499133 shot font15_41_quiz_capitals_correct.png
+501214 shot font15_42_quiz_capitals_wrong.png
+503014 STEP 40_capitals_quiz ok
+503015 STEP 50_flag_to_country begin
+506105 shot font15_49_practice_flags_flag_to_country_selected.png
+506627 quiz ready after 57ms
+507752 shot font15_50_quiz_flag_to_country_question.png
+509024 shot font15_52_quiz_flag_to_country_wrong.png
+512802 shot font15_51_quiz_flag_to_country_correct.png
+514844 STEP 50_flag_to_country ok
+514845 STEP 60_country_to_flag begin
+518057 quiz ready after 54ms
+519192 shot font15_60_quiz_country_to_flag_question.png
+520546 shot font15_61_quiz_country_to_flag_5050.png
+521985 shot font15_63_quiz_country_to_flag_wrong.png
+524272 shot font15_62_quiz_country_to_flag_correct.png
+526200 STEP 60_country_to_flag ok
+526201 STEP 70_stats begin
+528183 shot font15_70_stats.png
+530682 shot font15_71_achievements.png
+531665 STEP 70_stats ok
+531666 STEP 72_dashboard_after_play begin
+533593 shot font15_72_dashboard_after_play.png
+534633 shot font15_72_dashboard_after_play_s1.png
+535662 STEP 72_dashboard_after_play ok
+535664 STEP 80_settings begin
+537537 shot font15_80_settings.png
+538237 shot font15_80_settings_s1.png
+538944 shot font15_80_settings_s2.png
+539937 shot font15_80_settings_s3.png
+540948 STEP 80_settings ok
+540949 STEP 90_daily_quiz begin
+545632 quiz ready after 1053ms
+546533 shot font15_90_daily_quiz_question.png
+548202 STEP 90_daily_quiz ok
+548202 STEP 95_relaunch_skips_onboarding begin
+551101 shot font15_95_relaunch_dashboard.png
+551102 STEP 95_relaunch_skips_onboarding ok
+551103 STEP 96_back_from_home_leaves_app begin
+551121 STEP 96_back_from_home_leaves_app ok
+551154 DONE failures=0

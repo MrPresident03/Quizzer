@@ -1,0 +1,12 @@
+== first launch ==
+LaunchState: COLD
+TotalTime: 3375
+WaitTime: 3408
+== second launch ==
+LaunchState: COLD
+TotalTime: 1940
+WaitTime: 1942
+== third launch ==
+LaunchState: COLD
+TotalTime: 2712
+WaitTime: 2714

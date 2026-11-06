@@ -1,0 +1,4 @@
+total 3140
+-rw-rw---- 1 u0_a192 u0_a192 2646016 2026-11-06 18:09 brainblitz_database
+-rw------- 1 u0_a192 u0_a192   32768 2026-11-06 18:09 brainblitz_database-shm
+-rw------- 1 u0_a192 u0_a192  524288 2026-11-06 18:09 brainblitz_database-wal

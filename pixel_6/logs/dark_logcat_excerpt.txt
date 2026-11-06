@@ -1,0 +1,52 @@
+1---------- beginning of main
+2-11-06 18:13:29.018  5190  6330 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 336 [CONTEXT service_id=218 ]
+3:11-06 18:13:29.024  6534  6534 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+4:11-06 18:13:29.027  6534  6534 I AndroidRuntime: Using default boot image
+5:11-06 18:13:29.027  6534  6534 I AndroidRuntime: Leaving lock profiling enabled
+6-11-06 18:13:29.029  6534  6534 I app_process: Core platform API reporting enabled, enforcing=false
+7-11-06 18:13:29.029  6534  6534 I app_process: Using CollectorTypeCC GC.
+8-11-06 18:13:29.030  5190  6138 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 18 uptime_millis: 18 exec_start_elapsed_seconds: 336 [CONTEXT service_id=218 ]
+9-11-06 18:13:29.080  6534  6534 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-11-06 18:13:29.087  6534  6534 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-11-06 18:13:29.087  6534  6534 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+12-11-06 18:13:29.091  6534  6534 W app_process: Unexpected CPU variant for x86: x86_64.
+13-11-06 18:13:29.091  6534  6534 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+14-11-06 18:13:29.102  6534  6534 W libc    : Access denied finding property "ro.product.name_for_attestation"
+15-11-06 18:13:29.102  6534  6534 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+16-11-06 18:13:29.102  6534  6534 W libc    : Access denied finding property "ro.product.model_for_attestation"
+17:11-06 18:13:29.103  6534  6534 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+18-11-06 18:13:29.101  6534  6534 W main    : type=1400 audit(0.0:65): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+19-11-06 18:13:29.107  6534  6534 D UiAutomationConnection: Created on user UserHandle{0}
+20---------- beginning of system
+21-11-06 18:13:29.110   519   885 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+22-11-06 18:13:29.112   519   885 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+23-11-06 18:13:29.113   519   601 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+24-11-06 18:13:29.113   519   550 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+25-11-06 18:13:29.101  6534  6534 W main    : type=1400 audit(0.0:66): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+26-11-06 18:13:29.101  6534  6534 W main    : type=1400 audit(0.0:67): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+27-11-06 18:13:29.117   337   337 D Zygote  : Forked child process 6550
+28-11-06 18:13:29.117   519   550 I ActivityManager: Start proc 6550:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+29-11-06 18:13:29.139  6550  6550 I s.quizzer.debug: Late-enabling -Xcheck:jni
+30-11-06 18:13:29.148  6550  6550 I s.quizzer.debug: Using CollectorTypeCC GC.
+31-11-06 18:13:29.149  6550  6550 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+32-11-06 18:13:29.149  6550  6550 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+--
+4029-11-06 18:16:32.114   519   537 V WindowManager: Finish Transition #26: created at 11-06 18:16:31.150 collect-started=0.026ms request-sent=0.059ms started=23.566ms ready=33.178ms sent=278.082ms finished=927.36ms
+4030-11-06 18:16:32.119   519   885 D CoreBackPreview: Window{d8ef6b4 u0 Splash Screen nz.durbs.quizzer.debug.test EXITING}: Setting back callback null
+4031-11-06 18:16:32.194  6534  6534 I app_process: System.exit called, status: 0
+4032:11-06 18:16:32.194  6534  6534 I AndroidRuntime: VM exiting with result code 0.
+4033-11-06 18:16:32.209  6776  6776 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@6c2f7c4
+4034-11-06 18:16:32.212   519  1409 D CoreBackPreview: Window{5acf905 u0 nz.durbs.quizzer.debug.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity}: Setting back callback null
+4035-11-06 18:16:32.230   831   831 I Choreographer: Skipped 33 frames!  The application may be doing too much work on its main thread.
+4036-11-06 18:16:32.283   831   897 D EGL_emulation: app_time_stats: avg=175.91ms min=7.76ms max=611.62ms count=7
+4037-11-06 18:16:32.283   831   865 W Looper  : Slow dispatch took 178ms wmshell.main h=android.os.Handler c=android.window.TaskOrganizer$1$$ExternalSyntheticLambda3@b369291 m=0
+4038-11-06 18:16:32.283   831   865 W Looper  : Slow delivery took 53ms wmshell.main h=android.os.Handler c=com.android.wm.shell.bubbles.BubbleController$BubblesImpl$$ExternalSyntheticLambda5@40ac5f6 m=0
+4039-11-06 18:16:32.283   519   540 W ActivityManager: setHasOverlayUi called on unknown pid: 6550
+4040-11-06 18:16:32.288   398  1639 D audioserver: FGS Logger Transaction failed
+4041-11-06 18:16:32.290  1717  2154 I A       : on opa visibility changed false
+4042-11-06 18:16:32.298   398  1639 D audioserver: -129
+4043-11-06 18:16:32.357   337   337 I Zygote  : Process 6550 exited due to signal 9 (Killed)
+4044-11-06 18:16:32.387   519  2284 W InputManager-JNI: Input channel object 'd8ef6b4 Splash Screen nz.durbs.quizzer.debug.test (client)' was disposed without first being removed with the input manager!
+4045-11-06 18:16:32.432   519  1409 W InputManager-JNI: Input channel object '5acf905 nz.durbs.quizzer.debug.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity (client)' was disposed without first being removed with the input manager!
+4046-11-06 18:16:32.515   519  1409 I ActivityManager: Force stopping nz.durbs.quizzer.debug.test appid=10193 user=0: from pid 6836
+4047-11-06 18:16:32.516   519   538 D DisplayManagerService: Drop pending events for gone uid 10193

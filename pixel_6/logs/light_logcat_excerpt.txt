@@ -1,0 +1,61 @@
+199-11-06 18:10:12.804  1779  2323 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+200-11-06 18:10:12.804  1779  2323 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+201-11-06 18:10:12.804  1779  2323 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+202:11-06 18:10:12.818  6025  6025 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+203:11-06 18:10:12.821  6025  6025 I AndroidRuntime: Using default boot image
+204:11-06 18:10:12.821  6025  6025 I AndroidRuntime: Leaving lock profiling enabled
+205-11-06 18:10:12.824  6025  6025 I app_process: Core platform API reporting enabled, enforcing=false
+206-11-06 18:10:12.825  6025  6025 I app_process: Using CollectorTypeCC GC.
+207-11-06 18:10:12.830   519  1636 D ActivityManager: sync unfroze 3729 com.google.android.rkpdapp for 6
+208-11-06 18:10:12.833   519   519 I RegistrationProxy: onServiceConnected: com.android.rkpdapp.service.RemoteProvisioningService
+209-11-06 18:10:12.836   519  1636 I RegistrationProxy: IGetRegistrationCallback.onSuccess
+210-11-06 18:10:12.836  5243  5361 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+211---------- beginning of kernel
+212-11-06 18:10:13.004     0     0 I servicemanager: Found android.hardware.security.keymint.IRemotelyProvisionedComponent/default in device VINTF manifest.
+213-11-06 18:10:12.839   519  1936 I RemoteProvisionSysSvc: Fetching key 10131 for client 239692376
+214-11-06 18:10:12.839   519  1936 I RegistrationProxy: getKeyAsync operation started with callback 196691889
+215-11-06 18:10:12.839  3729  3808 I RkpdRegistrationBinder: Key requested for : android.hardware.security.keymint.IRemotelyProvisionedComponent/default, clientUid: 1017, keyId: 10131, callback: 143333309
+216-11-06 18:10:12.840  3729  3808 I RkpdRegistrationBinder: Key successfully assigned to client
+217-11-06 18:10:12.840   519   519 I RemoteProvisionSysSvc: Successfully fetched key for client 239692376
+218-11-06 18:10:12.841  5243  5348 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32
+219-11-06 18:10:12.848  5243  5306 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+--
+227-11-06 18:10:13.009  6025  6025 W libc    : Access denied finding property "ro.product.name_for_attestation"
+228-11-06 18:10:13.009  6025  6025 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+229-11-06 18:10:13.009  6025  6025 W libc    : Access denied finding property "ro.product.model_for_attestation"
+230:11-06 18:10:13.010  6025  6025 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+231-11-06 18:10:13.005  6025  6025 W main    : type=1400 audit(0.0:52): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+232-11-06 18:10:13.017  6025  6025 D UiAutomationConnection: Created on user UserHandle{0}
+233-11-06 18:10:13.005  6025  6025 W main    : type=1400 audit(0.0:53): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+234-11-06 18:10:13.018   519  1936 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+235-11-06 18:10:13.020   519  1936 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+236-11-06 18:10:13.023   519   550 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+237-11-06 18:10:13.028   337   337 D Zygote  : Forked child process 6042
+238-11-06 18:10:13.030   519   601 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+239-11-06 18:10:13.030   519   550 I ActivityManager: Start proc 6042:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+240-11-06 18:10:13.005  6025  6025 W main    : type=1400 audit(0.0:54): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+241-11-06 18:10:13.039  6042  6042 I s.quizzer.debug: Late-enabling -Xcheck:jni
+242-11-06 18:10:13.048  6042  6042 I s.quizzer.debug: Using CollectorTypeCC GC.
+243-11-06 18:10:13.049  6042  6042 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+244-11-06 18:10:13.049  6042  6042 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+245-11-06 18:10:13.072   414   428 I adbd    : jdwp connection from 6042
+--
+6344-11-06 18:13:24.021     0     0 I binder  : 519:2425 ioctl 400c620e 7ec7348fd930 returned -11
+6345-11-06 18:13:23.853   519   538 D DisplayManagerService: Drop pending events for gone uid 10192
+6346-11-06 18:13:23.856  6025  6025 I app_process: System.exit called, status: 0
+6347:11-06 18:13:23.856  6025  6025 I AndroidRuntime: VM exiting with result code 0.
+6348-11-06 18:13:23.861   519   519 W Looper  : Slow dispatch took 103ms main h=android.os.Handler c=android.view.accessibility.AccessibilityManager$$ExternalSyntheticLambda1@7abc090 m=0
+6349-11-06 18:13:23.874  1779  2320 I A       : NGA enabled in interactor.
+6350-11-06 18:13:23.874  1779  2320 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+6351-11-06 18:13:23.879  1717  1761 I A       : Initializing all components
+6352-11-06 18:13:23.880   519  2425 I ActivityManager: Killing 6042:nz.durbs.quizzer.debug/u0a192 (adj 0): stop nz.durbs.quizzer.debug due to finished inst
+6353-11-06 18:13:23.883  6371  6371 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@6c2f7c4
+6354-11-06 18:13:23.884   519  2285 D CoreBackPreview: Window{20127fb u0 nz.durbs.quizzer.debug.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity}: Setting back callback null
+6355-11-06 18:13:23.898  1717  1761 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+6356-11-06 18:13:23.898  1717  1761 I A       : [Memory] eligibility: StashEligibility{6}
+6357-11-06 18:13:23.899  1717  2146 I A       : onIsEnabledChanged, isEnabled: false
+6358-11-06 18:13:23.899  1717  2146 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+6359-11-06 18:13:23.899  1717  2146 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+6360-11-06 18:13:23.899  1717  2146 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+6361-11-06 18:13:23.899  1717  2146 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+6362-11-06 18:13:23.899  1717  2146 W A       : Disposing empty manager. Did you forgot to subscribe observables?

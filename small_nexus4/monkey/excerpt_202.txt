@@ -1,0 +1,100 @@
+91-11-06 18:18:40.098  1080  1080 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=visionquest captain america easter egg,group_id=web552922,response_id=077fc4f7-2096-4542-87b5-2b80d4cec22c,support_query_builder=false,} searchAction=visionquest captain america easter egg searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 9506a716-a3ee-47d0-803a-0bfcb08fd9b6
+92-11-06 18:18:40.098  1080  1080 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=ny mets,group_id=web552922,response_id=077fc4f7-2096-4542-87b5-2b80d4cec22c,support_query_builder=false,} searchAction=ny mets searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: f50bfdb4-acda-4986-aa1c-817e8b8dc7ce
+93-11-06 18:18:40.098  1080  1080 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=volunteer visits shelter dog nina,group_id=web552922,response_id=077fc4f7-2096-4542-87b5-2b80d4cec22c,support_query_builder=false,} searchAction=volunteer visits shelter dog nina searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 8ef308dd-c0a3-4093-8c60-c4b746552890
+94:11-06 18:18:40.099  7541  7541 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+95:11-06 18:18:40.177  7541  7541 I AndroidRuntime: Using default boot image
+96:11-06 18:18:40.177  7541  7541 I AndroidRuntime: Leaving lock profiling enabled
+97-11-06 18:18:40.178  7541  7541 I app_process: Core platform API reporting enabled, enforcing=false
+98-11-06 18:18:40.179  7541  7541 I app_process: Using CollectorTypeCC GC.
+99-11-06 18:18:40.255  7541  7541 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+100-11-06 18:18:40.262  7541  7541 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+101-11-06 18:18:40.262  7541  7541 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+102-11-06 18:18:40.266  7541  7541 W app_process: Unexpected CPU variant for x86: x86_64.
+103-11-06 18:18:40.266  7541  7541 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+104-11-06 18:18:40.277  7541  7541 W main    : type=1400 audit(0.0:81): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+105-11-06 18:18:40.288  7541  7541 W libc    : Access denied finding property "ro.product.name_for_attestation"
+106-11-06 18:18:40.297  7541  7541 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+107-11-06 18:18:40.297  7541  7541 W libc    : Access denied finding property "ro.product.model_for_attestation"
+108:11-06 18:18:40.298  7541  7541 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+109-11-06 18:18:40.289  7541  7541 W main    : type=1400 audit(0.0:82): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+110-11-06 18:18:40.306  7252  7268 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#67)android.os.BinderProxy@1a06fc3@0
+111-11-06 18:18:40.310   524   541 V WindowManager: Finish Transition #67: created at 11-06 18:18:39.914 collect-started=0.019ms request-sent=0.062ms started=25.007ms ready=24.981ms sent=118.498ms finished=394.961ms
+112-11-06 18:18:40.310  7541  7541 W Monkey  : args: [-p, nz.durbs.quizzer.debug, --pct-syskeys, 0, --throttle, 40, -s, 202, -v, 4000]
+113-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "-p"
+114-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "nz.durbs.quizzer.debug"
+115-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "--pct-syskeys"
+116-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "0"
+117-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "--throttle"
+118-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "40"
+119-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "-s"
+120-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "202"
+121-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "-v"
+122-11-06 18:18:40.310  7541  7541 W Monkey  :  arg: "4000"
+123-11-06 18:18:40.310  7541  7541 W Monkey  : data="nz.durbs.quizzer.debug"
+--
+1377-11-06 18:18:58.330  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=265.0, y[0]=866.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=649114, downTime=649114, deviceId=-1, source=0x1002, displayId=0, eventId=-297382644 }
+1378-11-06 18:18:58.331  7541  7541 I Monkey  : :Sending Touch (ACTION_UP): 0:(206.1289,914.8281)
+1379-11-06 18:18:58.333  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=206.1289, y[0]=914.8281, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=649120, downTime=649114, deviceId=-1, source=0x1002, displayId=0, eventId=-740909025 }
+1380:11-06 18:18:58.388  7555  7555 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1381-11-06 18:18:58.442   342  1584 D android.hardware.audio@7.1-impl.ranchu: threadLoop: entering standby, frames: 9192512
+1382-11-06 18:18:58.631  7541  7541 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(0.0,0.0)
+1383-11-06 18:18:58.736   397  1005 D audioserver: FGS Logger Transaction failed
+1384-11-06 18:18:58.736   397  1005 D audioserver: -129
+1385-11-06 18:18:58.784   397   495 D AudioFlinger: mixer(0x70c755930930) throttle end: throttle time(33)
+1386-11-06 18:18:58.897   397   495 D audioserver: FGS Logger Transaction failed
+1387-11-06 18:18:58.897   397   495 D audioserver: -129
+1388-11-06 18:18:58.905  7541  7541 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-3.0,-5.0)
+1389-11-06 18:18:58.907  7541  7541 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(753.0,912.0)
+1390-11-06 18:18:58.908  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=753.0, y[0]=912.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=649696, downTime=649696, deviceId=-1, source=0x1002, displayId=0, eventId=-1031891738 }
+1391-11-06 18:18:58.909  7541  7541 I Monkey  : :Sending Touch (ACTION_UP): 0:(750.5342,901.21875)
+1392-11-06 18:18:58.910  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=750.5342, y[0]=901.21875, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=649698, downTime=649696, deviceId=-1, source=0x1002, displayId=0, eventId=-199020659 }
+1393-11-06 18:18:58.910  7252  7268 D ShellBackPreview: Finishing gesture with event action: 1
+1394-11-06 18:18:58.910  7252  7268 D ShellBackPreview: onGestureFinished() mTriggerBack == false
+1395-11-06 18:18:58.910  7252  7268 D ShellBackPreview: BackAnimationController: finishBackNavigation()
+--
+1786-11-06 18:19:04.363  7252  7252 D DLObserver: remove listener: com.android.systemui.dock.DockManagerExtensionsKt$retrieveIsDocked$1$callback$1@e1c173e
+1787-11-06 18:19:04.367  7252  7276 D ControlsListingControllerImpl: Unsubscribing callback
+1788-11-06 18:19:04.375  7555  7580 D EGL_emulation: app_time_stats: avg=40.34ms min=4.64ms max=418.41ms count=23
+1789:11-06 18:19:04.457  7555  7555 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1790-11-06 18:19:04.462  7252  7277 D EGL_emulation: app_time_stats: avg=40.55ms min=1.70ms max=87.49ms count=23
+1791-11-06 18:19:04.471  7541  7541 I Monkey  : :Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+1792-11-06 18:19:04.474   524  2279 W ActivityTaskManager: callingPackage for (uid=2000, pid=7541) has no WPC
+1793-11-06 18:19:04.474  7541  7541 I Monkey  :     // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+1794-11-06 18:19:04.476   524  2279 I ActivityTaskManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=nz.durbs.quizzer.debug/com.example.MainActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=3
+1795-11-06 18:19:04.476  7252  7281 D KeyguardService: setOccluded(false)
+1796-11-06 18:19:04.476  7252  7281 D KeyguardViewMediator: setOccluded(false)
+1797-11-06 18:19:04.476  7252  7252 D KeyguardViewMediator: handleSetOccluded(false)
+1798-11-06 18:19:04.476  7252  7268 D WindowManagerShell: onActivityRestartAttempt: ComponentInfo{nz.durbs.quizzer.debug/com.example.MainActivity}
+1799-11-06 18:19:04.532  7555  7564 W System  : A resource failed to call release. 
+1800-11-06 18:19:04.615  7541  7541 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-1.0,-1.0)
+1801-11-06 18:19:04.616  7541  7541 I Monkey  :     //[calendar_time:2026-11-06 18:19:04.615  system_uptime:655404]
+1802-11-06 18:19:04.616  7541  7541 I Monkey  :     // Sending event #1300
+1803-11-06 18:19:04.690   397   415 D audioserver: FGS Logger Transaction failed
+1804-11-06 18:19:04.690   397   415 D audioserver: -129
+--
+2162-11-06 18:19:12.859  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=33.351562, y[0]=461.83105, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=663647, downTime=663638, deviceId=-1, source=0x1002, displayId=0, eventId=-359355589 }
+2163-11-06 18:19:12.961   397   417 D audioserver: FGS Logger Transaction failed
+2164-11-06 18:19:12.961   397   417 D audioserver: -129
+2165:11-06 18:19:12.999  7555  7555 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+2166-11-06 18:19:13.048  7541  7541 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(447.0,1115.0)
+2167-11-06 18:19:13.050  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=447.0, y[0]=1115.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=663837, downTime=663837, deviceId=-1, source=0x1002, displayId=0, eventId=-199095719 }
+2168-11-06 18:19:13.051  7541  7541 I Monkey  : :Sending Touch (ACTION_UP): 0:(448.47168,1117.4346)
+2169-11-06 18:19:13.058  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=448.47168, y[0]=1117.4346, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=663839, downTime=663837, deviceId=-1, source=0x1002, displayId=0, eventId=-1047697834 }
+2170-11-06 18:19:13.193   397   495 D audioserver: FGS Logger Transaction failed
+2171-11-06 18:19:13.193   397   495 D audioserver: -129
+2172-11-06 18:19:13.307  7555  7562 I s.quizzer.debug: Background concurrent copying GC freed 1117034(36MB) AllocSpace objects, 3(112KB) LOS objects, 49% free, 9052KB/17MB, paused 19us,12us total 183.057ms
+2173-11-06 18:19:13.398  7541  7541 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(56.0,1075.0)
+2174-11-06 18:19:13.399  1080  1080 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=56.0, y[0]=1075.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=664187, downTime=664187, deviceId=-1, source=0x1002, displayId=0, eventId=-302293030 }
+2175-11-06 18:19:13.400  7252  7268 D ShellBackPreview: Finishing gesture with event action: 3
+2176-11-06 18:19:13.400  7252  7268 D ShellBackPreview: onGestureFinished() mTriggerBack == false
+2177-11-06 18:19:13.400  7252  7268 D ShellBackPreview: BackAnimationController: finishBackNavigation()
+2178-11-06 18:19:13.409  7541  7541 I Monkey  :     //[calendar_time:2026-11-06 18:19:13.409  system_uptime:664198]
+2179-11-06 18:19:13.409  7541  7541 I Monkey  :     // Sending event #1800
+2180-11-06 18:19:13.410  7541  7541 I Monkey  : :Sending Touch (ACTION_UP): 0:(80.78613,987.02734)
+--
+4440-11-06 18:19:46.980  7541  7541 I Monkey  : ## Network stats: elapsed time=66639ms (0ms mobile, 0ms wifi, 66639ms not connected)
+4441-11-06 18:19:46.980  7541  7541 I Monkey  : // Monkey finished
+4442-11-06 18:19:46.983  7541  7541 I app_process: System.exit called, status: 0
+4443:11-06 18:19:46.983  7541  7541 I AndroidRuntime: VM exiting with result code 0.
+4444-11-06 18:19:47.006  7555  7580 D EGL_emulation: app_time_stats: avg=22.25ms min=8.82ms max=37.20ms count=39
+4445-11-06 18:19:47.237     0     0 I logd    : logdr: UID=2000 GID=2000 PID=7719 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns

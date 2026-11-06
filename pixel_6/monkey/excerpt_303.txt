@@ -1,0 +1,189 @@
+86-11-06 18:24:26.992  5243  5243 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+87-11-06 18:24:26.997   831   872 W Looper  : Slow dispatch took 64ms wmshell.anim h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver@86ecf60 m=0
+88-11-06 18:24:26.997  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+89:11-06 18:24:26.998  8280  8280 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+90-11-06 18:24:26.998  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.onStartInputView():1995 onStartInputView(EditorInfo{inputType=0x1(Normal) imeOptions=0x2000003 privateImeOptions=com.google.android.inputmethod.latin.appSupportsSmartComposeAndDel,com.google.android.inputmethod.latin.canary.appSupportsSmartComposeAndDel,com.google.android.inputmethod.latin.dev.appSupportsSmartComposeAndDel actionName=SEARCH actionLabel=null actionId=0 initialSelStart=5 initialSelEnd=5 initialCapsMode=0x0 hintText=non-empty label=null packageName=com.google.android.apps.nexuslauncher fieldId=2131362265 fieldName=null extras=null}, false)
+91-11-06 18:24:26.999  1554  1619 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:411
+92-11-06 18:24:26.999  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+93-11-06 18:24:26.999  1554  1554 W ModuleManager: ModuleManager.loadModule():450 Module erj is not available
+94-11-06 18:24:27.001  1554  1554 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():189 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+95-11-06 18:24:27.001  1554  1554 I AndroidIME: AbstractIme.onActivate():86 LatinIme.onActivate() : EditorInfo = inputType=0x1(Normal) imeOptions=0x2000003 privateImeOptions=com.google.android.inputmethod.latin.appSupportsSmartComposeAndDel,com.google.android.inputmethod.latin.canary.appSupportsSmartComposeAndDel,com.google.android.inputmethod.latin.dev.appSupportsSmartComposeAndDel actionName=SEARCH actionLabel=null actionId=0 initialSelStart=5 initialSelEnd=5 initialCapsMode=0x0 hintText=non-empty label=null packageName=com.google.android.apps.nexuslauncher fieldId=2131362265 fieldName=null extras=null, IncognitoMode = false, DeviceLocked = false
+96-11-06 18:24:27.001  1554  1554 I Delight5Facilitator: Delight5Facilitator.initializeForIme():777 initializeForIme() : Locale = [en_US], layout = qwerty
+97-11-06 18:24:27.002  1554  1554 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.cancelShutdown():55 cancelShutdown()
+98-11-06 18:24:27.002  1554  1554 I VoiceInputManagerWrapper: VoiceInputManagerWrapper.syncLanguagePacks():67 syncLanguagePacks()
+99-11-06 18:24:27.002  1554  1554 I LatinIme: LatinIme.updateEnableInlineSuggestionsOnDecoderSideFlags():1003 inline flag updated to:false
+100:11-06 18:24:27.003  8280  8280 I AndroidRuntime: Using default boot image
+101:11-06 18:24:27.003  8280  8280 I AndroidRuntime: Leaving lock profiling enabled
+102-11-06 18:24:27.007  5243  5243 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+103-11-06 18:24:27.015  8280  8280 I app_process: Core platform API reporting enabled, enforcing=false
+104-11-06 18:24:27.080  1554  1554 I KeyboardWrapper: KeyboardWrapper.consumeEvent():275 Skip consuming an event as current keyboard is deactivated (state=0, keyboard existence=true)
+105-11-06 18:24:27.081   831   872 W Looper  : Slow delivery took 56ms wmshell.anim h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver@86ecf60 m=0
+106-11-06 18:24:27.081   831   865 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#85)android.os.BinderProxy@e7ffba9@0
+107-11-06 18:24:27.085  1554  7722 I SpeechFactory: SpeechRecognitionFactory.maybeScheduleAutoPackDownloadForFallback():205 maybeScheduleAutoPackDownloadForFallback()
+108-11-06 18:24:27.085  1554  7722 I FallbackOnDeviceRecognitionProvider: FallbackOnDeviceRecognitionProvider.maybeScheduleAutoPackDownload():195 maybeScheduleAutoPackDownload() for language tag en-US
+109-11-06 18:24:27.086   519  2216 W WindowManager: Exception thrown during dispatchAppVisibility Window{6032ff7 u0 nz.durbs.quizzer.debug/com.example.MainActivity EXITING}
+110-11-06 18:24:27.086   519  2216 W WindowManager: android.os.DeadObjectException
+111-11-06 18:24:27.086   519  2216 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+112-11-06 18:24:27.086   519  2216 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+113-11-06 18:24:27.086   519  2216 W WindowManager: 	at android.view.IWindow$Stub$Proxy.dispatchAppVisibility(IWindow.java:546)
+114-11-06 18:24:27.086   519  2216 W WindowManager: 	at com.android.server.wm.WindowState.sendAppVisibilityToClients(WindowState.java:3271)
+115-11-06 18:24:27.086   519  2216 W WindowManager: 	at com.android.server.wm.WindowContainer.sendAppVisibilityToClients(WindowContainer.java:1221)
+116-11-06 18:24:27.086   519  2216 W WindowManager: 	at com.android.server.wm.WindowToken.setClientVisible(WindowToken.java:409)
+--
+203-11-06 18:24:27.714  8280  8280 W libc    : Access denied finding property "ro.product.name_for_attestation"
+204-11-06 18:24:27.718  8280  8280 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+205-11-06 18:24:27.719  8280  8280 W libc    : Access denied finding property "ro.product.model_for_attestation"
+206:11-06 18:24:27.720  8280  8280 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+207-11-06 18:24:27.722  8280  8280 W Monkey  : args: [-p, nz.durbs.quizzer.debug, --pct-syskeys, 0, --throttle, 40, -s, 303, -v, 4000]
+208-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "-p"
+209-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "nz.durbs.quizzer.debug"
+210-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "--pct-syskeys"
+211-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "0"
+212-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "--throttle"
+213-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "40"
+214-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "-s"
+215-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "303"
+216-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "-v"
+217-11-06 18:24:27.722  8280  8280 W Monkey  :  arg: "4000"
+218-11-06 18:24:27.722  8280  8280 W Monkey  : data="nz.durbs.quizzer.debug"
+219-11-06 18:24:27.722  8280  8280 W Monkey  : arg="--pct-syskeys" mCurArgData="null" mNextArg=3 argwas="--pct-syskeys" nextarg="0"
+220-11-06 18:24:27.722  8280  8280 W Monkey  : data="0"
+221-11-06 18:24:27.726  8280  8280 W Monkey  : arg="--throttle" mCurArgData="null" mNextArg=5 argwas="--throttle" nextarg="40"
+--
+1534-11-06 18:24:51.867  5243  5243 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+1535-11-06 18:24:51.868  5243  5243 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+1536-11-06 18:24:51.878  1554  2389 I Delight5Decoder: Delight5DecoderWrapper.setKeyboardLayout():457 setKeyboardLayout()
+1537:11-06 18:24:51.914  8294  8294 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1538-11-06 18:24:51.919  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3483 setKeyboardViewShown() : type = HEADER, shownType = SHOW_MANDATORY_WITH_ANIMATION
+1539-11-06 18:24:51.920  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3530 setKeyboardViewShown() : shouldShow = true
+1540-11-06 18:24:51.921  8294  8294 W FrameTracker: Missed App frame:UNKNOWN: 74, 240533, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1541-11-06 18:24:51.922  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 74, 240533, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1542-11-06 18:24:51.925  8294  8294 W FrameTracker: Missed App frame:UNKNOWN: 88, 240571, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1543-11-06 18:24:51.925  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 88, 240571, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1544-11-06 18:24:51.980  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(557.0,1970.0)
+1545-11-06 18:24:51.981  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=557.0, y[0]=1970.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1019584, downTime=1019584, deviceId=-1, source=0x1002, displayId=0, eventId=-374954067 }
+1546-11-06 18:24:51.986  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(539.8096,1963.4805)
+1547-11-06 18:24:51.987  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=539.8096, y[0]=1963.4805, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1019590, downTime=1019584, deviceId=-1, source=0x1002, displayId=0, eventId=-512373558 }
+1548-11-06 18:24:52.027  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(852.0,1120.0)
+1549-11-06 18:24:52.028  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=852.0, y[0]=1120.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1019631, downTime=1019631, deviceId=-1, source=0x1002, displayId=0, eventId=-967122504 }
+1550-11-06 18:24:52.028  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(850.33105,1120.7344)
+1551-11-06 18:24:52.029  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=850.33105, y[0]=1120.7344, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1019632, downTime=1019631, deviceId=-1, source=0x1002, displayId=0, eventId=-633664988 }
+1552-11-06 18:24:52.048   519  2236 I ImeTracker: nz.durbs.quizzer.debug:cee453c2: onRequestShow at ORIGIN_SERVER_START_INPUT reason ATTACH_NEW_INPUT
+--
+4845-11-06 18:25:29.119  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=246.0, y[0]=1679.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1056717, downTime=1056717, deviceId=-1, source=0x1002, displayId=0, eventId=-1052575858 }
+4846-11-06 18:25:29.120  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(248.72559,1681.8135)
+4847-11-06 18:25:29.120  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=248.72559, y[0]=1681.8135, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1056724, downTime=1056717, deviceId=-1, source=0x1002, displayId=0, eventId=-429964626 }
+4848:11-06 18:25:29.144  8294  8294 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+4849-11-06 18:25:29.162  8280  8280 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-2.0,3.0)
+4850-11-06 18:25:29.170  1554  1667 D EGL_emulation: app_time_stats: avg=288.96ms min=94.20ms max=731.10ms count=5
+4851-11-06 18:25:29.171  8280  8280 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(2.0,-5.0)
+4852-11-06 18:25:29.410  1554  1554 W InputConnectionWrapper: InputConnectionWrapper.recordDuration():1451 IPC IC_GET_SURROUNDING_TEXT took 178 ms
+4853-11-06 18:25:29.576  8280  8280 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-1.0,4.0)
+4854-11-06 18:25:29.631  8280  8280 I Monkey  : :Sending Flip keyboardOpen=true
+4855-11-06 18:25:29.631  8280  8280 I Monkey  : Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+4856-11-06 18:25:29.631  8280  8280 I Monkey  :     // Injection Failed
+4857-11-06 18:25:29.629  8280  8280 W commands.monkey: type=1400 audit(0.0:109): avc:  denied  { write } for  name="event0" dev="tmpfs" ino=506 scontext=u:r:shell:s0 tcontext=u:object_r:input_device:s0 tclass=chr_file permissive=0
+4858-11-06 18:25:29.742  8280  8280 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-3.0,3.0)
+4859-11-06 18:25:29.807  8294  8316 D EGL_emulation: app_time_stats: avg=86.02ms min=35.01ms max=129.73ms count=12
+4860-11-06 18:25:29.808  1554  1554 W InputConnectionWrapper: InputConnectionWrapper.recordDuration():1451 IPC IC_GET_SURROUNDING_TEXT took 106 ms
+4861-11-06 18:25:29.809   831   897 D EGL_emulation: app_time_stats: avg=56.41ms min=2.12ms max=153.57ms count=14
+4862-11-06 18:25:29.947  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(892.0,1208.0)
+4863-11-06 18:25:29.950  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=892.0, y[0]=1208.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1057550, downTime=1057550, deviceId=-1, source=0x1002, displayId=0, eventId=-873301141 }
+--
+5170-11-06 18:25:38.522   519   814 D ActivityManager: sync unfroze 833 com.google.android.permissioncontroller for 6
+5171-11-06 18:25:38.582  8280  8280 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-5.0,0.0)
+5172-11-06 18:25:38.608   831   895 D ControlsListingControllerImpl: Subscribing callback, service count: 0
+5173:11-06 18:25:38.687  8294  8294 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+5174-11-06 18:25:38.753   831   897 D EGL_emulation: app_time_stats: avg=74.79ms min=11.15ms max=234.13ms count=14
+5175-11-06 18:25:38.803   519  2143 W ProcessStats: Tracking association SourceState{99766f3 com.google.android.inputmethod.latin/10143 ImpBg #17936} whose proc state 6 is better than process ProcessState{2f821a4 com.google.android.gms/10131 pkg=com.google.android.gms} proc state 8 (167 skipped)
+5176-11-06 18:25:38.852  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(282.0,325.0)
+5177-11-06 18:25:38.878  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=282.0, y[0]=325.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1066456, downTime=1066456, deviceId=-1, source=0x1002, displayId=0, eventId=-193107210 }
+5178-11-06 18:25:38.879  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(264.67285,340.6162)
+5179-11-06 18:25:38.879  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=264.67285, y[0]=340.6162, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1066483, downTime=1066456, deviceId=-1, source=0x1002, displayId=0, eventId=-182559980 }
+5180-11-06 18:25:38.922  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(29.0,1233.0)
+5181-11-06 18:25:38.923  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=29.0, y[0]=1233.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1066526, downTime=1066526, deviceId=-1, source=0x1002, displayId=0, eventId=-712542177 }
+5182-11-06 18:25:38.923  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(35.251953,1236.4863)
+5183-11-06 18:25:38.923  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=35.251953, y[0]=1236.4863, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1066527, downTime=1066526, deviceId=-1, source=0x1002, displayId=0, eventId=-503864836 }
+5184-11-06 18:25:38.963   831   895 D ControlsListingControllerImpl: Unsubscribing callback
+5185-11-06 18:25:39.046  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(518.0,405.0)
+5186-11-06 18:25:39.047  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=518.0, y[0]=405.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1066650, downTime=1066650, deviceId=-1, source=0x1002, displayId=0, eventId=-1062588256 }
+5187-11-06 18:25:39.047  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(524.6074,405.2539)
+5188-11-06 18:25:39.048  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=524.6074, y[0]=405.2539, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1066651, downTime=1066650, deviceId=-1, source=0x1002, displayId=0, eventId=-517540153 }
+--
+8285-11-06 18:26:08.424  5243  5243 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+8286-11-06 18:26:08.425  8294  8294 D InsetsController: show(ime(), fromIme=true)
+8287-11-06 18:26:08.426  8294  8294 I ImeTracker: nz.durbs.quizzer.debug:19662560: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+8288:11-06 18:26:08.442  8294  8294 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+8289-11-06 18:26:08.478  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(682.0,165.0)
+8290-11-06 18:26:08.480  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=682.0, y[0]=165.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1096082, downTime=1096082, deviceId=-1, source=0x1002, displayId=0, eventId=-1047449326 }
+8291-11-06 18:26:08.481  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(668.7373,174.8291)
+8292-11-06 18:26:08.481  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=668.7373, y[0]=174.8291, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1096085, downTime=1096082, deviceId=-1, source=0x1002, displayId=0, eventId=-456715841 }
+8293-11-06 18:26:08.505   519   608 D ActivityManager: freezing 7591 com.google.android.gms.unstable
+8294-11-06 18:26:08.506   519   608 D ActivityManager: freezing 1708 com.google.process.gservices
+8295-11-06 18:26:08.632  8294  8294 I ImeTracker: nz.durbs.quizzer.debug:97f189cc: onShown
+8296-11-06 18:26:08.647  1554  1554 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():159 Tooltip with id spell_check_add_to_dictionary not found in tooltipManager.
+8297-11-06 18:26:08.666  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3483 setKeyboardViewShown() : type = HEADER, shownType = SHOW_MANDATORY_WITH_ANIMATION
+8298-11-06 18:26:08.666  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3530 setKeyboardViewShown() : shouldShow = true
+8299-11-06 18:26:08.783  8280  8280 I Monkey  : :Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=nz.durbs.quizzer.debug/com.example.MainActivity;end
+8300-11-06 18:26:08.822   519  1635 W ActivityTaskManager: callingPackage for (uid=2000, pid=8280) has no WPC
+8301-11-06 18:26:08.823  8280  8280 I Monkey  :     // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=nz.durbs.quizzer.debug/com.example.MainActivity } in package nz.durbs.quizzer.debug
+8302-11-06 18:26:08.827   519  1635 I ActivityTaskManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=nz.durbs.quizzer.debug/com.example.MainActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=3
+8303-11-06 18:26:08.828   831   847 D KeyguardService: setOccluded(false)
+--
+9003-11-06 18:26:16.933  8280  8280 I Monkey  : Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+9004-11-06 18:26:16.933  8280  8280 I Monkey  :     // Injection Failed
+9005-11-06 18:26:16.929  8280  8280 W commands.monkey: type=1400 audit(0.0:114): avc:  denied  { write } for  name="event0" dev="tmpfs" ino=506 scontext=u:r:shell:s0 tcontext=u:object_r:input_device:s0 tclass=chr_file permissive=0
+9006:11-06 18:26:16.968  8294  8294 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+9007-11-06 18:26:16.982   398   398 D audioserver: FGS Logger Transaction failed
+9008-11-06 18:26:16.982   398   398 D audioserver: -129
+9009-11-06 18:26:17.005  1554  1554 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():159 Tooltip with id spell_check_add_to_dictionary not found in tooltipManager.
+9010-11-06 18:26:17.008  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3483 setKeyboardViewShown() : type = HEADER, shownType = SHOW_MANDATORY_WITH_ANIMATION
+9011-11-06 18:26:17.008  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3530 setKeyboardViewShown() : shouldShow = true
+9012-11-06 18:26:17.032  1554  1667 D EGL_emulation: app_time_stats: avg=256.91ms min=85.50ms max=470.67ms count=4
+9013-11-06 18:26:17.081  8280  8280 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-5.0,-5.0)
+9014-11-06 18:26:17.154  8280  8280 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-2.0,0.0)
+9015-11-06 18:26:17.182   398   398 D audioserver: FGS Logger Transaction failed
+9016-11-06 18:26:17.182   398   398 D audioserver: -129
+9017-11-06 18:26:17.243  8280  8280 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(650.0,1765.0)
+9018-11-06 18:26:17.244  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=650.0, y[0]=1765.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1104847, downTime=1104847, deviceId=-1, source=0x1002, displayId=0, eventId=-80874564 }
+9019-11-06 18:26:17.253  8280  8280 I Monkey  : :Sending Touch (ACTION_UP): 0:(697.209,1740.4668)
+9020-11-06 18:26:17.257  1106  1106 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=697.209, y[0]=1740.4668, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1104857, downTime=1104847, deviceId=-1, source=0x1002, displayId=0, eventId=-328740616 }
+9021-11-06 18:26:17.278   519  1936 I ImeTracker: nz.durbs.quizzer.debug:78b3cdef: onRequestShow at ORIGIN_SERVER_START_INPUT reason ATTACH_NEW_INPUT
+--
+9227-11-06 18:26:18.988  1554  2389 I Delight5Decoder: Delight5DecoderWrapper.setKeyboardLayout():457 setKeyboardLayout()
+9228-11-06 18:26:18.993  8294  8294 D InsetsController: show(ime(), fromIme=true)
+9229-11-06 18:26:18.993  8294  8294 I ImeTracker: nz.durbs.quizzer.debug:6ddb459c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+9230:11-06 18:26:18.993  8294  8294 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9231-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 80, 268352, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9232-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed App frame:UNKNOWN: 88, 268367, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9233-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 88, 268367, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9234-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed App frame:UNKNOWN: 74, 268374, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9235-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 74, 268374, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9236-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed App frame:UNKNOWN: 74, 268405, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9237-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 74, 268405, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9238-11-06 18:26:18.993  8294  8294 W FrameTracker: Missed App frame:UNKNOWN: 74, 268421, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9239-11-06 18:26:18.994  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 74, 268421, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9240-11-06 18:26:18.994  8294  8294 W FrameTracker: Missed App frame:UNKNOWN: 74, 268429, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9241-11-06 18:26:18.994  8294  8294 W FrameTracker: Missed SF frame:UNKNOWN: 74, 268429, 0, CUJ=J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+9242-11-06 18:26:19.000  8294  8338 V PerfettoTrigger: Triggering /system/bin/trigger_perfetto com.android.telemetry.interaction-jank-monitor-69
+9243-11-06 18:26:19.035  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3483 setKeyboardViewShown() : type = HEADER, shownType = SHOW_MANDATORY_WITH_ANIMATION
+9244-11-06 18:26:19.035  1554  1554 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3530 setKeyboardViewShown() : shouldShow = true
+9245-11-06 18:26:19.050  5243  5243 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+--
+9569-11-06 18:26:25.193  8280  8280 I Monkey  : ## Network stats: elapsed time=117350ms (0ms mobile, 0ms wifi, 117350ms not connected)
+9570-11-06 18:26:25.193  8280  8280 I Monkey  : // Monkey finished
+9571-11-06 18:26:25.202  8280  8280 I app_process: System.exit called, status: 0
+9572:11-06 18:26:25.202  8280  8280 I AndroidRuntime: VM exiting with result code 0.
+9573-11-06 18:26:25.314  1709  1763 I AiAiEcho: Settings changed for uri: content://settings/secure/device_state_rotation_lock
+9574-11-06 18:26:25.314  1709  2080 I AiAiEcho: Predicting[0]: 
+9575-11-06 18:26:25.314  1709  2080 I AiAiEcho: EchoTargets: 
+9576-11-06 18:26:25.314  1709  2080 I AiAiEcho: Filtered by AiAi flag check: 
+9577-11-06 18:26:25.314  1709  2080 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+9578-11-06 18:26:25.314  1709  2080 I AiAiEcho: Predicting[0]: 
+9579-11-06 18:26:25.314  1709  2080 I AiAiEcho: EchoTargets: 
+9580-11-06 18:26:25.314  1709  2080 I AiAiEcho: Filtered by AiAi flag check: 
+9581-11-06 18:26:25.314  1709  2080 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+9582-11-06 18:26:25.315  1709  2080 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+9583-11-06 18:26:25.315  1709  2080 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+9584-11-06 18:26:25.509     0     0 I logd    : logdr: UID=2000 GID=2000 PID=8544 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns
+9585-11-06 18:26:25.351   831   831 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
