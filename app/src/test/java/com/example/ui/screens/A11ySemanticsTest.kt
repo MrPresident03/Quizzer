@@ -1,5 +1,6 @@
 package com.example.ui.screens
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.VolumeUp
@@ -58,6 +59,7 @@ class A11ySemanticsTest {
         var clicks = 0
         compose.setContent {
             BrainBlitzTheme {
+              Row {
                 LifelineButton(
                     label = "Skip", count = 0, icon = Icons.Default.SkipNext,
                     isActive = true, onClick = { clicks++ }, tag = "used"
@@ -66,6 +68,7 @@ class A11ySemanticsTest {
                     label = "Skip", count = 1, icon = Icons.Default.SkipNext,
                     isActive = true, onClick = { clicks += 10 }, tag = "fresh"
                 )
+              }
             }
         }
         compose.onNodeWithTag("used").assertIsNotEnabled().assertContentDescriptionEquals("Skip, used")
