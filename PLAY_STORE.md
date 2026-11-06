@@ -53,7 +53,7 @@ Both files are also attached to a GitHub Release. Each run gets a higher version
 - Title, short and full description: copy from `fastlane/metadata/android/en-US/`
 - App icon: `images/icon.png` (512×512)
 - Feature graphic: `images/featureGraphic.png` (1024×500)
-- **Phone screenshots: 2–8 needed.** Take them on your phone from the release build: Home, a question with the explanation showing, the Daily Challenge result, Progress/Topic mastery, Practice.
+- **Phone screenshots: 2–8 needed.** Six ready-made ones (1200×2400, padded from Pixel 6 emulator captures so they stay within Play's 2:1 limit) are in `fastlane/metadata/android/en-US/images/phoneScreenshots/`: `1_home.png`, `2_question.png`, `3_flag.png`, `4_explanation.png`, `5_daily.png`, `6_progress.png`. Replace them with real-phone shots from the release build if you prefer.
 - Category: **Trivia** (Games) or **Education**. Contact email required (it's public).
 
 ## 4. Testing, then production
