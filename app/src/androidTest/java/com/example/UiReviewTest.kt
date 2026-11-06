@@ -103,6 +103,9 @@ class UiReviewTest {
 
     step("04_dashboard") {
       awaitTag("quick_play_card", 30_000)
+      // Let the onboarding -> dashboard cross-fade finish: on the slow small emulator the first frame
+      // otherwise still shows the last onboarding page.
+      settle(2000)
       scrollCapture("04_dashboard", 6)
     }
 
