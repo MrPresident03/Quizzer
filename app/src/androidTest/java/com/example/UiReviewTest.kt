@@ -3,6 +3,8 @@ package com.example
 import android.graphics.Bitmap
 import android.os.SystemClock
 import android.view.KeyEvent
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
@@ -112,7 +114,7 @@ class UiReviewTest {
     step("05_daily_lobby") {
       recover()
       scrollToTop()
-      clickTag("daily_challenge_card")
+      clickTag("daily_challenge_button")
       awaitTag("start_daily_challenge_button", 15_000)
       scrollCapture("05_daily_lobby", 3)
       recover()
@@ -129,36 +131,39 @@ class UiReviewTest {
       }
     }
 
-    step("08_topic_selection") {
+    step("08_practice") {
       clickTag("nav_tab_practice")
       awaitTag("start_practice_quiz_button", 15_000)
       settle(800)
-      shot("08_topic_selection_top")
-      // The page is a plain scrolling column; jump to landmarks instead of swiping (the topic grid
-      // inside it would swallow swipes).
-      scrollToText("CHOOSE GAMEPLAY FORMAT")
-      shot("09_topic_selection_flag_card")
-      scrollToText("Select Difficulty")
-      shot("10_topic_selection_options")
-      scrollToTag("start_practice_quiz_button")
-      shot("11_topic_selection_bottom")
-      // Exercise the selectors so selected states are visible.
-      clickText("Hard", 1)
-      clickText("20 Qs", 1)
-      clickText("True/False")
-      clickText("General Knowledge")
-      scrollToText("Select Difficulty")
-      shot("12_topic_selection_selected")
+      shot("08_practice_top")
+      // Flags selected: topics clear, Format and Questions switch to the flag options.
+      setToggle("special_flags", true)
+      shot("09_practice_flags_selected")
+      scrollToTag("timer_toggle")
+      shot("10_practice_flags_options_and_start")
+      setToggle("special_flags", false)
+      // A few selections so the selected states show.
+      clickTag("opt_difficulty_Hard")
+      clickTag("opt_count_20")
+      clickTag("opt_format_True/False")
+      setToggle("topic_General Knowledge", true)
+      setToggle("topic_History", true)
+      scrollToTag("timer_toggle")
+      shot("11_practice_options_and_start")
+      scrollToTag("topic_General Knowledge")
+      shot("12_practice_topics_selected")
       // Put it back to defaults.
-      clickText("Mixed", 1)
-      clickText("10 Qs", 1)
-      clickText("General Knowledge")
+      setToggle("topic_General Knowledge", false)
+      setToggle("topic_History", false)
+      clickTag("opt_difficulty_Mixed")
+      clickTag("opt_count_10")
+      clickTag("opt_format_Mixed")
     }
 
     // ---- Normal multiple choice: the long run (lifelines, outcomes, results, review).
     step("20_mc_quiz") {
       openPractice()
-      clickText("Multiple Choice")
+      clickTag("opt_format_Multiple Choice")
       clickTag("start_practice_quiz_button")
       waitQuiz("19_quiz_loading")
       settle(600)
@@ -188,7 +193,7 @@ class UiReviewTest {
     // ---- True/False
     step("30_tf_quiz") {
       openPractice()
-      clickText("True/False")
+      clickTag("opt_format_True/False")
       clickTag("start_practice_quiz_button")
       waitQuiz(null)
       settle(600)
@@ -200,8 +205,10 @@ class UiReviewTest {
     // ---- Capital Cities
     step("40_capitals_quiz") {
       openPractice()
-      clickText("Multiple Choice")
-      clickTag("featured_capital_cities_card")
+      setToggle("topic_Capital Cities Challenge", true)
+      clickTag("opt_format_Multiple Choice")
+      shot("39_practice_capitals_only")
+      clickTag("start_practice_quiz_button")
       waitQuiz(null)
       settle(600)
       shot("40_quiz_capitals_question")
@@ -212,10 +219,10 @@ class UiReviewTest {
     // ---- Flags: Flag to Country
     step("50_flag_to_country") {
       openPractice()
-      scrollToText("CHOOSE GAMEPLAY FORMAT")
-      clickText("Flag ➔ Name")
-      shot("49_topic_flag_card_flag_to_country_selected")
-      clickText("START GEOGRAPHY QUIZ")
+      setToggle("special_flags", true)
+      clickTag("opt_format_flag_to_country")
+      shot("49_practice_flags_flag_to_country_selected")
+      clickTag("start_practice_quiz_button")
       waitQuiz(null)
       settle(800)
       shot("50_quiz_flag_to_country_question")
@@ -226,9 +233,9 @@ class UiReviewTest {
     // ---- Flags: Country to Flag
     step("60_country_to_flag") {
       openPractice()
-      scrollToText("CHOOSE GAMEPLAY FORMAT")
-      clickText("Name ➔ Flag")
-      clickText("START GEOGRAPHY QUIZ")
+      setToggle("special_flags", true)
+      clickTag("opt_format_country_to_flag")
+      clickTag("start_practice_quiz_button")
       waitQuiz(null)
       settle(800)
       shot("60_quiz_country_to_flag_question")
@@ -272,7 +279,7 @@ class UiReviewTest {
       settle(600)
       // Home keeps its scroll position across tabs now, so the daily card may be off-screen (lazy list).
       scrollToTop()
-      clickTag("daily_challenge_card")
+      clickTag("daily_challenge_button")
       awaitTag("start_daily_challenge_button", 15_000)
       clickTag("start_daily_challenge_button")
       waitQuiz(null)
@@ -317,7 +324,20 @@ class UiReviewTest {
     recover()
     clickTag("nav_tab_practice")
     awaitTag("start_practice_quiz_button", 15_000)
+    // Practice remembers its selections across visits: start each quiz from a known state.
+    setToggle("special_flags", false)
+    setToggle("topic_Capital Cities Challenge", false)
     settle(500)
+  }
+
+  /** Taps a topic tile / Flags / switch only if it is not already in the wanted state. */
+  private fun setToggle(tag: String, on: Boolean) {
+    awaitTag(tag, 15_000)
+    if (isOn(tag) != on) clickTag(tag)
+  }
+
+  private fun isOn(tag: String): Boolean = safe {
+    compose.onAllNodesWithTag(tag).onFirst().fetchSemanticsNode().config[SemanticsProperties.ToggleableState] == ToggleableState.On
   }
 
   /** Waits for the first question of a quiz; screenshots the "Finding fresh questions" spinner if it shows. */

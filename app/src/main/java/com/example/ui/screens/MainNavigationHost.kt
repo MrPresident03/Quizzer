@@ -227,10 +227,6 @@ fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
                         onNavigateToPracticeSelection = {
                             navController.navigateTab("practice_config")
                         },
-                        onStartTopicOfTheDay = { topic ->
-                            mainViewModel.startPracticeQuiz(listOf(topic), "Mixed", 10, "Mixed")
-                            navController.navigateOnce("practice_quiz")
-                        },
                         onNavigateToProfile = {
                             navController.navigateTab("settings_config")
                         },
@@ -245,14 +241,16 @@ fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
                         onStartMistakeReview = {
                             mainViewModel.startMistakeReview()
                             navController.navigateOnce("practice_quiz")
-                        }
+                        },
+                        challengeNumber = DailyChallenge.number(LocalDate.now()),
+                        todayResult = todayDailyResult,
+                        onShareDaily = shareDaily
                     )
                 }
 
                 // Route D: Config Topic Selector Screen Tab 2
                 composable("practice_config") {
                     TopicSelectionScreen(
-                        onNavigateBack = { navController.returnToDashboard() },
                         onStartQuiz = { categories, difficulty, count, format, timed ->
                             mainViewModel.startPracticeQuiz(categories, difficulty, count, format, timed, rememberForQuickPlay = true)
                             navController.navigateOnce("practice_quiz")

@@ -1,362 +1,342 @@
 package com.example.ui.screens
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.data.repository.Categories
 import com.example.data.repository.PracticeSettings
 
-@OptIn(ExperimentalMaterial3Api::class)
+private const val ENDLESS_COUNT = 999
+private val MIN_TOUCH = 48.dp
+
+private fun labelFor(count: Int) = if (count == ENDLESS_COUNT) "Endless" else "$count questions"
+
+/** Text for the sticky start button, e.g. "Start · 3 topics · 10 questions". */
+fun practiceStartLabel(flags: Boolean, topics: List<String>, count: Int): String {
+    val what = when {
+        flags -> "Flags"
+        topics.isEmpty() -> "All topics"
+        topics.size == 1 -> topics.single()
+        else -> "${topics.size} topics"
+    }
+    return "Start · $what · ${labelFor(count)}"
+}
+
 @Composable
 fun TopicSelectionScreen(
-    onNavigateBack: () -> Unit,
     onStartQuiz: (categories: List<String>, difficulty: String, count: Int, format: String, timed: Boolean) -> Unit,
     initial: PracticeSettings = PracticeSettings(),
-    onStartFlagQuiz: (mode: String, difficulty: String, count: Int) -> Unit = { _, _, _ -> }
+    onStartFlagQuiz: (mode: String, difficulty: String, count: Int) -> Unit = { _, _, _ -> },
+    todayTopic: String = remember { topicOfTheDay() }
 ) {
     val topics = remember { getTopicsList() }
-    // Start from the last settings you played with (the same ones Quick Play uses).
-    val selectedTopics = remember { mutableStateListOf<String>().apply { addAll(initial.categories) } }
+    val capital = remember { topics.first { it.name == Categories.CAPITAL_CITIES } }
+    val gridTopics = remember { topics.filter { it.name != Categories.CAPITAL_CITIES } }
 
-    var selectedDifficulty by remember { mutableStateOf(initial.difficulty) }
-    var selectedCount by remember { mutableStateOf(initial.count) }
-    var selectedFormat by remember { mutableStateOf(initial.format) }
-    var isTimedEnabled by remember { mutableStateOf(initial.timed) }
+    // Selections survive rotation and process death; `initial` (the last choices) seeds them.
+    var topicsCsv by rememberSaveable { mutableStateOf(initial.categories.joinToString(";")) }
+    var flagsSelected by rememberSaveable { mutableStateOf(false) }
+    var difficulty by rememberSaveable { mutableStateOf(initial.difficulty) }
+    var count by rememberSaveable { mutableStateOf(initial.count) }
+    var format by rememberSaveable { mutableStateOf(initial.format) }
+    var timed by rememberSaveable { mutableStateOf(initial.timed) }
+    var flagMode by rememberSaveable { mutableStateOf("Mixed") }
+    var flagCount by rememberSaveable { mutableStateOf(10) }
+
+    val selected = if (topicsCsv.isEmpty()) emptyList() else topicsCsv.split(";")
+    fun setSelected(list: List<String>) { topicsCsv = list.joinToString(";") }
+    fun toggleTopic(name: String) {
+        flagsSelected = false
+        setSelected(if (name in selected) selected - name else selected + name)
+    }
+
+    val capitalOnly = !flagsSelected && selected == listOf(Categories.CAPITAL_CITIES)
+    val formatOptions = buildList {
+        add("Mixed" to "Mixed")
+        add("Multiple Choice" to "Multiple choice")
+        if (!capitalOnly) add("True/False" to "True/False")
+    }
+    val effectiveFormat = if (capitalOnly && format == "True/False") "Mixed" else format
+    val activeCount = if (flagsSelected) flagCount else count
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
-                title = { Text("Practice Quiz Suite", fontWeight = FontWeight.ExtraBold) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+            Text(
+                text = "Practice",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 12.dp, bottom = 4.dp)
             )
+        },
+        bottomBar = {
+            Surface(color = MaterialTheme.colorScheme.background, tonalElevation = 3.dp) {
+                Button(
+                    onClick = {
+                        if (flagsSelected) onStartFlagQuiz(flagMode, difficulty, flagCount)
+                        else onStartQuiz(selected, difficulty, count, effectiveFormat, timed)
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                        .heightIn(min = 56.dp)
+                        .testTag("start_practice_quiz_button")
+                ) {
+                    Icon(Icons.Default.PlayArrow, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = practiceStartLabel(flagsSelected, selected, activeCount),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = innerPadding.calculateTopPadding())
+                .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+                .padding(horizontal = 20.dp)
+                .padding(top = 8.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            // Header Description
-            Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                Text(
-                    text = "Select Topics to Study",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+            SectionLabel("SPECIAL MODES")
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                TopicTile(
+                    name = capital.name.removeSuffix(" Challenge"),
+                    icon = capital.icon,
+                    selected = !flagsSelected && capital.name in selected,
+                    badge = false,
+                    tag = "topic_${capital.name}",
+                    onToggle = { toggleTopic(capital.name) },
+                    modifier = Modifier.weight(1f)
                 )
-                Text(
-                    text = "Select one or more categories below. Leaving none selected practices ALL topics.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                )
-            }
-
-            // Featured Capital Cities Challenge Card
-            Card(
-                onClick = {
-                    onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat, isTimedEnabled)
-                },
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f)
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .testTag("featured_capital_cities_card")
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.LocationCity,
-                            contentDescription = "Capital Cities Only",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(28.dp)
-                        )
-                    }
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "Capital Cities Only Challenge",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                        Text(
-                            text = "Test your knowledge exclusively on capitals of sovereign countries across all continents!",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-                            onStartQuiz(listOf("Capital Cities Challenge"), selectedDifficulty, selectedCount, selectedFormat, isTimedEnabled)
-                        },
-                        modifier = Modifier.size(32.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Start capitals only challenge",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }
-
-            // Flag quiz (moved here from the home screen)
-            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-                FlagQuizCard(onStartFlagQuiz = onStartFlagQuiz)
-            }
-
-            // Topic selection Grid
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(260.dp)
-                    .padding(horizontal = 20.dp)
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(topics) { topic ->
-                        val isSelected = selectedTopics.contains(topic.name)
-                        Card(
-                            onClick = {
-                                if (isSelected) {
-                                    selectedTopics.remove(topic.name)
-                                } else {
-                                    selectedTopics.add(topic.name)
-                                }
-                            },
-                            shape = RoundedCornerShape(16.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = if (isSelected) topic.color.copy(alpha = 0.2f)
-                                else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
-                            ),
-                            border = if (isSelected) {
-                                androidx.compose.foundation.BorderStroke(2.dp, topic.color)
-                            } else null,
-                            modifier = Modifier.height(68.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(36.dp)
-                                        .clip(CircleShape)
-                                        .background(topic.color.copy(alpha = 0.25f)),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = topic.icon,
-                                        contentDescription = topic.name,
-                                        tint = topic.color,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                }
-                                Text(
-                                    text = topic.name,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                                    overflow = TextOverflow.Ellipsis,
-                                    maxLines = 2,
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
+                TopicTile(
+                    name = "Flags",
+                    icon = Icons.Default.Flag,
+                    selected = flagsSelected,
+                    badge = false,
+                    tag = "special_flags",
+                    onToggle = {
+                        if (flagsSelected) flagsSelected = false
+                        else {
+                            flagsSelected = true
+                            setSelected(emptyList())
                         }
-                    }
-                }
-            }
-
-            Divider(modifier = Modifier.padding(horizontal = 20.dp))
-
-            // Sub-Settings Panels
-            Column(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // 1. Difficulty
-                Text("Select Difficulty", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    listOf("Mixed", "Easy", "Medium", "Hard").forEach { diff ->
-                        val isSelected = selectedDifficulty == diff
-                        Button(
-                            onClick = { selectedDifficulty = diff },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isSelected) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.surfaceVariant,
-                                contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary
-                                else MaterialTheme.colorScheme.onSurfaceVariant
-                            ),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
-                        ) {
-                            Text(diff, fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                // 2. Length (Question Count)
-                Text("Number of Questions", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    listOf(
-                        "10 Qs" to 10,
-                        "20 Qs" to 20,
-                        "30 Qs" to 30,
-                        "Endless" to 999
-                    ).forEach { (label, countValue) ->
-                        val isSelected = selectedCount == countValue
-                        Button(
-                            onClick = { selectedCount = countValue },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isSelected) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.surfaceVariant,
-                                contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary
-                                else MaterialTheme.colorScheme.onSurfaceVariant
-                            ),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
-                        ) {
-                            Text(label, fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                // 3. Question format
-                Text("Question Format", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    listOf("Mixed", "Multiple Choice", "True/False").forEach { fmt ->
-                        val isSelected = selectedFormat == fmt
-                        Button(
-                            onClick = { selectedFormat = fmt },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isSelected) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.surfaceVariant,
-                                contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary
-                                else MaterialTheme.colorScheme.onSurfaceVariant
-                            ),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
-                        ) {
-                            Text(fmt, fontWeight = FontWeight.Bold, fontSize = 11.sp, maxLines = 1)
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                // 4. Timer Toggle option
-                Surface(
-                    shape = RoundedCornerShape(16.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            Icon(imageVector = Icons.Default.HourglassEmpty, contentDescription = "Timer Settings")
-                            Column {
-                                Text("Timed Questions Enabled", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
-                                Text("${PracticeSettings.QUESTION_SECONDS} seconds per question", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
-                            }
-                        }
-                        Switch(
-                            checked = isTimedEnabled,
-                            onCheckedChange = { isTimedEnabled = it }
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Start Practice Session Master Button
-                Button(
-                    onClick = {
-                        val activeCats = selectedTopics.toList()
-                        onStartQuiz(activeCats, selectedDifficulty, selectedCount, selectedFormat, isTimedEnabled)
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .testTag("start_practice_quiz_button"),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Icon(imageVector = Icons.Default.PlayArrow, contentDescription = "Start Quiz")
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Begin Practice Blitz",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(Modifier.height(6.dp))
+            SectionLabel("TOPICS  (tap to select · none = all)")
+            gridTopics.chunked(2).forEach { rowTopics ->
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                    rowTopics.forEach { t ->
+                        TopicTile(
+                            name = t.name,
+                            icon = t.icon,
+                            selected = !flagsSelected && t.name in selected,
+                            badge = t.name == todayTopic,
+                            tag = "topic_${t.name}",
+                            onToggle = { toggleTopic(t.name) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    if (rowTopics.size == 1) Spacer(Modifier.weight(1f))
+                }
+            }
+
+            Spacer(Modifier.height(6.dp))
+            SectionLabel("OPTIONS")
+
+            OptionRow(
+                label = "Format",
+                group = "format",
+                options = if (flagsSelected) listOf(
+                    "flag_to_country" to "Flag → Name",
+                    "country_to_flag" to "Name → Flag",
+                    "Mixed" to "Mixed"
+                ) else formatOptions,
+                selectedValue = if (flagsSelected) flagMode else effectiveFormat,
+                onSelect = { if (flagsSelected) flagMode = it else format = it }
+            )
+            OptionRow(
+                label = "Difficulty",
+                group = "difficulty",
+                options = listOf("Easy" to "Easy", "Medium" to "Medium", "Hard" to "Hard", "Mixed" to "Mixed"),
+                selectedValue = difficulty,
+                onSelect = { difficulty = it }
+            )
+            if (flagsSelected) {
+                OptionRow(
+                    label = "Questions",
+                    group = "count",
+                    options = listOf("10" to "10", "20" to "20", "40" to "40"),
+                    selectedValue = flagCount.toString(),
+                    onSelect = { flagCount = it.toInt() }
+                )
+            } else {
+                OptionRow(
+                    label = "Questions",
+                    group = "count",
+                    options = listOf("10" to "10", "20" to "20", "40" to "40", ENDLESS_COUNT.toString() to "Endless"),
+                    selectedValue = count.toString(),
+                    onSelect = { count = it.toInt() }
+                )
+            }
+
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .toggleable(
+                        value = timed,
+                        role = Role.Switch,
+                        onValueChange = { timed = it }
                     )
+                    .testTag("timer_toggle")
+            ) {
+                Row(
+                    modifier = Modifier
+                        .heightIn(min = 56.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(Icons.Default.HourglassEmpty, contentDescription = null)
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Timer", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            "${PracticeSettings.QUESTION_SECONDS} seconds per question",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    Switch(checked = timed, onCheckedChange = null)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SectionLabel(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelMedium,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+}
+
+@Composable
+private fun TopicTile(
+    name: String,
+    icon: ImageVector,
+    selected: Boolean,
+    badge: Boolean,
+    tag: String,
+    onToggle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val container = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
+    val content = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = container,
+        contentColor = content,
+        border = if (selected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
+        modifier = modifier
+            .heightIn(min = 64.dp)
+            .toggleable(value = selected, role = Role.Checkbox, onValueChange = { onToggle() })
+            .testTag(tag)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Icon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (badge) {
+                    Text(
+                        text = "★ Today",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun OptionRow(
+    label: String,
+    group: String,
+    options: List<Pair<String, String>>,
+    selectedValue: String,
+    onSelect: (String) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(label, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+            options.forEach { (value, text) ->
+                val isSelected = value == selectedValue
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(min = MIN_TOUCH)
+                        .selectable(selected = isSelected, role = Role.RadioButton, onClick = { onSelect(value) })
+                        .testTag("opt_${group}_$value")
+                ) {
+                    Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)) {
+                        Text(
+                            text = text,
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
@@ -365,32 +345,31 @@ fun TopicSelectionScreen(
 
 data class QuizTopicItem(
     val name: String,
-    val icon: ImageVector,
-    val color: Color
+    val icon: ImageVector
 )
 
 fun getTopicsList(): List<QuizTopicItem> {
     return listOf(
-        QuizTopicItem("Capital Cities Challenge", Icons.Default.LocationCity, Color(0xFF00C853)),
-        QuizTopicItem("General Knowledge", Icons.Default.MenuBook, Color(0xFFF57C00)),
-        QuizTopicItem("Science & Nature", Icons.Default.Science, Color(0xFF388E3C)),
-        QuizTopicItem("History", Icons.Default.History, Color(0xFF8D6E63)),
-        QuizTopicItem("Geography", Icons.Default.Public, Color(0xFF1976D2)),
-        QuizTopicItem("Sports & Recreation", Icons.Default.SportsBasketball, Color(0xFFE65100)),
-        QuizTopicItem("Entertainment", Icons.Default.Movie, Color(0xFFC2185B)),
-        QuizTopicItem("Literature & Books", Icons.Default.ImportContacts, Color(0xFF303F9F)),
-        QuizTopicItem("Art & Architecture", Icons.Default.Brush, Color(0xFFD32F2F)),
-        QuizTopicItem("Food & Drink", Icons.Default.Restaurant, Color(0xFFFBC02D)),
-        QuizTopicItem("Technology & Computing", Icons.Default.Computer, Color(0xFF0097A7)),
-        QuizTopicItem("Mathematics & Logic", Icons.Default.Calculate, Color(0xFF7B1FA2)),
-        QuizTopicItem("Pop Culture & Memes", Icons.Default.Mood, Color(0xFF00796B)),
-        QuizTopicItem("Language & Linguistics", Icons.Default.Translate, Color(0xFF5E35B1)),
-        QuizTopicItem("Politics & World Leaders", Icons.Default.Gavel, Color(0xFF455A64)),
-        QuizTopicItem("Business & Economics", Icons.Default.AttachMoney, Color(0xFF2E7D32)),
-        QuizTopicItem("Health & Medicine", Icons.Default.Favorite, Color(0xFFC62828)),
-        QuizTopicItem("Religion & Mythology", Icons.Default.AutoAwesome, Color(0xFFE6AF2E)),
-        QuizTopicItem("Animals & Wildlife", Icons.Default.Pets, Color(0xFF558B2F)),
-        QuizTopicItem("Fashion & Design", Icons.Default.Architecture, Color(0xFFAD1457)),
-        QuizTopicItem("True Crime & Law", Icons.Default.Fingerprint, Color(0xFF37474F))
+        QuizTopicItem(Categories.CAPITAL_CITIES, Icons.Default.LocationCity),
+        QuizTopicItem("General Knowledge", Icons.Default.MenuBook),
+        QuizTopicItem("Science & Nature", Icons.Default.Science),
+        QuizTopicItem("History", Icons.Default.History),
+        QuizTopicItem("Geography", Icons.Default.Public),
+        QuizTopicItem("Sports & Recreation", Icons.Default.SportsBasketball),
+        QuizTopicItem("Entertainment", Icons.Default.Movie),
+        QuizTopicItem("Literature & Books", Icons.Default.ImportContacts),
+        QuizTopicItem("Art & Architecture", Icons.Default.Brush),
+        QuizTopicItem("Food & Drink", Icons.Default.Restaurant),
+        QuizTopicItem("Technology & Computing", Icons.Default.Computer),
+        QuizTopicItem("Mathematics & Logic", Icons.Default.Calculate),
+        QuizTopicItem("Pop Culture & Memes", Icons.Default.Mood),
+        QuizTopicItem("Language & Linguistics", Icons.Default.Translate),
+        QuizTopicItem("Politics & World Leaders", Icons.Default.Gavel),
+        QuizTopicItem("Business & Economics", Icons.Default.AttachMoney),
+        QuizTopicItem("Health & Medicine", Icons.Default.Favorite),
+        QuizTopicItem("Religion & Mythology", Icons.Default.AutoAwesome),
+        QuizTopicItem("Animals & Wildlife", Icons.Default.Pets),
+        QuizTopicItem("Fashion & Design", Icons.Default.Architecture),
+        QuizTopicItem("True Crime & Law", Icons.Default.Fingerprint)
     )
 }
