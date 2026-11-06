@@ -49,14 +49,17 @@ object DailyReminder {
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
 
-    /** Queues a one-off run at the next 18:00 local time; the worker queues the following one. */
-    fun schedule(context: Context) {
+    /**
+     * Queues a one-off run at the next 18:00 local time; the worker queues the following one.
+     * The worker passes APPEND_OR_REPLACE because REPLACE would cancel the worker that's calling it.
+     */
+    fun schedule(context: Context, policy: ExistingWorkPolicy = ExistingWorkPolicy.REPLACE) {
         val request = OneTimeWorkRequestBuilder<DailyReminderWorker>()
             .setInitialDelay(nextReminderDelay(ZonedDateTime.now()))
             .build()
         val workManager = WorkManager.getInstance(context)
         workManager.cancelUniqueWork(LEGACY_PERIODIC_WORK_NAME)
-        workManager.enqueueUniqueWork(WORK_NAME, ExistingWorkPolicy.REPLACE, request)
+        workManager.enqueueUniqueWork(WORK_NAME, policy, request)
     }
 
     fun cancel(context: Context) {
@@ -100,7 +103,7 @@ class DailyReminderWorker(context: Context, params: WorkerParameters) : Coroutin
         val playedToday = prefs.dailyPlayedDate == LocalDate.now().toString()
         if (!prefs.dailyReminderEnabled) return Result.success()
         if (!playedToday) DailyReminder.show(applicationContext)
-        DailyReminder.schedule(applicationContext)
+        DailyReminder.schedule(applicationContext, ExistingWorkPolicy.APPEND_OR_REPLACE)
         return Result.success()
     }
 }
