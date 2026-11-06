@@ -43,7 +43,9 @@ class HomePracticeUiTest {
     }
 
     private fun tap(tag: String) {
-        compose.onNodeWithTag(tag).performScrollTo().performClick()
+        // The Start button is pinned outside the scrolling page; everything else may need a scroll.
+        if (tag == "start_practice_quiz_button") compose.onNodeWithTag(tag).performClick()
+        else compose.onNodeWithTag(tag).performScrollTo().performClick()
     }
 
     @Test
