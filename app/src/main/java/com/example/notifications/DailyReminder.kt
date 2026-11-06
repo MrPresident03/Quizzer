@@ -12,8 +12,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.example.MainActivity
@@ -21,14 +21,26 @@ import com.example.R
 import com.example.data.repository.QuizPrefs
 import java.time.Duration
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.concurrent.TimeUnit
+import java.time.ZonedDateTime
+
+/**
+ * How long from [now] until the next [hour]:00 in [now]'s own time zone. Exactly [hour]:00 counts as
+ * already passed, so the answer is for tomorrow. The target is built from the local date and time and
+ * then resolved to an instant, so a day with a daylight-saving change is 23 or 25 hours long.
+ */
+fun nextReminderDelay(now: ZonedDateTime, hour: Int = DailyReminder.REMINDER_HOUR): Duration {
+    var next = now.toLocalDate().atTime(hour, 0).atZone(now.zone)
+    if (!next.isAfter(now)) next = now.toLocalDate().plusDays(1).atTime(hour, 0).atZone(now.zone)
+    return Duration.between(now, next)
+}
 
 /** Opt-in evening reminder to play the Daily Challenge, skipped on days it's already been played. */
 object DailyReminder {
     const val REMINDER_HOUR = 18
     private const val CHANNEL_ID = "daily_reminder"
-    private const val WORK_NAME = "daily_challenge_reminder"
+    // Old 24h periodic work (drifted with DST and time-zone changes); cancelled on every schedule().
+    private const val LEGACY_PERIODIC_WORK_NAME = "daily_challenge_reminder"
+    private const val WORK_NAME = "daily_challenge_reminder_next"
     private const val NOTIFICATION_ID = 4201
 
     /** Android 13+ needs the runtime notification permission; older versions don't. */
@@ -37,19 +49,23 @@ object DailyReminder {
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
 
-    fun schedule(context: Context) {
-        val now = LocalDateTime.now()
-        var next = now.toLocalDate().atTime(REMINDER_HOUR, 0)
-        if (!next.isAfter(now)) next = next.plusDays(1)
-        val request = PeriodicWorkRequestBuilder<DailyReminderWorker>(1, TimeUnit.DAYS)
-            .setInitialDelay(Duration.between(now, next).toMinutes(), TimeUnit.MINUTES)
+    /**
+     * Queues a one-off run at the next 18:00 local time; the worker queues the following one.
+     * The worker passes APPEND_OR_REPLACE because REPLACE would cancel the worker that's calling it.
+     */
+    fun schedule(context: Context, policy: ExistingWorkPolicy = ExistingWorkPolicy.REPLACE) {
+        val request = OneTimeWorkRequestBuilder<DailyReminderWorker>()
+            .setInitialDelay(nextReminderDelay(ZonedDateTime.now()))
             .build()
-        WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(WORK_NAME, ExistingPeriodicWorkPolicy.UPDATE, request)
+        val workManager = WorkManager.getInstance(context)
+        workManager.cancelUniqueWork(LEGACY_PERIODIC_WORK_NAME)
+        workManager.enqueueUniqueWork(WORK_NAME, policy, request)
     }
 
     fun cancel(context: Context) {
-        WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
+        val workManager = WorkManager.getInstance(context)
+        workManager.cancelUniqueWork(LEGACY_PERIODIC_WORK_NAME)
+        workManager.cancelUniqueWork(WORK_NAME)
     }
 
     internal fun show(context: Context) {
@@ -85,9 +101,9 @@ class DailyReminderWorker(context: Context, params: WorkerParameters) : Coroutin
     override suspend fun doWork(): Result {
         val prefs = QuizPrefs(applicationContext)
         val playedToday = prefs.dailyPlayedDate == LocalDate.now().toString()
-        if (prefs.dailyReminderEnabled && !playedToday) {
-            DailyReminder.show(applicationContext)
-        }
+        if (!prefs.dailyReminderEnabled) return Result.success()
+        if (!playedToday) DailyReminder.show(applicationContext)
+        DailyReminder.schedule(applicationContext, ExistingWorkPolicy.APPEND_OR_REPLACE)
         return Result.success()
     }
 }
