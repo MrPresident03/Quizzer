@@ -77,6 +77,12 @@ android {
   testOptions { unitTests { isIncludeAndroidResources = true } }
 }
 
+// Room writes its schema JSON here on every build. The files are committed, and CI fails if a build
+// changes them, so a schema change can't ship without a migration (see .github/workflows/android.yml).
+ksp {
+  arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 // KSP (Room/Moshi code generation) is only needed for the app's own sources; tests don't use those
 // annotations, so skip it for test source sets. Note: KSP2 may log a harmless
 // "ApplicationManager.getApplication() is null" NullPointerException from a background thread.

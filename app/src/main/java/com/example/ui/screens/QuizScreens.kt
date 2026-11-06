@@ -17,6 +17,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -223,11 +225,33 @@ fun QuizPlayScreen(
     isEndless: Boolean = false,
     onNext: () -> Unit = {},
     usedLifelines: Set<String> = emptySet(),
-    timerSeconds: Int = PracticeSettings.QUESTION_SECONDS
+    timerSeconds: Int = PracticeSettings.QUESTION_SECONDS,
+    isDaily: Boolean = false,
+    /** A short heads-up shown at the start, e.g. when fewer questions exist than were asked for. */
+    notice: String? = null,
+    onDismissNotice: () -> Unit = {},
+    /** Freeze / continue the countdown (app in the background, quit dialog open). */
+    onPauseTimer: () -> Unit = {},
+    onResumeTimer: () -> Unit = {}
 ) {
     val haptic = LocalHapticFeedback.current
-    var showQuitDialog by remember { mutableStateOf(false) }
+    // Survives rotation, so the dialog doesn't vanish (and the timer restart) mid-decision.
+    var showQuitDialog by rememberSaveable { mutableStateOf(false) }
     val currentQ = questions.getOrNull(currentIndex)
+
+    val quitDialogOpen by rememberUpdatedState(showQuitDialog)
+    val pauseTimer by rememberUpdatedState(onPauseTimer)
+    val resumeTimer by rememberUpdatedState(onResumeTimer)
+    // The countdown stops while the app is in the background...
+    LifecycleStartEffect(Unit) {
+        if (!quitDialogOpen) resumeTimer()
+        onStopOrDispose { pauseTimer() }
+    }
+    // ...and while the quit dialog is open.
+    LaunchedEffect(showQuitDialog) {
+        if (showQuitDialog) pauseTimer() else resumeTimer()
+    }
+    val answeredSoFar = currentIndex + if (isRevealed) 1 else 0
 
     // System back goes through the same path as the X button, so the quiz is properly stopped
     // instead of running on (and being recorded as a failed session) in the background.
@@ -241,8 +265,13 @@ fun QuizPlayScreen(
             title = { Text(if (isEndless) "End this run?" else "Quit quiz?") },
             text = {
                 Text(
-                    if (isEndless) "Your endless run will end here and your score will be saved."
-                    else "Your progress in this quiz won't be saved."
+                    when {
+                        isEndless -> "Your endless run will end here and your score will be saved."
+                        isDaily && answeredSoFar >= 1 ->
+                            "Leaving now uses today's attempt \u2013 your score so far will be saved."
+                        isDaily -> "You can still play today's challenge later."
+                        else -> "Your progress in this quiz won't be saved."
+                    }
                 )
             },
             confirmButton = {
@@ -329,6 +358,30 @@ fun QuizPlayScreen(
                             .height(8.dp)
                             .clip(RoundedCornerShape(4.dp))
                     )
+                }
+                if (notice != null) {
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("quiz_notice")
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(start = 12.dp, top = 4.dp, bottom = 4.dp, end = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = notice,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.weight(1f)
+                            )
+                            IconButton(onClick = onDismissNotice, modifier = Modifier.testTag("dismiss_quiz_notice")) {
+                                Icon(imageVector = Icons.Default.Close, contentDescription = "Dismiss")
+                            }
+                        }
+                    }
                 }
             }
 
@@ -870,12 +923,18 @@ fun QuizResultsScreen(
     isDaily: Boolean,
     onReviewClick: () -> Unit,
     onDashboardFinish: () -> Unit,
-    onShare: (() -> Unit)? = null
+    onShare: (() -> Unit)? = null,
+    // False for runs too short (or the wrong mode) to count as perfect, so 1/1 isn't "Blitz Perfect!".
+    perfectEligible: Boolean = true,
+    // Why the run ended, e.g. an Endless topic running out of questions.
+    endMessage: String? = null
 ) {
     val correctCount = answers.count { it }
     val totalCount = questions.size
     val accuracy = if (totalCount == 0) 0f else (correctCount.toFloat() / totalCount * 100)
-    val tier = resultTier(correctCount, totalCount)
+    val tier = resultTier(correctCount, totalCount).let {
+        if (it == ResultTier.PERFECT && !perfectEligible) ResultTier.GREAT else it
+    }
     val isPerfect = tier == ResultTier.PERFECT
     val celebrate = tier == ResultTier.PERFECT || tier == ResultTier.GREAT
 
@@ -971,6 +1030,15 @@ fun QuizResultsScreen(
                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
                 textAlign = TextAlign.Center
             )
+
+            endMessage?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center
+                )
+            }
 
             if (tier == ResultTier.PRACTISE) {
                 Text(

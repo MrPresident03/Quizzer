@@ -64,6 +64,32 @@ class MistakeBook(entries: List<MistakeEntry> = emptyList(), private val capacit
         trim()
     }
 
+    /** Drops entries whose question was removed from the bank. Returns true if anything changed. */
+    fun removeKeys(keys: Set<String>): Boolean = byKey.keys.removeAll(keys)
+
+    /**
+     * Re-copies options / answer / explanation from the updated bank versions, so a corrected answer
+     * isn't reviewed against its old, stale copy. Keeps when and how often it was missed.
+     */
+    fun refreshFrom(questions: Collection<Question>): Boolean {
+        var changed = false
+        for (question in questions) {
+            val key = QuestionPicker.keyOf(question)
+            val entry = byKey[key] ?: continue
+            if (!QuestionPicker.isPlayable(question)) continue
+            byKey[key] = entry.copy(
+                text = question.text,
+                options = question.optionsList,
+                correctIndex = question.correctIndex,
+                category = question.category,
+                difficulty = question.difficulty,
+                explanation = question.explanation
+            )
+            changed = true
+        }
+        return changed
+    }
+
     /** Returns true if the question was in the book and has now been cleared. */
     fun recordRight(question: Question): Boolean = byKey.remove(QuestionPicker.keyOf(question)) != null
 

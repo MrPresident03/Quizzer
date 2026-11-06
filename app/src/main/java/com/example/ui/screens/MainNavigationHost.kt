@@ -19,6 +19,7 @@ import androidx.navigation.compose.*
 import com.example.QuizApplication
 import com.example.data.repository.DailyChallenge
 import com.example.data.repository.QuizPrefs
+import com.example.data.repository.Scoring
 import com.example.data.repository.SessionType
 import com.example.ui.Routes
 import com.example.ui.navigateOnce
@@ -54,6 +55,8 @@ fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
     val topicStats by mainViewModel.topicStats.collectAsState()
     val reminderEnabled by mainViewModel.dailyReminderEnabled.collectAsState()
     val quickPlay by mainViewModel.quickPlaySettings.collectAsState()
+    val quizNotice by mainViewModel.notice.collectAsState()
+    val endMessage by mainViewModel.endMessage.collectAsState()
     val activityContext = LocalContext.current
     val onboardingPrefs = remember { QuizPrefs(context) }
 
@@ -355,6 +358,11 @@ fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
                     }
 
                     QuizPlayScreen(
+                        isDaily = true,
+                        notice = quizNotice,
+                        onDismissNotice = { mainViewModel.dismissNotice() },
+                        onPauseTimer = { mainViewModel.pauseTimer() },
+                        onResumeTimer = { mainViewModel.resumeTimer() },
                         questions = activeQs,
                         currentIndex = activeIdx,
                         selectedOption = activeSelection,
@@ -416,6 +424,11 @@ fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
                     }
 
                     QuizPlayScreen(
+                        isDaily = false,
+                        notice = quizNotice,
+                        onDismissNotice = { mainViewModel.dismissNotice() },
+                        onPauseTimer = { mainViewModel.pauseTimer() },
+                        onResumeTimer = { mainViewModel.resumeTimer() },
                         questions = activeQs,
                         currentIndex = activeIdx,
                         selectedOption = activeSelection,
@@ -460,6 +473,8 @@ fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
                         answers = mainViewModel.quizAnswersList,
                         xpEarned = xpEarned,
                         isDaily = type == SessionType.DAILY,
+                        perfectEligible = Scoring.isPerfect(type, activeQs.size, mainViewModel.quizAnswersList),
+                        endMessage = endMessage,
                         onReviewClick = { navController.navigateOnce("review_answers") },
                         onDashboardFinish = { navController.returnToDashboard() },
                         onShare = shareDaily
@@ -482,6 +497,8 @@ fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
                         answers = mainViewModel.quizAnswersList,
                         xpEarned = xpEarned,
                         isDaily = type == SessionType.DAILY,
+                        perfectEligible = Scoring.isPerfect(type, activeQs.size, mainViewModel.quizAnswersList),
+                        endMessage = endMessage,
                         onReviewClick = { navController.navigateOnce("review_answers") },
                         onDashboardFinish = { navController.returnToDashboard() }
                     )
