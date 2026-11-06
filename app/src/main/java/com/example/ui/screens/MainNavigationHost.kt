@@ -15,11 +15,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import com.example.QuizApplication
 import com.example.data.repository.DailyChallenge
+import com.example.data.repository.QuizPrefs
 import com.example.data.repository.SessionType
+import com.example.ui.Routes
+import com.example.ui.navigateOnce
+import com.example.ui.navigateTab
+import com.example.ui.returnToDashboard
+import com.example.ui.shouldRedirectFromQuiz
+import com.example.ui.shouldRedirectFromResults
 import com.example.ui.shareText
 import java.time.Instant
 import java.time.LocalDate
@@ -30,7 +36,7 @@ import com.example.ui.theme.BrainBlitzTheme
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalLayoutApi::class)
 @Composable
-fun MainNavigationHost() {
+fun MainNavigationHost(startDestination: String = Routes.DASHBOARD) {
     val navController = rememberNavController()
 
     // Retrieve manual DI instances from custom Application Context
@@ -49,6 +55,7 @@ fun MainNavigationHost() {
     val reminderEnabled by mainViewModel.dailyReminderEnabled.collectAsState()
     val quickPlay by mainViewModel.quickPlaySettings.collectAsState()
     val activityContext = LocalContext.current
+    val onboardingPrefs = remember { QuizPrefs(context) }
 
     // Derived from real history: lifetime XP (level progress) and the days you actually played.
     val lifetimeXp = remember(history) { history.sumOf { it.xpEarned } }
@@ -101,11 +108,7 @@ fun MainNavigationHost() {
                             },
                             selected = currentRoute == "dashboard",
                             onClick = {
-                                navController.navigate("dashboard") {
-                                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                navController.navigateTab("dashboard")
                             },
                             modifier = Modifier.testTag("nav_tab_home")
                         )
@@ -129,11 +132,7 @@ fun MainNavigationHost() {
                             },
                             selected = currentRoute == "practice_config",
                             onClick = {
-                                navController.navigate("practice_config") {
-                                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                navController.navigateTab("practice_config")
                             },
                             modifier = Modifier.testTag("nav_tab_practice")
                         )
@@ -157,11 +156,7 @@ fun MainNavigationHost() {
                             },
                             selected = currentRoute == "analytics_milestones",
                             onClick = {
-                                navController.navigate("analytics_milestones") {
-                                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                navController.navigateTab("analytics_milestones")
                             },
                             modifier = Modifier.testTag("nav_tab_analytics")
                         )
@@ -185,11 +180,7 @@ fun MainNavigationHost() {
                             },
                             selected = currentRoute == "settings_config",
                             onClick = {
-                                navController.navigate("settings_config") {
-                                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                navController.navigateTab("settings_config")
                             },
                             modifier = Modifier.testTag("nav_tab_settings")
                         )
@@ -199,32 +190,23 @@ fun MainNavigationHost() {
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = "splash",
+                startDestination = startDestination,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(if (showBottomBar) innerPadding else PaddingValues(0.dp))
+                    .then(
+                        // Tab screens have their own Scaffolds/top bars: the outer padding already
+                        // covers the status bar, so mark it consumed or it is applied twice.
+                        if (showBottomBar) Modifier.padding(innerPadding).consumeWindowInsets(innerPadding)
+                        else Modifier
+                    )
             ) {
-                // Route A: Splash Screen Pulsing Logo
-                composable("splash") {
-                    SplashScreen(themeId = stats.activeThemeId) {
-                        // After splash, route straight to onboarding if first run (such as stats count equals initial zeros), otherwise Home
-                        if (stats.totalQuestionsAnswered == 0 && stats.xpPoints == 0 && stats.displayName == "Quiz Champ") {
-                            navController.navigate("onboarding") {
-                                popUpTo("splash") { inclusive = true }
-                            }
-                        } else {
-                            navController.navigate("dashboard") {
-                                popUpTo("splash") { inclusive = true }
-                            }
-                        }
-                    }
-                }
-
                 // Route B: Swipe Onboarding Slides Panels
                 composable("onboarding") {
                     OnboardingScreen {
-                        navController.navigate("dashboard") {
-                            popUpTo("onboarding") { inclusive = true }
+                        onboardingPrefs.onboardingDone = true
+                        navController.navigate(Routes.DASHBOARD) {
+                            popUpTo(Routes.ONBOARDING) { inclusive = true }
+                            launchSingleTop = true
                         }
                     }
                 }
@@ -237,29 +219,29 @@ fun MainNavigationHost() {
                         userStats = stats,
                         dailyPlayed = dailyPlayed,
                         onNavigateToDailyChallenge = {
-                            navController.navigate("daily_lobby")
+                            navController.navigateOnce("daily_lobby")
                         },
                         onNavigateToPracticeSelection = {
-                            navController.navigate("practice_config")
+                            navController.navigateTab("practice_config")
                         },
                         onStartTopicOfTheDay = { topic ->
                             mainViewModel.startPracticeQuiz(listOf(topic), "Mixed", 10, "Mixed")
-                            navController.navigate("practice_quiz")
+                            navController.navigateOnce("practice_quiz")
                         },
                         onNavigateToProfile = {
-                            navController.navigate("settings_config")
+                            navController.navigateTab("settings_config")
                         },
                         quickPlaySummary = quickPlay.summary(),
                         onQuickPlay = {
                             mainViewModel.startQuickPlay()
-                            navController.navigate("practice_quiz")
+                            navController.navigateOnce("practice_quiz")
                         },
                         lifetimeXp = lifetimeXp,
                         playedDays = playedDays,
                         mistakeCount = mistakeCount,
                         onStartMistakeReview = {
                             mainViewModel.startMistakeReview()
-                            navController.navigate("practice_quiz")
+                            navController.navigateOnce("practice_quiz")
                         }
                     )
                 }
@@ -267,19 +249,15 @@ fun MainNavigationHost() {
                 // Route D: Config Topic Selector Screen Tab 2
                 composable("practice_config") {
                     TopicSelectionScreen(
-                        onNavigateBack = {
-                            navController.navigate("dashboard") {
-                                popUpTo("dashboard") { inclusive = true }
-                            }
-                        },
+                        onNavigateBack = { navController.returnToDashboard() },
                         onStartQuiz = { categories, difficulty, count, format, timed ->
                             mainViewModel.startPracticeQuiz(categories, difficulty, count, format, timed, rememberForQuickPlay = true)
-                            navController.navigate("practice_quiz")
+                            navController.navigateOnce("practice_quiz")
                         },
                         initial = quickPlay,
                         onStartFlagQuiz = { mode, difficulty, count ->
                             mainViewModel.startFlagsQuiz(mode, difficulty, count)
-                            navController.navigate("practice_quiz")
+                            navController.navigateOnce("practice_quiz")
                         }
                     )
                 }
@@ -298,7 +276,7 @@ fun MainNavigationHost() {
                             } else {
                                 mainViewModel.startPracticeQuiz(listOf(topic), "Mixed", 10, "Mixed")
                             }
-                            navController.navigate("practice_quiz")
+                            navController.navigateOnce("practice_quiz")
                         }
                     )
                 }
@@ -312,8 +290,10 @@ fun MainNavigationHost() {
                         },
                         onResetProgress = {
                             mainViewModel.resetAllAppProgress()
-                            navController.navigate("onboarding") {
-                                popUpTo("dashboard") { inclusive = true }
+                            onboardingPrefs.onboardingDone = false
+                            navController.navigate(Routes.ONBOARDING) {
+                                popUpTo(Routes.DASHBOARD) { inclusive = true }
+                                launchSingleTop = true
                             }
                         },
                         onClearQuestionHistory = {
@@ -336,7 +316,7 @@ fun MainNavigationHost() {
                         onNavigateBack = { navController.popBackStack() },
                         onStartDailyQuiz = {
                             mainViewModel.startDailyChallenge()
-                            navController.navigate("daily_quiz")
+                            navController.navigateOnce("daily_quiz")
                         },
                         onShare = shareDaily
                     )
@@ -358,10 +338,18 @@ fun MainNavigationHost() {
                     val type by mainViewModel.sessionType.collectAsState()
                     val usedLifelines by mainViewModel.usedLifelines.collectAsState()
 
+                    // Nothing to play (process death, say): leave instead of spinning forever.
+                    LaunchedEffect(activeQs.isEmpty(), loading, error, quizEnded) {
+                        if (shouldRedirectFromQuiz(activeQs.isNotEmpty(), loading, error != null, quizEnded)) {
+                            navController.returnToDashboard(from = "daily_quiz")
+                        }
+                    }
+
                     LaunchedEffect(quizEnded) {
                         if (quizEnded) {
                             navController.navigate("daily_results") {
                                 popUpTo("daily_quiz") { inclusive = true }
+                                launchSingleTop = true
                             }
                         }
                     }
@@ -383,9 +371,7 @@ fun MainNavigationHost() {
                         onQuitQuiz = {
                             // Stops the timer and pending jobs. Endless runs end on a results screen instead.
                             if (!mainViewModel.quitQuiz()) {
-                                navController.navigate("dashboard") {
-                                    popUpTo("daily_quiz") { inclusive = true }
-                                }
+                                navController.returnToDashboard()
                             }
                         },
                         isLoading = loading,
@@ -413,10 +399,18 @@ fun MainNavigationHost() {
                     val type by mainViewModel.sessionType.collectAsState()
                     val usedLifelines by mainViewModel.usedLifelines.collectAsState()
 
+                    // Nothing to play (process death, say): leave instead of spinning forever.
+                    LaunchedEffect(activeQs.isEmpty(), loading, error, quizEnded) {
+                        if (shouldRedirectFromQuiz(activeQs.isNotEmpty(), loading, error != null, quizEnded)) {
+                            navController.returnToDashboard(from = "practice_quiz")
+                        }
+                    }
+
                     LaunchedEffect(quizEnded) {
                         if (quizEnded) {
                             navController.navigate("practice_results") {
                                 popUpTo("practice_quiz") { inclusive = true }
+                                launchSingleTop = true
                             }
                         }
                     }
@@ -438,9 +432,7 @@ fun MainNavigationHost() {
                         onQuitQuiz = {
                             // Stops the timer and pending jobs. Endless runs end on a results screen instead.
                             if (!mainViewModel.quitQuiz()) {
-                                navController.navigate("dashboard") {
-                                    popUpTo("practice_quiz") { inclusive = true }
-                                }
+                                navController.returnToDashboard()
                             }
                         },
                         isLoading = loading,
@@ -457,17 +449,19 @@ fun MainNavigationHost() {
                     val activeQs by mainViewModel.activeQuestions.collectAsState()
                     val xpEarned by mainViewModel.lastSessionXp.collectAsState()
                     val type by mainViewModel.sessionType.collectAsState()
+                    val finished by mainViewModel.quizFinished.collectAsState()
+                    LaunchedEffect(finished, activeQs.isEmpty()) {
+                        if (shouldRedirectFromResults(finished, activeQs.isNotEmpty())) {
+                            navController.returnToDashboard(from = "daily_results")
+                        }
+                    }
                     QuizResultsScreen(
                         questions = activeQs,
                         answers = mainViewModel.quizAnswersList,
                         xpEarned = xpEarned,
                         isDaily = type == SessionType.DAILY,
-                        onReviewClick = { navController.navigate("review_answers") },
-                        onDashboardFinish = {
-                            navController.navigate("dashboard") {
-                                popUpTo("daily_results") { inclusive = true }
-                            }
-                        },
+                        onReviewClick = { navController.navigateOnce("review_answers") },
+                        onDashboardFinish = { navController.returnToDashboard() },
                         onShare = shareDaily
                     )
                 }
@@ -477,23 +471,31 @@ fun MainNavigationHost() {
                     val activeQs by mainViewModel.activeQuestions.collectAsState()
                     val xpEarned by mainViewModel.lastSessionXp.collectAsState()
                     val type by mainViewModel.sessionType.collectAsState()
+                    val finished by mainViewModel.quizFinished.collectAsState()
+                    LaunchedEffect(finished, activeQs.isEmpty()) {
+                        if (shouldRedirectFromResults(finished, activeQs.isNotEmpty())) {
+                            navController.returnToDashboard(from = "practice_results")
+                        }
+                    }
                     QuizResultsScreen(
                         questions = activeQs,
                         answers = mainViewModel.quizAnswersList,
                         xpEarned = xpEarned,
                         isDaily = type == SessionType.DAILY,
-                        onReviewClick = { navController.navigate("review_answers") },
-                        onDashboardFinish = {
-                            navController.navigate("dashboard") {
-                                popUpTo("practice_results") { inclusive = true }
-                            }
-                        }
+                        onReviewClick = { navController.navigateOnce("review_answers") },
+                        onDashboardFinish = { navController.returnToDashboard() }
                     )
                 }
 
                 // Route M: Session detailed question-by-question explanations review
                 composable("review_answers") {
                     val activeQs by mainViewModel.activeQuestions.collectAsState()
+                    val finished by mainViewModel.quizFinished.collectAsState()
+                    LaunchedEffect(finished, activeQs.isEmpty()) {
+                        if (shouldRedirectFromResults(finished, activeQs.isNotEmpty())) {
+                            navController.returnToDashboard(from = "review_answers")
+                        }
+                    }
                     ReviewAnswersScreen(
                         questions = activeQs,
                         correctAnswers = mainViewModel.quizAnswersList,

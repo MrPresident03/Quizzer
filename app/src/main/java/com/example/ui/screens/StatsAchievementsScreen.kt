@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,7 +52,7 @@ fun StatsAndAchievementsScreen(
     topicStats: List<TopicStat> = emptyList(),
     onPracticeTopic: (String) -> Unit = {}
 ) {
-    var activeTab by remember { mutableStateOf(0) } // 0 = Stats/History, 1 = Achievements
+    var activeTab by rememberSaveable { mutableIntStateOf(0) } // 0 = Stats/History, 1 = Achievements
 
     Scaffold(
         topBar = {

@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,8 +56,8 @@ fun SettingsScreen(
     var hapticEnabled by remember(userStats.isHapticFeedbackEnabled) { mutableStateOf(userStats.isHapticFeedbackEnabled) }
     var fontLargeEnabled by remember(userStats.fontSizePreference) { mutableStateOf(userStats.fontSizePreference == "large") }
 
-    var showResetDialog by remember { mutableStateOf(false) }
-    var showClearHistoryDialog by remember { mutableStateOf(false) }
+    var showResetDialog by rememberSaveable { mutableStateOf(false) }
+    var showClearHistoryDialog by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -70,6 +71,7 @@ fun SettingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
+                .imePadding()
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
                 .padding(bottom = 32.dp),
