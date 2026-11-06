@@ -259,7 +259,7 @@ private fun Header(
 
 @Composable
 private fun DailyCard(
-    challengeNumber: Int,
+    challengeNumber: Long,
     played: Boolean,
     result: DailyResult?,
     timeLeft: String,
