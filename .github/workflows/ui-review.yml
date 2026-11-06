@@ -2,9 +2,12 @@ name: UI review (emulator)
 
 # Test-only: runs the debug app on a real emulator, screenshots every screen in three passes
 # (light / dark / 1.5x font), measures startup time and monkey-tests it. Nothing here changes app code.
+# Runs on every push to a fix/** branch and on demand. The last job commits the screenshots and
+# reports to an orphan branch ui-review/<run_id>, so they can be fetched with plain git:
+#   git fetch origin ui-review/<run_id>
 on:
   push:
-    branches: [ review/app-audit ]
+    branches: [ 'fix/**' ]
   workflow_dispatch:
 
 concurrency:
@@ -107,3 +110,63 @@ jobs:
             ui-review-out/${{ matrix.name }}
             !ui-review-out/${{ matrix.name }}/shots
           if-no-files-found: warn
+
+  # Artifacts can't be downloaded from every environment, but git can be fetched anywhere: publish
+  # the run's screenshots and reports as a one-commit orphan branch.
+  publish-results:
+    name: Publish results branch
+    needs: [build, ui-review]
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: ui-review-*-*
+          path: downloaded
+
+      - name: Assemble results
+        run: |
+          mkdir -p results
+          for p in pixel_6 small_nexus4; do
+            mkdir -p "results/$p"
+            if [ -d "downloaded/ui-review-$p-reports" ]; then
+              cp -a "downloaded/ui-review-$p-reports/." "results/$p/"
+            fi
+            if [ -d "downloaded/ui-review-$p-screenshots" ]; then
+              mkdir -p "results/$p/shots"
+              if command -v mogrify > /dev/null; then
+                # Keeps the branch small (hundreds of full-size PNGs add up): 720px wide JPEGs are plenty to review.
+                mogrify -path "results/$p/shots" -resize '720x>' -quality 85 -format jpg "downloaded/ui-review-$p-screenshots"/*.png || true
+              else
+                cp -a "downloaded/ui-review-$p-screenshots/." "results/$p/shots/"
+              fi
+              cp -a "downloaded/ui-review-$p-screenshots"/*.log "results/$p/shots/" 2>/dev/null || true
+            fi
+          done
+          # Raw logcats can be huge; keep them compressed.
+          find results -type f -name '*.txt' -size +1M -exec gzip -9 {} +
+          {
+            echo "UI review run ${{ github.run_id }}"
+            echo "commit ${{ github.sha }} (${{ github.ref_name }})"
+            echo "run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } > results/README.txt
+          du -sh results
+          find results -type f | wc -l
+
+      - name: Commit to ui-review/${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd results
+          git init -q -b results
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "UI review results for run ${{ github.run_id }} (${{ github.sha }})"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" \
+            "HEAD:refs/heads/ui-review/${{ github.run_id }}"
+          echo "Results: branch ui-review/${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
