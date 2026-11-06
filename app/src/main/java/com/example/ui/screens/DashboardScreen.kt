@@ -58,7 +58,7 @@ fun DashboardScreen(
     playedDays: Set<LocalDate> = emptySet(),
     mistakeCount: Int = 0,
     onStartMistakeReview: () -> Unit = {},
-    challengeNumber: Int = 1,
+    challengeNumber: Long = 1,
     todayResult: DailyResult? = null,
     onShareDaily: () -> Unit = {},
     today: LocalDate = LocalDate.now()
