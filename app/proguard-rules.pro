@@ -10,6 +10,5 @@
 -keep class kotlin.Metadata { *; }
 
 # JSON model classes (bundled questions, mistakes list).
--keep class com.example.data.api.** { *; }
 -keep class com.example.data.repository.BundledQuestionJson { *; }
 -keep class com.example.data.repository.MistakeEntry { *; }

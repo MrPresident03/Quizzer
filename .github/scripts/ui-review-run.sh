@@ -91,7 +91,16 @@ run_pass() { # $1 = prefix, $2 = night, $3 = font scale
   ls "$OUT/shots" | grep -c "^${prefix}" || true
 }
 
+# Clean status bar (clock 12:00, full battery, no notifications) for the Play Store screenshots.
+demo() { adb shell am broadcast -a com.android.systemui.demo -e command "$@" > /dev/null 2>&1; }
+adb shell settings put global sysui_demo_allowed 1
+demo enter
+demo clock -e hhmm 1200
+demo battery -e level 100 -e plugged false
+demo network -e wifi show -e level 4
+demo notifications -e visible false
 run_pass light_  no  1.0
+demo exit
 run_pass dark_   yes 1.0
 run_pass font15_ no  1.5
 
