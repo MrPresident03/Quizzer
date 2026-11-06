@@ -11,11 +11,13 @@ import kotlinx.coroutines.flow.Flow
 interface QuizDao {
 
     // --- QUESTIONS ---
-    @Query("SELECT * FROM questions")
-    fun getAllQuestionsFlow(): Flow<List<Question>>
+    /** All questions in the given topics (quiz building never loads the whole table). */
+    @Query("SELECT * FROM questions WHERE category IN (:topics)")
+    suspend fun getQuestionsByCategories(topics: List<String>): List<Question>
 
-    @Query("SELECT * FROM questions")
-    suspend fun getAllQuestions(): List<Question>
+    /** A random sample for all-topics quizzes. */
+    @Query("SELECT * FROM questions ORDER BY RANDOM() LIMIT :limit")
+    suspend fun getRandomQuestions(limit: Int): List<Question>
 
     @Query("SELECT text FROM questions")
     suspend fun getAllQuestionTexts(): List<String>

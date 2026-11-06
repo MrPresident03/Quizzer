@@ -12,9 +12,7 @@ If you have Android's device backup turned on, Android may include the app's dat
 
 ## Internet access
 
-When you're online, the app downloads trivia questions from the [Open Trivia Database](https://opentdb.com) (opentdb.com). These requests contain only quiz settings (such as topic and difficulty) and an anonymous session token issued by that service so it doesn't repeat questions. No personal information is sent. As with any website request, opentdb.com can see your device's IP address; its own policies apply to that service.
-
-The app works offline using its built-in questions.
+All trivia questions are bundled inside the app, so it makes no network requests for questions and works fully offline. The app does not request internet access.
 
 ## Notifications
 

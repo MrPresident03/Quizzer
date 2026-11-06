@@ -1,4 +1,4 @@
-# Quizzer release (R8) rules. Most libraries (Room, Moshi codegen, Retrofit, OkHttp, WorkManager,
+# Quizzer release (R8) rules. Most libraries (Room, Moshi codegen, WorkManager,
 # Compose) ship their own consumer rules; only app-specific additions go here.
 
 # Readable stack traces in Play Console crash reports (upload mapping.txt with each release).
@@ -9,7 +9,7 @@
 # reflective fallback; keep Kotlin metadata so it still works if a type without an adapter appears.
 -keep class kotlin.Metadata { *; }
 
-# JSON model classes (bundled questions, mistakes list, Open Trivia DB responses).
+# JSON model classes (bundled questions, mistakes list).
 -keep class com.example.data.api.** { *; }
 -keep class com.example.data.repository.BundledQuestionJson { *; }
 -keep class com.example.data.repository.MistakeEntry { *; }

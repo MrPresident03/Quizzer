@@ -44,7 +44,7 @@ Both files are also attached to a GitHub Release. Each run gets a higher version
 | App access | All functionality is available without special access |
 | Content rating | Category **Reference, News, or Educational** (or Game → Trivia). No violence, sexual content, profanity, drugs, gambling or user interaction. Some quiz questions mention historical events and criminal law at a factual level. |
 | Target audience | **13 and over** (choosing under-13 brings in the Families policy requirements) |
-| Data safety | **No data collected, no data shared.** Questions are downloaded from opentdb.com over HTTPS, but no user data is sent. There are no accounts, so account deletion doesn't apply. |
+| Data safety | **No data collected, no data shared.** Questions are bundled in the app; it makes no network requests and has no INTERNET permission. There are no accounts, so account deletion doesn't apply. |
 | Government / financial / health features | None |
 | News app | No |
 

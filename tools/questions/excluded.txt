@@ -1,0 +1,281 @@
+# Questions build_bank.py always drops, one question text per line (matched ignoring case and extra spaces).
+# Use it for generated items that a template filter lets through but that were judged wrong on review
+# (non-athletes in sports_people, doubtful convictions, abuse cases, celebrity 'designers', ...).
+# Lines starting with # are comments.
+
+# crimes
+What was Al Capone convicted of?
+What was Albert Kesselring convicted of?
+What was Alexander Berkman convicted of?
+What was Ariel Sharon convicted of?
+What was Augusto Pinochet convicted of?
+What was Benazir Bhutto convicted of?
+What was Bernard Bolzano convicted of?
+What was Carlos Menem convicted of?
+What was Diego Maradona convicted of?
+What was Elizabeth Báthory convicted of?
+What was Ferdinand Marcos convicted of?
+What was Frank Wedekind convicted of?
+What was Galileo Galilei convicted of?
+What was Giordano Bruno convicted of?
+What was Gotthold Ephraim Lessing convicted of?
+What was Herostratus convicted of?
+What was Jacques de Molay convicted of?
+What was Jan Hus convicted of?
+What was Joan of Arc convicted of?
+What was Johannes Scotus Eriugena convicted of?
+What was Leo Tolstoy convicted of?
+What was Liu Xiaobo convicted of?
+What was Ludwig Quidde convicted of?
+What was Mani convicted of?
+What was Mansur Al-Hallaj convicted of?
+What was Marcus Garvey convicted of?
+What was Maximilien Robespierre convicted of?
+What was Meister Eckhart convicted of?
+What was Nestorius convicted of?
+What was O. J. Simpson convicted of?
+What was Origen convicted of?
+What was Phil Spector convicted of?
+What was Pol Pot convicted of?
+What was Roger Garaudy convicted of?
+What was Saigō Takamori convicted of?
+What was Sayyid Qutb convicted of?
+What was Silvio Berlusconi convicted of?
+What was Talaat Paşa convicted of?
+What was Vladimir Lenin convicted of?
+What was William of Ockham convicted of?
+
+# fashion_country
+Which country is the fashion brand Art Deco from?
+Which country is the fashion brand Elite Model Management from?
+Which country is the fashion brand Harley-Davidson from?
+Which country is the fashion brand Intersport from?
+Which country is the fashion brand Samsung Group from?
+Which country is the fashion brand Toys "R" Us from?
+
+# fashion_designers
+Adolf Dassler is a fashion designer from which country?
+Alexander McQueen is a fashion designer from which country?
+Alyssa Milano is a fashion designer from which country?
+Anna Chapman is a fashion designer from which country?
+Ashley Olsen is a fashion designer from which country?
+Boy George is a fashion designer from which country?
+Byun Baek-hyun is a fashion designer from which country?
+Calvin Klein is a fashion designer from which country?
+Chloë Sevigny is a fashion designer from which country?
+Christian Dior is a fashion designer from which country?
+Coco Chanel is a fashion designer from which country?
+Cristóbal Balenciaga is a fashion designer from which country?
+Dannii Minogue is a fashion designer from which country?
+Donatella Versace is a fashion designer from which country?
+Elizabeth Hurley is a fashion designer from which country?
+Estée Lauder is a fashion designer from which country?
+G-Dragon is a fashion designer from which country?
+Gianni Versace is a fashion designer from which country?
+Giorgio Armani is a fashion designer from which country?
+Gwen Stefani is a fashion designer from which country?
+Hilary Duff is a fashion designer from which country?
+Hubert de Givenchy is a fashion designer from which country?
+Imelda Marcos is a fashion designer from which country?
+Ivanka Trump is a fashion designer from which country?
+Jackson Wang is a fashion designer from which country?
+Janet Jackson is a fashion designer from which country?
+Jean-Paul Gaultier is a fashion designer from which country?
+Jelena Karleuša is a fashion designer from which country?
+Jennifer Lopez is a fashion designer from which country?
+Jessica Simpson is a fashion designer from which country?
+John Galliano is a fashion designer from which country?
+Karl Lagerfeld is a fashion designer from which country?
+Kate Moss is a fashion designer from which country?
+Kelly Osbourne is a fashion designer from which country?
+Khloé Kardashian is a fashion designer from which country?
+Kim Kardashian is a fashion designer from which country?
+Kourtney Kardashian is a fashion designer from which country?
+Kylie Jenner is a fashion designer from which country?
+Liya Kebede is a fashion designer from which country?
+Mandy Moore is a fashion designer from which country?
+Margot Fonteyn is a fashion designer from which country?
+Mary Quant is a fashion designer from which country?
+Mary-Kate Olsen is a fashion designer from which country?
+Melissa McCarthy is a fashion designer from which country?
+Mena Suvari is a fashion designer from which country?
+Miuccia Prada is a fashion designer from which country?
+Nicole Richie is a fashion designer from which country?
+Nicole Scherzinger is a fashion designer from which country?
+Paris Hilton is a fashion designer from which country?
+Ralph Lauren is a fashion designer from which country?
+René Lacoste is a fashion designer from which country?
+Roberto Cavalli is a fashion designer from which country?
+Rooney Mara is a fashion designer from which country?
+Rue McClanahan is a fashion designer from which country?
+Sakis Rouvas is a fashion designer from which country?
+Sean Combs is a fashion designer from which country?
+Selena Gomez is a fashion designer from which country?
+Solange Knowles is a fashion designer from which country?
+Stella McCartney is a fashion designer from which country?
+Stromae is a fashion designer from which country?
+Tommy Hilfiger is a fashion designer from which country?
+Valentino is a fashion designer from which country?
+Vanessa Williams is a fashion designer from which country?
+Vera Wang is a fashion designer from which country?
+Victoria Beckham is a fashion designer from which country?
+Vivienne Westwood is a fashion designer from which country?
+Yayoi Kusama is a fashion designer from which country?
+Yves Saint Laurent is a fashion designer from which country?
+
+# food_origin
+Which country does the bread taboon bread originate from?
+Which country does the cheese Comté cheese originate from?
+Which country does the cheese Jāņi cheese originate from?
+Which country does the cheese Nisa cheese originate from?
+Which country does the cheese Roquefort cheese originate from?
+Which country does the cheese Vlašić cheese originate from?
+
+# geo_cities
+In which country is the city of Gaza City?
+In which country is the city of Sevastopol?
+In which country is the city of Simferopol?
+
+# geo_heritage
+In which country is Al-Aqsa Mosque located?
+In which country is Church of the Nativity located?
+In which country is Dome of the Rock located?
+
+# geography
+In which country is Mount of Olives located?
+Which of these countries contains part of Crimea?
+Which of these countries contains part of Crimean Mountains?
+
+# legal_bodies
+The Bundesrat is the national legislature of which country?
+The Conseil d'État is the highest court of which country?
+The Court of Audit is the highest court of which country?
+The Federal Administrative Court is the highest court of which country?
+The National Parliament is the national legislature of which country?
+The Supreme Assembly is the national legislature of which country?
+The Supreme Council is the national legislature of which country?
+The Supreme Court of Cassation is the highest court of which country?
+
+# sports_people
+Which sport is 2 Chainz known for?
+Which sport is Ahmad ibn Billah known for?
+Which sport is Albert Camus known for?
+Which sport is Alec Douglas-Home known for?
+Which sport is Cory Booker known for?
+Which sport is Cyrus Vance known for?
+Which sport is Edi Rama known for?
+Which sport is Elie Wiesel known for?
+Which sport is Franz Vranitzky known for?
+Which sport is George H. W. Bush known for?
+Which sport is George Marshall known for?
+Which sport is George VI known for?
+Which sport is George Wallace known for?
+Which sport is Gerald Ford known for?
+Which sport is Gustaf V of Sweden known for?
+Which sport is Jack Palance known for?
+Which sport is Jack Warden known for?
+Which sport is Jacques Rogge known for?
+Which sport is Joschka Fischer known for?
+Which sport is Joseph Campbell known for?
+Which sport is José Mourinho known for?
+Which sport is Julio Iglesias known for?
+Which sport is Jüri Ratas known for?
+Which sport is Katherine Langford known for?
+Which sport is Kathryn Newton known for?
+Which sport is Ken Anderson known for?
+Which sport is Kirk Kerkorian known for?
+Which sport is Konstantinos Stephanopoulos known for?
+Which sport is Käärijä known for?
+Which sport is Lester B. Pearson known for?
+Which sport is Mahershala Ali known for?
+Which sport is Mario Cuomo known for?
+Which sport is Mark Harmon known for?
+Which sport is Masaoka Shiki known for?
+Which sport is Nawaz Sharif known for?
+Which sport is Nick Nolte known for?
+Which sport is Niels Bohr known for?
+Which sport is Paul Robeson known for?
+Which sport is Paul-Henri Spaak known for?
+Which sport is Pompeu Fabra known for?
+Which sport is Randy Savage known for?
+Which sport is Richard Dean Anderson known for?
+Which sport is Roland Garros known for?
+Which sport is Roy Scheider known for?
+Which sport is Thomas Kretschmann known for?
+Which sport is Timothy Olyphant known for?
+Which sport is Tyler Hoechlin known for?
+Which sport is Urho Kekkonen known for?
+Which sport is Valdas Adamkus known for?
+Which sport is Victor McLaglen known for?
+Which sport is Viktor Orbán known for?
+Which sport is Willie Dixon known for?
+
+# trials
+In which country did the legal case 1993 Michael Jackson sexual abuse allegations take place?
+In which country did the legal case 2015 FIFA corruption case take place?
+In which country did the legal case Adolf Eichmann trial take place?
+In which country did the legal case Al-Kateb v Godwin take place?
+In which country did the legal case Alabama Claims take place?
+In which country did the legal case Auschwitz Trial take place?
+In which country did the legal case Brown Dog affair take place?
+In which country did the legal case Brown v. Board of Education take place?
+In which country did the legal case Buchenwald Trial take place?
+In which country did the legal case Burning Sun scandal take place?
+In which country did the legal case Bush v. Gore take place?
+In which country did the legal case Calciopoli take place?
+In which country did the legal case Chisholm v. Georgia take place?
+In which country did the legal case Citizens United v. Federal Election Commission take place?
+In which country did the legal case Dachau Trials take place?
+In which country did the legal case Depp v. Heard take place?
+In which country did the legal case Dobbs v. Jackson Women's Health Organization take place?
+In which country did the legal case Dred Scott v. Sandford take place?
+In which country did the legal case Frankfurt Auschwitz Trials take place?
+In which country did the legal case Furman v. Georgia take place?
+In which country did the legal case Griswold v. Connecticut take place?
+In which country did the legal case Gürtel case take place?
+In which country did the legal case Judges' Trial take place?
+In which country did the legal case Kuala Lumpur War Crimes Commission take place?
+In which country did the legal case Lawrence v. Texas take place?
+In which country did the legal case Liebeck v. McDonald's Restaurants take place?
+In which country did the legal case Lochner v. New York take place?
+In which country did the legal case Loving v. Virginia take place?
+In which country did the legal case Luanda Trial take place?
+In which country did the legal case Marbury v. Madison take place?
+In which country did the legal case Maxi Trial take place?
+In which country did the legal case Mazan rape case take place?
+In which country did the legal case McMartin preschool trial take place?
+In which country did the legal case Miranda v. Arizona take place?
+In which country did the legal case Netto Question take place?
+In which country did the legal case Nix v. Hedden take place?
+In which country did the legal case Nuremberg Medical Trial take place?
+In which country did the legal case Nuremberg trials take place?
+In which country did the legal case O. J. Simpson murder case take place?
+In which country did the legal case Obergefell v. Hodges take place?
+In which country did the legal case Pedra Branca dispute take place?
+In which country did the legal case Planned Parenthood v. Casey take place?
+In which country did the legal case Plessy v. Ferguson take place?
+In which country did the legal case Queen Boat arrests take place?
+In which country did the legal case Rivonia Trial take place?
+In which country did the legal case Roe v. Wade take place?
+In which country did the legal case Sacco and Vanzetti take place?
+In which country did the legal case Scopes Trial take place?
+In which country did the legal case Scottsboro Boys take place?
+In which country did the legal case Shah Bano case take place?
+In which country did the legal case Silvio Berlusconi underage prostitution charges take place?
+In which country did the legal case Stutthof Trials take place?
+In which country did the legal case Texas v. White take place?
+In which country did the legal case Trial of Sheikh Hasina take place?
+In which country did the legal case Trial of the Juntas take place?
+In which country did the legal case federal prosecution of Donald Trump for election interference take place?
+In which country did the legal case federal prosecution of Donald Trump for mishandling of classified documents take place?
+In which country did the legal case trial of Catalonia independence leaders take place?
+
+# trials (sexual-abuse cases and current partisan prosecutions; added on review)
+In which country did Burning Sun scandal take place?
+In which country did Depp v. Heard take place?
+In which country did McMartin preschool trial take place?
+In which country did Queen Boat arrests take place?
+In which country did Scottsboro Boys take place?
+In which country did Silvio Berlusconi underage prostitution charges take place?
+In which country did federal prosecution of Donald Trump for election interference take place?
+In which country did federal prosecution of Donald Trump for mishandling of classified documents take place?

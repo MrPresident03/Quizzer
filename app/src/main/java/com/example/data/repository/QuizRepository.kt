@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import okio.buffer
+import okio.source
 import java.time.LocalDate
 import java.util.Locale
 import kotlin.random.Random
@@ -26,14 +28,12 @@ import kotlin.random.Random
 class QuizRepository(
     private val context: Context,
     private val quizDao: QuizDao,
-    private val prefs: QuizPrefs = QuizPrefs(context),
-    private val remote: OpenTdbRemoteSource = OpenTdbRemoteSource(prefs)
+    private val prefs: QuizPrefs = QuizPrefs(context)
 ) {
 
     val userStats: Flow<UserStats?> = quizDao.getUserStatsFlow()
     val allHistory: Flow<List<QuizHistory>> = quizDao.getAllHistoryFlow()
     val allAchievements: Flow<List<Achievement>> = quizDao.getAllAchievementsFlow()
-    val allQuestions: Flow<List<Question>> = quizDao.getAllQuestionsFlow()
 
     private val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
 
@@ -79,20 +79,22 @@ class QuizRepository(
         if (prefs.bundledSeedVersion >= BUNDLED_SEED_VERSION) return
         val bundled = loadBundledQuestions() ?: return // try again next launch
 
+        bundledCache = bundled // same parse serves the daily challenge; never parse the JSON twice
+
         val removed = quizDao.deleteLegacyGeneratedQuestions()
-        val existing = quizDao.getAllQuestionTexts().mapTo(HashSet()) { QuestionPicker.normalizedText(it) }
-        val toInsert = bundled
-            .filter { QuestionPicker.normalizedText(it.text) !in existing }
-            .distinctBy { QuestionPicker.normalizedText(it.text) }
-        quizDao.insertQuestions(toInsert)
+        val seenTexts = quizDao.getAllQuestionTexts().mapTo(HashSet()) { QuestionPicker.normalizedText(it) }
+        // One pass: HashSet.add is false for rows already stored and for duplicates inside the bank.
+        val toInsert = bundled.filter { seenTexts.add(QuestionPicker.normalizedText(it.text)) }
+        if (toInsert.isNotEmpty()) quizDao.insertQuestions(toInsert) // single call = single transaction
         prefs.bundledSeedVersion = BUNDLED_SEED_VERSION
         Log.d(TAG, "Question bank synced: removed $removed placeholders, added ${toInsert.size} bundled questions")
     }
 
     private fun loadBundledQuestions(): List<Question>? = try {
-        val json = context.assets.open("questions.json").bufferedReader().use { it.readText() }
         val type = Types.newParameterizedType(List::class.java, BundledQuestionJson::class.java)
-        val parsed = moshi.adapter<List<BundledQuestionJson>>(type).fromJson(json).orEmpty()
+        val adapter = moshi.adapter<List<BundledQuestionJson>>(type)
+        // Streamed from the asset so a 20k-question file is never held as one big String.
+        val parsed = context.assets.open("questions.json").source().buffer().use { adapter.fromJson(it) }.orEmpty()
         parsed.map {
             Question(
                 text = it.text.trim(),
@@ -139,10 +141,9 @@ class QuizRepository(
     /**
      * Builds a practice quiz.
      *
-     * One OpenTDB call is made per quiz (the API allows one call every 5 seconds), aimed at the
-     * selected topic with the thinnest local pool. Everything fetched is cached in Room, so the
-     * offline bank keeps growing. The quiz is then drawn from remote + local questions, preferring
-     * never-seen and least-recently-seen ones, balanced across the selected topics.
+     * Fully offline: questions come from the bundled bank in Room (only the selected topics, or a
+     * random sample for all topics, are loaded), preferring never-seen and least-recently-seen
+     * ones, balanced across the selected topics.
      *
      * @param excludeKeys question keys already used in this session (endless mode refills).
      */
@@ -290,24 +291,13 @@ class QuizRepository(
                 matchesFormat(q) &&
                 QuestionPicker.keyOf(q) !in excludeKeys
 
-        // 1. Pick which topic gets the (single) network call: the one with the fewest unseen local questions.
-        var local = quizDao.getAllQuestions().filter(QuestionPicker::isPlayable)
-        val remoteTopic: String? = if (topics.isEmpty()) null else {
-            topics.filter(Categories::hasRemoteSource)
-                .shuffled(random)
-                .minByOrNull { topic -> local.count { it.category == topic && matches(it, true) && freshness(it) == null } }
-                ?: NO_REMOTE
-        }
+        // 1. Load only what this quiz can use: the chosen topics, or a random sample for all topics.
+        val sampleSize = maxOf(count * SAMPLE_FACTOR, MIN_SAMPLE)
+        val local = (if (topics.isEmpty()) quizDao.getRandomQuestions(sampleSize) else quizDao.getQuestionsByCategories(topics))
+            .filter(QuestionPicker::isPlayable)
 
-        // 2. Fetch and cache, so the offline bank grows with every online session.
-        val remoteQuestions = if (remoteTopic == NO_REMOTE) emptyList() else remote.fetch(remoteTopic, difficulty, apiType, count)
-        if (remoteQuestions.isNotEmpty()) {
-            cacheRemoteQuestions(remoteQuestions)
-            local = quizDao.getAllQuestions().filter(QuestionPicker::isPlayable)
-        }
-
-        // 3. Freshest-first, balanced across the chosen topics.
-        val pool = QuestionPicker.dedupe(remoteQuestions.filter { matches(it, false) } + local.filter { matches(it, true) })
+        // 2. Freshest-first, balanced across the chosen topics.
+        val pool = QuestionPicker.dedupe(local.filter { matches(it, true) })
         val buckets = if (topics.size <= 1) listOf(pool) else topics.map { topic -> pool.filter { it.category == topic } }
         var picked = QuestionPicker.balancedPick(
             buckets.map { QuestionPicker.orderByFreshness(it, freshness, random) },
@@ -315,28 +305,20 @@ class QuizRepository(
             random
         )
 
-        // 4. Too few for this difficulty? Top up from the same topics at any difficulty.
+        // 3. Too few for this difficulty? Top up from the same topics at any difficulty.
         if (picked.size < count && difficulty != null) {
             val have = picked.mapTo(HashSet()) { QuestionPicker.keyOf(it) }
             val extra = QuestionPicker.dedupe(local.filter { matches(it, false) && QuestionPicker.keyOf(it) !in have })
             picked = picked + QuestionPicker.pickFresh(extra, count - picked.size, freshness, random)
         }
 
-        // 5. Still nothing at all (e.g. True/False on a topic with no T/F questions): use any topic.
+        // 4. Still nothing at all (e.g. True/False on a topic with no T/F questions): use any topic.
         if (picked.isEmpty()) {
-            val any = QuestionPicker.dedupe(local.filter { matchesFormat(it) && QuestionPicker.keyOf(it) !in excludeKeys })
+            val anyTopic = if (topics.isEmpty()) local else quizDao.getRandomQuestions(sampleSize).filter(QuestionPicker::isPlayable)
+            val any = QuestionPicker.dedupe(anyTopic.filter { matchesFormat(it) && QuestionPicker.keyOf(it) !in excludeKeys })
             picked = QuestionPicker.pickFresh(any, count, freshness, random)
         }
         return picked
-    }
-
-    private suspend fun cacheRemoteQuestions(questions: List<Question>) {
-        val existing = quizDao.getAllQuestionTexts().mapTo(HashSet()) { QuestionPicker.normalizedText(it) }
-        val fresh = questions
-            .filter { QuestionPicker.normalizedText(it.text) !in existing }
-            .distinctBy { QuestionPicker.normalizedText(it.text) }
-            .map { it.copy(id = 0) }
-        if (fresh.isNotEmpty()) quizDao.insertQuestions(fresh)
     }
 
     /** Dedupe, drop malformed rows, shuffle question order AND each question's answer order. */
@@ -513,14 +495,13 @@ class QuizRepository(
     suspend fun clearQuestionHistory() = withContext(Dispatchers.IO) {
         quizDao.resetAnswerStats()
         prefs.clearSeen()
-        prefs.openTdbToken = null // a fresh token lets OpenTDB serve previously seen questions again
     }
 
     companion object {
         private const val TAG = "QuizRepository"
 
         /** Bump when assets/questions.json changes so existing installs pick up the new questions. */
-        const val BUNDLED_SEED_VERSION = 3
+        const val BUNDLED_SEED_VERSION = 4
 
         const val ENDLESS_COUNT = 999
         const val ENDLESS_BATCH_SIZE = 20
@@ -529,7 +510,8 @@ class QuizRepository(
         private const val FREEZE_EVERY_DAYS = 7
         private const val MAX_STREAK_FREEZES = 2
         private const val MAX_NAME_LENGTH = 24
-        private const val NO_REMOTE = "\u0000no-remote"
+        private const val SAMPLE_FACTOR = 40
+        private const val MIN_SAMPLE = 800
         private val DIFFICULTIES = setOf("easy", "medium", "hard")
     }
 }
