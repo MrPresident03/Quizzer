@@ -34,6 +34,12 @@ jobs:
           set -o pipefail
           ./gradlew assembleDebug --stacktrace 2>&1 | tee build-output.txt
 
+      # TEMP: print the generated Room schema so it can be committed (removed again afterwards).
+      - name: Print Room schema
+        if: always()
+        run: |
+          for f in app/schemas/*/*.json; do echo "SCHEMA_FILE_BEGIN $f"; cat "$f"; echo; echo "SCHEMA_FILE_END"; done
+
       - name: Run unit tests
         run: |
           set -o pipefail

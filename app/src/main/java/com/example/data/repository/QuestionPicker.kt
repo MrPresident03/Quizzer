@@ -114,7 +114,13 @@ object QuestionPicker {
 
 /**
  * In-memory record of when each question key was last shown, capped to [capacity] entries
- * (oldest dropped first). Serialises to a simple "millis<TAB>key" per line format.
+ * (oldest dropped first).
+ *
+ * The cap is above the size of the bundled question bank (about 14,500 questions), so a long-time
+ * player's whole history is kept. To keep that affordable in SharedPreferences, question keys (64-bit
+ * hex hashes) are stored as base-36 numbers with each timestamp as a delta from the previous entry
+ * (about 18 bytes per question instead of 30). Logs with other kinds of keys use the older, larger
+ * "millis<TAB>key" per line format, which [parse] still reads.
  */
 class SeenLog(private val capacity: Int = DEFAULT_CAPACITY) {
 
@@ -133,18 +139,56 @@ class SeenLog(private val capacity: Int = DEFAULT_CAPACITY) {
         }
     }
 
+    fun remove(key: String) {
+        entries.remove(key)
+    }
+
     fun clear() = entries.clear()
 
     fun snapshot(): Map<String, Long> = HashMap(entries)
 
-    fun serialize(): String = entries.entries.joinToString("\n") { "${it.value}\t${it.key}" }
+    fun serialize(): String {
+        if (entries.isEmpty() || !entries.keys.all { HEX_KEY.matches(it) }) return serializeLegacy()
+        val out = StringBuilder(entries.size * 18 + 3).append(COMPACT_HEADER)
+        var previous = 0L
+        for ((key, at) in entries) {
+            out.append(java.lang.Long.toUnsignedString(java.lang.Long.parseUnsignedLong(key, 16), 36))
+                .append(':')
+                .append(java.lang.Long.toString(at - previous, 36))
+                .append(',')
+            previous = at
+        }
+        return out.toString()
+    }
+
+    private fun serializeLegacy(): String = entries.entries.joinToString("\n") { "${it.value}\t${it.key}" }
 
     companion object {
-        const val DEFAULT_CAPACITY = 2000
+        const val DEFAULT_CAPACITY = 30_000
+
+        private const val COMPACT_HEADER = "v2\n"
+        // What QuestionPicker.keyOf produces: unsigned hex without leading zeros (so it round-trips exactly).
+        private val HEX_KEY = Regex("^(0|[1-9a-f][0-9a-f]{0,15})$")
 
         fun parse(serialized: String?, capacity: Int = DEFAULT_CAPACITY): SeenLog {
             val log = SeenLog(capacity)
-            serialized?.lineSequence()?.forEach { line ->
+            if (serialized == null) return log
+            if (serialized.startsWith(COMPACT_HEADER)) {
+                var at = 0L
+                for (token in serialized.substring(COMPACT_HEADER.length).split(',')) {
+                    val colon = token.indexOf(':')
+                    if (colon <= 0) continue
+                    try {
+                        val key = java.lang.Long.toHexString(java.lang.Long.parseUnsignedLong(token.substring(0, colon), 36))
+                        at += java.lang.Long.parseLong(token.substring(colon + 1), 36)
+                        log.mark(key, at)
+                    } catch (e: NumberFormatException) {
+                        // Skip a damaged token rather than losing the whole log.
+                    }
+                }
+                return log
+            }
+            serialized.lineSequence().forEach { line ->
                 val tab = line.indexOf('\t')
                 if (tab > 0) {
                     val at = line.substring(0, tab).toLongOrNull()

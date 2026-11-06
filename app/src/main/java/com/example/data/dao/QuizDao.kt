@@ -22,6 +22,17 @@ interface QuizDao {
     @Query("SELECT text FROM questions")
     suspend fun getAllQuestionTexts(): List<String>
 
+    /** Every stored question, for the bundled-bank upsert (runs once per question-bank version). */
+    @Query("SELECT * FROM questions")
+    suspend fun getAllQuestions(): List<Question>
+
+    @Update
+    suspend fun updateQuestions(questions: List<Question>)
+
+    /** Callers chunk [ids]: Android's SQLite allows only 999 bound variables per statement. */
+    @Query("DELETE FROM questions WHERE id IN (:ids)")
+    suspend fun deleteQuestionsByIds(ids: List<Int>)
+
     @Query("SELECT COUNT(*) FROM questions")
     suspend fun getQuestionsCount(): Int
 
@@ -70,12 +81,49 @@ interface QuizDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateUserStats(stats: UserStats)
 
+    /** Creates the default row only if there is none, so it can never overwrite real progress. */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUserStatsIfMissing(stats: UserStats)
+
+    // Partial updates: each writes only its own columns, so settings, theme and quiz results saved
+    // at about the same time can't overwrite each other with a stale copy of the whole row.
+    @Query("UPDATE user_stats SET activeThemeId = :themeId WHERE id = 1")
+    suspend fun setActiveTheme(themeId: String)
+
+    @Query("UPDATE user_stats SET isSoundEffectsEnabled = :sound, isHapticFeedbackEnabled = :haptic, fontSizePreference = :fontSize WHERE id = 1")
+    suspend fun setToggles(sound: Boolean, haptic: Boolean, fontSize: String)
+
+    @Query("UPDATE user_stats SET displayName = :name, avatarId = :avatarId WHERE id = 1")
+    suspend fun setProfile(name: String, avatarId: String)
+
+    @Query("UPDATE user_stats SET avatarId = :avatarId WHERE id = 1")
+    suspend fun setAvatar(avatarId: String)
+
+    @Query(
+        """
+        UPDATE user_stats SET
+            totalQuestionsAnswered = totalQuestionsAnswered + :answered,
+            correctAnswersCount = correctAnswersCount + :correct,
+            xpPoints = xpPoints + :xp,
+            currentLevel = MAX(currentLevel, :level)
+        WHERE id = 1
+        """
+    )
+    suspend fun addSessionTotals(answered: Int, correct: Int, xp: Int, level: Int)
+
+    @Query("UPDATE user_stats SET currentStreak = :streak, hasStreakFreeze = :freezes, lastQuizDateStr = :date WHERE id = 1")
+    suspend fun setStreak(streak: Int, freezes: Int, date: String)
+
     // --- QUIZ HISTORY ---
     @Query("SELECT * FROM quiz_history ORDER BY timestamp DESC")
     fun getAllHistoryFlow(): Flow<List<QuizHistory>>
 
     @Query("SELECT COUNT(*) FROM quiz_history")
     suspend fun getHistoryCount(): Int
+
+    /** Quizzes that count towards "N quizzes" achievements (not tiny Endless / Review runs). */
+    @Query("SELECT COUNT(*) FROM quiz_history WHERE NOT (quizType IN ('Endless', 'Review') AND totalQuestions < :minAnswers)")
+    suspend fun getCountedHistoryCount(minAnswers: Int): Int
 
     /** Lifetime XP earned (independent of XP spent in the shop). */
     @Query("SELECT COALESCE(SUM(xpEarned), 0) FROM quiz_history")

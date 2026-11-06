@@ -1,6 +1,7 @@
 package com.example.ui.viewmodel
 
 import android.app.Application
+import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import com.example.data.repository.DailyChallenge
 import com.example.data.repository.DailyResult
 import com.example.data.repository.PracticeSettings
 import com.example.data.repository.QuestionPicker
+import com.example.data.repository.QuizNotices
 import com.example.data.repository.QuizRepository
 import com.example.data.repository.Scoring
 import com.example.data.repository.SessionSummary
@@ -31,13 +33,22 @@ import kotlin.random.Random
 
 class QuizViewModel(
     application: Application,
-    private val repository: QuizRepository
+    private val repository: QuizRepository,
+    /** The current date; replaceable in tests so "finishing after midnight" can be simulated. */
+    private val today: () -> LocalDate = { LocalDate.now() },
+    /** Monotonic milliseconds, for real elapsed time per question; replaceable in tests. */
+    private val elapsedClock: () -> Long = { SystemClock.elapsedRealtime() }
 ) : AndroidViewModel(application) {
 
     // --- DATA STATE FLOWS ---
     val userStats: StateFlow<UserStats> = repository.userStats
         .map { it ?: UserStats() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UserStats())
+
+    /** The streak to display: the stored one, or 0 once more days were missed than streak freezes cover. */
+    val effectiveStreak: StateFlow<Int> = userStats
+        .map { Scoring.effectiveStreak(it, today()) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
     val quizHistory: StateFlow<List<QuizHistory>> = repository.allHistory
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -76,6 +87,14 @@ class QuizViewModel(
     private val _sessionType = MutableStateFlow(SessionType.PRACTICE)
     val sessionType: StateFlow<SessionType> = _sessionType.asStateFlow()
 
+    private val _notice = MutableStateFlow<String?>(null)
+    /** A short heads-up at quiz start, e.g. "Only 6 True/False questions in Fashion & Design - playing 6". */
+    val notice: StateFlow<String?> = _notice.asStateFlow()
+
+    private val _endMessage = MutableStateFlow<String?>(null)
+    /** Set when an Endless run ended because the topic ran out: "You've answered every question in X!" */
+    val endMessage: StateFlow<String?> = _endMessage.asStateFlow()
+
     private val _lastSessionXp = MutableStateFlow(0)
     val lastSessionXp: StateFlow<Int> = _lastSessionXp.asStateFlow()
 
@@ -86,6 +105,13 @@ class QuizViewModel(
     val quizSelectedIndices: List<Int?> get() = selections.toList()
 
     private var sessionStartTime = System.currentTimeMillis()
+    private var dailyDate: LocalDate = today() // the Daily's date as captured when it was started
+    private var endlessExhausted = false
+    private var paused = false
+    // Real time spent on the current question (excludes time paused in the background / quit dialog).
+    private var elapsedBeforePauseMs = 0L
+    private var questionClockStartMs = 0L
+    private var questionClockRunning = false
     private var speedStreak = 0
     private var bestSpeedStreak = 0
     private var lifelinesUsedThisSession = 0
@@ -119,8 +145,8 @@ class QuizViewModel(
     private val _topicStats = MutableStateFlow<List<TopicStat>>(emptyList())
     val topicStats: StateFlow<List<TopicStat>> = _topicStats.asStateFlow()
 
-    private val _dailyReminderEnabled = MutableStateFlow(repository.isDailyReminderEnabled)
-    val dailyReminderEnabled: StateFlow<Boolean> = _dailyReminderEnabled.asStateFlow()
+    /** The reminder switch: the player's choice AND notifications being allowed in system settings. */
+    val dailyReminderEnabled: StateFlow<Boolean> = repository.reminderShown
 
     // Session bookkeeping. Every new/quit session bumps sessionId, and every delayed coroutine checks
     // it before touching state, so a stale "advance in 2.5 s" can't leak into the next quiz.
@@ -144,8 +170,13 @@ class QuizViewModel(
 
     /** Re-check on every dashboard visit so the lock clears after midnight while the app is open. */
     fun checkDailyPlayedStatus() {
-        _dailyPlayedToday.value = repository.isDailyPlayed()
-        _todayDailyResult.value = repository.todayDailyResult()
+        val date = today()
+        _dailyPlayedToday.value = repository.isDailyPlayed(date)
+        _todayDailyResult.value = repository.todayDailyResult(date)
+    }
+
+    fun dismissNotice() {
+        _notice.value = null
     }
 
     fun refreshTopicStats() {
@@ -159,8 +190,10 @@ class QuizViewModel(
     }
 
     /** Wordle-style share text for today's daily result, or null if it hasn't been played. */
-    fun dailyShareText(): String? =
-        repository.todayDailyResult()?.let { DailyChallenge.shareText(LocalDate.now(), it) }
+    fun dailyShareText(): String? = repository.lastDailyResult()?.let { result ->
+        // Numbered by the day the Daily was played, not by whenever the share button is tapped.
+        Scoring.parseDate(result.date)?.let { DailyChallenge.shareText(it, result) }
+    }
 
     // --- QUIZ GAME ENGINE ACTIONS ---
 
@@ -186,17 +219,21 @@ class QuizViewModel(
         val endless = count == QuizRepository.ENDLESS_COUNT
         val id = beginSession(if (endless) SessionType.ENDLESS else SessionType.PRACTICE, difficulty, timed)
         practiceRequest = PracticeRequest(categories, difficulty, format)
-        load(id) { repository.getPracticeQuiz(categories, difficulty, count, format) }
+        load(id, notice = { questions -> QuizNotices.forPractice(count, questions, categories, format) }) {
+            repository.getPracticeQuiz(categories, difficulty, count, format)
+        }
     }
 
     fun startDailyChallenge() {
         val id = beginSession(SessionType.DAILY, "Mixed", timed = true)
-        if (repository.isDailyPlayed()) {
+        val date = today()
+        dailyDate = date // everything about this attempt is filed under the day it was started
+        if (repository.isDailyPlayed(date)) {
             _dailyPlayedToday.value = true
             _loadError.value = "You've already played today's challenge. A new one unlocks at midnight."
             return
         }
-        load(id) { repository.getDailyChallengeQuiz() }
+        load(id) { repository.getDailyChallengeQuiz(date) }
     }
 
     fun startFlagsQuiz(mode: String, difficulty: String, count: Int) {
@@ -222,12 +259,16 @@ class QuizViewModel(
             return true
         }
         if (type == SessionType.DAILY && answers.isNotEmpty()) {
-            // One attempt per day: bailing out after seeing questions uses it up.
-            repository.markDailyPlayed()
-            _dailyPlayedToday.value = true
+            // One attempt per day: bailing out after answering uses it up, and the score so far is
+            // saved (as the quit dialog says). It is never a "perfect" Daily.
+            val id = sessionId
+            cancelSessionJobs()
+            viewModelScope.launch { finishQuizSession(id, completed = false) }
+            return true
         }
         sessionId++
         cancelSessionJobs()
+        paused = false
         _activeQuestions.value = emptyList()
         _isLoading.value = false
         return false
@@ -248,6 +289,11 @@ class QuizViewModel(
         _quizFinished.value = false
         _isLoading.value = false
         _loadError.value = null
+        _notice.value = null
+        _endMessage.value = null
+        endlessExhausted = false
+        paused = false
+        questionClockRunning = false
         _hiddenOptions.value = emptySet()
         _audiencePoll.value = null
         _lastSessionXp.value = 0
@@ -275,7 +321,7 @@ class QuizViewModel(
         refillJob = null
     }
 
-    private fun load(id: Int, fetch: suspend () -> List<Question>) {
+    private fun load(id: Int, notice: ((List<Question>) -> String?)? = null, fetch: suspend () -> List<Question>) {
         _isLoading.value = true
         loadJob = viewModelScope.launch {
             val questions = try {
@@ -289,10 +335,11 @@ class QuizViewModel(
             if (id != sessionId) return@launch
             _isLoading.value = false
             if (questions.isEmpty()) {
-                _loadError.value = "Couldn't load any questions for these settings. Try different topics or check your connection."
+                _loadError.value = "Couldn't load any questions for these settings. Try different topics or a different format."
                 return@launch
             }
             sessionStartTime = System.currentTimeMillis()
+            _notice.value = notice?.invoke(questions)
             _activeQuestions.value = questions
             startQuestionTimer(id)
         }
@@ -307,7 +354,17 @@ class QuizViewModel(
     private fun startQuestionTimer(id: Int) {
         timerJob?.cancel()
         _timeLeft.value = MAX_QUESTION_SECONDS
-        if (!_isTimed.value) return
+        elapsedBeforePauseMs = 0L
+        questionClockStartMs = elapsedClock()
+        questionClockRunning = !paused
+        // If the app is in the background when the next question appears, wait for resumeTimer().
+        if (!_isTimed.value || paused) return
+        runTimer(id)
+    }
+
+    /** Counts down from whatever [_timeLeft] currently holds. */
+    private fun runTimer(id: Int) {
+        timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (_timeLeft.value > 0) {
                 delay(1000)
@@ -321,6 +378,35 @@ class QuizViewModel(
     private fun stopTimer() {
         timerJob?.cancel()
         timerJob = null
+    }
+
+    /** Real milliseconds spent on the current question so far, not counting paused time. */
+    private fun questionElapsedMs(): Long =
+        elapsedBeforePauseMs + if (questionClockRunning) elapsedClock() - questionClockStartMs else 0L
+
+    /**
+     * Freezes the countdown (app in the background, quit dialog open). The remaining seconds are kept
+     * and [resumeTimer] continues from them.
+     */
+    fun pauseTimer() {
+        if (paused) return
+        paused = true
+        stopTimer()
+        if (questionClockRunning) {
+            elapsedBeforePauseMs += elapsedClock() - questionClockStartMs
+            questionClockRunning = false
+        }
+    }
+
+    /** Continues after [pauseTimer], but only if a question is active and still unanswered. */
+    fun resumeTimer() {
+        if (!paused) return
+        paused = false
+        questionClockStartMs = elapsedClock()
+        questionClockRunning = true
+        val active = currentQuestion() != null && !_isAnswerRevealed.value && !advancing &&
+            !finishing && !_quizFinished.value && !_isLoading.value && _timeLeft.value > 0
+        if (_isTimed.value && active) runTimer(sessionId)
     }
 
     private fun onQuestionTimeout(id: Int) {
@@ -347,8 +433,9 @@ class QuizViewModel(
         logAnswer(question, optionIndex, isCorrect)
 
         // Speed Demon: consecutive correct answers within 10 seconds each.
-        val timeSpent = MAX_QUESTION_SECONDS - _timeLeft.value
-        speedStreak = if (isCorrect && _isTimed.value && timeSpent <= SPEED_SECONDS) speedStreak + 1 else 0
+        // Real elapsed time: "max minus time left" is wrong once the Extra Time lifeline was used.
+        val withinSpeedLimit = questionElapsedMs() <= SPEED_SECONDS * 1000L
+        speedStreak = if (isCorrect && _isTimed.value && withinSpeedLimit) speedStreak + 1 else 0
         bestSpeedStreak = maxOf(bestSpeedStreak, speedStreak)
 
         // Wrong answers stay up longer so there's time to read the explanation; "Next" skips the wait.
@@ -396,6 +483,9 @@ class QuizViewModel(
                 refillJob?.join()
                 if (id != sessionId) return
                 _isLoading.value = false
+                if (nextIndex >= _activeQuestions.value.size && endlessExhausted) {
+                    _endMessage.value = QuizNotices.endlessExhausted(practiceRequest?.categories.orEmpty())
+                }
             }
         }
 
@@ -415,11 +505,12 @@ class QuizViewModel(
     /** Endless mode keeps fetching fresh batches a few questions before the end. */
     private fun maybeRefillEndless(id: Int, nextIndex: Int) {
         val request = practiceRequest ?: return
-        if (refillJob?.isActive == true) return
+        if (refillJob?.isActive == true || endlessExhausted) return
         if (_activeQuestions.value.size - nextIndex > ENDLESS_REFILL_THRESHOLD) return
 
         refillJob = viewModelScope.launch {
             val usedKeys = _activeQuestions.value.mapTo(HashSet()) { QuestionPicker.keyOf(it) }
+            var failed = false
             val more = try {
                 repository.getPracticeQuiz(
                     request.categories, request.difficulty, QuizRepository.ENDLESS_COUNT, request.format, usedKeys
@@ -427,15 +518,20 @@ class QuizViewModel(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
+                failed = true
                 emptyList()
             }
-            if (id == sessionId && more.isNotEmpty()) {
-                _activeQuestions.value = _activeQuestions.value + more
+            if (id == sessionId) {
+                if (more.isNotEmpty()) {
+                    _activeQuestions.value = _activeQuestions.value + more
+                } else if (!failed) {
+                    endlessExhausted = true // nothing left in these topics: the run ends after the queued questions
+                }
             }
         }
     }
 
-    private suspend fun finishQuizSession(id: Int) {
+    private suspend fun finishQuizSession(id: Int, completed: Boolean = true) {
         if (finishing || id != sessionId) return
         finishing = true
         stopTimer()
@@ -452,20 +548,22 @@ class QuizViewModel(
             isMixedTopics = isMixedTopics(),
             durationSeconds = ((System.currentTimeMillis() - sessionStartTime) / 1000).toInt(),
             bestSpeedStreak = bestSpeedStreak,
-            lifelinesUsed = lifelinesUsedThisSession
+            lifelinesUsed = lifelinesUsedThisSession,
+            dailyDate = if (_sessionType.value == SessionType.DAILY) dailyDate else null,
+            completed = completed
         )
 
         // Show results immediately; XP shown uses the same formula the repository saves.
-        _lastSessionXp.value = Scoring.sessionXp(played, playedAnswers)
+        _lastSessionXp.value = Scoring.sessionXp(played, playedAnswers, summary.type)
         _activeQuestions.value = played
         _isLoading.value = false
         _quizFinished.value = true
 
         if (summary.type == SessionType.DAILY) {
-            repository.markDailyPlayed()
-            repository.saveDailyResult(playedAnswers, summary.durationSeconds)
-            _dailyPlayedToday.value = true
-            _todayDailyResult.value = repository.todayDailyResult()
+            repository.markDailyPlayed(dailyDate)
+            repository.saveDailyResult(playedAnswers, summary.durationSeconds, dailyDate)
+            _dailyPlayedToday.value = repository.isDailyPlayed(today())
+            _todayDailyResult.value = repository.lastDailyResult()
         }
         try {
             _lastSessionXp.value = repository.recordQuizSession(summary)
@@ -569,27 +667,13 @@ class QuizViewModel(
 
     fun updateProfile(displayName: String, avatarId: String) {
         viewModelScope.launch {
-            val stats = userStats.value
-            repository.updateConfig(
-                sound = stats.isSoundEffectsEnabled,
-                haptic = stats.isHapticFeedbackEnabled,
-                textLarge = stats.fontSizePreference == "large",
-                displayName = displayName,
-                avatar = avatarId
-            )
+            repository.updateProfile(displayName, avatarId) // writes only name + avatar
         }
     }
 
     fun updateToggles(sound: Boolean, haptic: Boolean, textLarge: Boolean) {
         viewModelScope.launch {
-            val stats = userStats.value
-            repository.updateConfig(
-                sound = sound,
-                haptic = haptic,
-                textLarge = textLarge,
-                displayName = stats.displayName,
-                avatar = stats.avatarId
-            )
+            repository.updateToggles(sound, haptic, textLarge) // writes only the three toggles
         }
     }
 
@@ -608,7 +692,6 @@ class QuizViewModel(
         val context = getApplication<Application>()
         val on = enabled && DailyReminder.canNotify(context)
         repository.isDailyReminderEnabled = on
-        _dailyReminderEnabled.value = on
         if (on) DailyReminder.schedule(context) else DailyReminder.cancel(context)
     }
 

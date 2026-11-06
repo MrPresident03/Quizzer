@@ -12,7 +12,7 @@ import com.example.data.model.UserStats
 @Database(
     entities = [Question::class, UserStats::class, QuizHistory::class, Achievement::class],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

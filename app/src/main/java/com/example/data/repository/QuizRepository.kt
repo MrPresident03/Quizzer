@@ -2,16 +2,21 @@ package com.example.data.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
+import androidx.room.RoomDatabase
+import androidx.room.withTransaction
 import com.example.data.dao.QuizDao
 import com.example.data.model.Achievement
 import com.example.data.model.Question
 import com.example.data.model.QuizHistory
 import com.example.data.model.UserStats
 import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import okio.BufferedSource
 import okio.buffer
 import okio.source
 import java.time.LocalDate
@@ -28,7 +34,9 @@ import kotlin.random.Random
 class QuizRepository(
     private val context: Context,
     private val quizDao: QuizDao,
-    private val prefs: QuizPrefs = QuizPrefs(context)
+    private val prefs: QuizPrefs = QuizPrefs(context),
+    /** When given, multi-step writes run in one Room transaction (all-or-nothing). */
+    private val database: RoomDatabase? = null
 ) {
 
     val userStats: Flow<UserStats?> = quizDao.getUserStatsFlow()
@@ -46,7 +54,24 @@ class QuizRepository(
     /** How many questions are waiting in "Review mistakes". */
     val mistakeCount: StateFlow<Int> = _mistakeCount.asStateFlow()
 
-    @Volatile private var bundledCache: List<Question>? = null
+    private val _reminderShown = MutableStateFlow(computeReminderShown())
+    /**
+     * What the "Daily Reminder" switch should show: the player's choice AND the system-level
+     * notification setting (which can be switched off outside the app).
+     */
+    val reminderShown: StateFlow<Boolean> = _reminderShown.asStateFlow()
+
+    private fun computeReminderShown(): Boolean =
+        prefs.dailyReminderEnabled && NotificationManagerCompat.from(context).areNotificationsEnabled()
+
+    /** Call whenever the app returns to the foreground: the system notification setting may have changed. */
+    fun refreshReminderState() {
+        _reminderShown.value = computeReminderShown()
+    }
+
+    /** Runs [block] atomically when a database was supplied (the app always does). */
+    private suspend fun <T> inTransaction(block: suspend () -> T): T =
+        if (database != null) database.withTransaction { block() } else block()
 
     // --- SEEDING & INITIALIZATION ---
 
@@ -58,10 +83,10 @@ class QuizRepository(
         if (initialized) return@withContext
         initMutex.withLock {
             if (initialized) return@withLock
+            // The stats row comes first: seeding takes a while, and a theme or setting changed during
+            // the first launch needs a row to land in (IGNORE, so it can never overwrite real progress).
+            quizDao.insertUserStatsIfMissing(UserStats())
             syncBundledQuestions()
-            if (quizDao.getUserStats() == null) {
-                quizDao.insertOrUpdateUserStats(UserStats())
-            }
             // IGNORE (not REPLACE) so adding a new achievement in an update doesn't re-lock earned ones.
             quizDao.deleteAchievement("shop_spree") // the XP shop was removed
             quizDao.insertMissingAchievements(defaultAchievements())
@@ -71,46 +96,98 @@ class QuizRepository(
     }
 
     /**
-     * Loads assets/questions.json into Room. Versioned, so new bundled questions reach existing
-     * installs too (the old code only seeded when the table was empty), and the old auto-generated
-     * placeholder questions are removed once.
+     * Makes the Room question table match assets/questions.json. Versioned, so a changed bank reaches
+     * existing installs. It is an upsert keyed on the normalised question text, all in one
+     * transaction: existing questions get the bank's latest wording / answers / explanation but keep
+     * their id and answered / correct counters, new ones are inserted, and questions that are no
+     * longer in the bank are removed (along with their entries in the mistakes list and seen log).
+     * The old auto-generated placeholder questions are removed too.
      */
     private suspend fun syncBundledQuestions() {
         if (prefs.bundledSeedVersion >= BUNDLED_SEED_VERSION) return
         val bundled = loadBundledQuestions() ?: return // try again next launch
-
-        bundledCache = bundled // same parse serves the daily challenge; never parse the JSON twice
-
-        val removed = quizDao.deleteLegacyGeneratedQuestions()
-        val seenTexts = quizDao.getAllQuestionTexts().mapTo(HashSet()) { QuestionPicker.normalizedText(it) }
-        // One pass: HashSet.add is false for rows already stored and for duplicates inside the bank.
-        val toInsert = bundled.filter { seenTexts.add(QuestionPicker.normalizedText(it.text)) }
-        if (toInsert.isNotEmpty()) quizDao.insertQuestions(toInsert) // single call = single transaction
-        prefs.bundledSeedVersion = BUNDLED_SEED_VERSION
-        Log.d(TAG, "Question bank synced: removed $removed placeholders, added ${toInsert.size} bundled questions")
+        if (applyBundledBank(bundled)) prefs.bundledSeedVersion = BUNDLED_SEED_VERSION
     }
 
-    private fun loadBundledQuestions(): List<Question>? = try {
-        val type = Types.newParameterizedType(List::class.java, BundledQuestionJson::class.java)
-        val adapter = moshi.adapter<List<BundledQuestionJson>>(type)
-        // Streamed from the asset so a 20k-question file is never held as one big String.
-        val parsed = context.assets.open("questions.json").source().buffer().use { adapter.fromJson(it) }.orEmpty()
-        parsed.map {
-            Question(
-                text = it.text.trim(),
-                optionsList = it.options.map(String::trim),
-                correctIndex = it.correctIndex,
-                category = it.category,
-                difficulty = it.difficulty.lowercase(Locale.ROOT),
-                explanation = it.explanation,
-                imageUrl = it.imageUrl
-            )
-        }.filter { q ->
-            QuestionPicker.isPlayable(q).also { ok -> if (!ok) Log.w(TAG, "Skipping malformed bundled question: ${q.text}") }
+    /** The upsert itself (see [syncBundledQuestions]). Returns false if it refused to touch the table. */
+    internal suspend fun applyBundledBank(bundled: List<Question>): Boolean {
+        if (bundled.isEmpty()) {
+            // Never wipe the table because of an empty / unreadable bank.
+            Log.e(TAG, "Bundled question bank has no playable questions; keeping the stored ones")
+            return false
         }
+
+        var removedLegacy = 0
+        lateinit var plan: BankSyncPlan
+        inTransaction {
+            removedLegacy = quizDao.deleteLegacyGeneratedQuestions()
+            plan = QuestionBankSync.plan(quizDao.getAllQuestions(), bundled)
+            if (plan.update.isNotEmpty()) quizDao.updateQuestions(plan.update)
+            if (plan.insert.isNotEmpty()) quizDao.insertQuestions(plan.insert)
+            plan.deleteIds.chunked(DELETE_CHUNK).forEach { quizDao.deleteQuestionsByIds(it) }
+        }
+
+        if (plan.removedKeys.isNotEmpty()) {
+            prefs.removeSeen(plan.removedKeys)
+            updateMistakes { it.removeKeys(plan.removedKeys) }
+        }
+        if (plan.update.isNotEmpty()) updateMistakes { it.refreshFrom(plan.update) }
+        _mistakeCount.value = mistakes().size
+        Log.d(
+            TAG,
+            "Question bank synced: removed $removedLegacy placeholders, ${plan.deleteIds.size} retired, " +
+                "updated ${plan.update.size}, added ${plan.insert.size}"
+        )
+        return true
+    }
+
+    /** Parses assets/questions.json (null if the file can't be read at all). Bad entries are skipped. */
+    internal fun loadBundledQuestions(): List<Question>? = try {
+        context.assets.open("questions.json").source().buffer().use { parseBundledQuestions(it) }
     } catch (e: Exception) {
         Log.e(TAG, "Could not read bundled questions.json", e)
         null
+    }
+
+    /**
+     * Streams the JSON array one entry at a time, so a single malformed entry (missing field, wrong
+     * type, unplayable options) is logged and skipped instead of losing the whole bank. A file that
+     * is not valid JSON at all still throws.
+     */
+    internal fun parseBundledQuestions(source: BufferedSource): List<Question> {
+        val adapter = moshi.adapter(BundledQuestionJson::class.java)
+        val reader = JsonReader.of(source)
+        val result = ArrayList<Question>()
+        var skipped = 0
+        reader.beginArray()
+        while (reader.hasNext()) {
+            val raw = reader.readJsonValue()
+            val question = try {
+                adapter.fromJsonValue(raw)?.let {
+                    Question(
+                        text = it.text.trim(),
+                        optionsList = it.options.map(String::trim),
+                        correctIndex = it.correctIndex,
+                        category = it.category,
+                        difficulty = it.difficulty.lowercase(Locale.ROOT),
+                        explanation = it.explanation,
+                        imageUrl = it.imageUrl
+                    )
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Skipping unreadable bundled entry: ${e.message}")
+                null
+            }
+            if (question != null && QuestionPicker.isPlayable(question)) {
+                result.add(question)
+            } else {
+                skipped++
+                if (question != null) Log.w(TAG, "Skipping malformed bundled question: ${question.text}")
+            }
+        }
+        reader.endArray()
+        if (skipped > 0) Log.w(TAG, "Skipped $skipped bad entries in questions.json")
+        return result
     }
 
     private fun defaultAchievements() = listOf(
@@ -185,9 +262,13 @@ class QuizRepository(
             flagCount = qty / 10
             capitalCount = qty / 10
         }
+        if (!multipleChoiceAllowed) capitalCount = 0 // capital questions have no True/False form
         val coreCount = qty - capitalCount - flagCount
 
         val core = buildCore(topics, diff, apiType, coreCount, lastSeen, excludeKeys, random)
+        // Endless refill and the chosen topics have run dry: say so (empty) rather than padding the
+        // run with flags or unrelated topics.
+        if (excludeKeys.isNotEmpty() && coreCount > 0 && core.isEmpty()) return@withContext emptyList()
         val flags = if (flagCount > 0) {
             FlagQuestionsProvider.generateFlagQuiz("Mixed", difficulty, flagCount, lastSeen, random)
         } else emptyList()
@@ -204,7 +285,7 @@ class QuizRepository(
      */
     suspend fun getDailyChallengeQuiz(date: LocalDate = LocalDate.now()): List<Question> = withContext(Dispatchers.IO) {
         initializeAppIfNeeded()
-        val bundled = bundledQuestions()
+        val bundled = loadBundledQuestions().orEmpty() // on demand: no permanent in-memory copy
         if (bundled.size >= DailyChallenge.TRIVIA_PER_DAY) {
             return@withContext DailyChallenge.build(bundled, date)
         }
@@ -218,12 +299,12 @@ class QuizRepository(
     fun todayDailyResult(today: LocalDate = LocalDate.now()): DailyResult? =
         DailyResult.parse(prefs.dailyResult)?.takeIf { it.date == today.toString() }
 
+    /** The most recently saved Daily result, whatever day it was played (used for sharing). */
+    fun lastDailyResult(): DailyResult? = DailyResult.parse(prefs.dailyResult)
+
     fun saveDailyResult(answers: List<Boolean>, seconds: Int, today: LocalDate = LocalDate.now()) {
         prefs.dailyResult = DailyResult(today.toString(), answers, seconds).serialize()
     }
-
-    private fun bundledQuestions(): List<Question> =
-        bundledCache ?: (loadBundledQuestions() ?: emptyList()).also { if (it.isNotEmpty()) bundledCache = it }
 
     // --- MISTAKE REVIEW ---
 
@@ -313,7 +394,9 @@ class QuizRepository(
         }
 
         // 4. Still nothing at all (e.g. True/False on a topic with no T/F questions): use any topic.
-        if (picked.isEmpty()) {
+        //    Only for a fresh quiz: an Endless refill (excludeKeys set) that finds nothing means the
+        //    topic is used up, and the run ends instead of drifting into other topics.
+        if (picked.isEmpty() && excludeKeys.isEmpty()) {
             val anyTopic = if (topics.isEmpty()) local else quizDao.getRandomQuestions(sampleSize).filter(QuestionPicker::isPlayable)
             val any = QuestionPicker.dedupe(anyTopic.filter { matchesFormat(it) && QuestionPicker.keyOf(it) !in excludeKeys })
             picked = QuestionPicker.pickFresh(any, count, freshness, random)
@@ -354,7 +437,10 @@ class QuizRepository(
 
     var isDailyReminderEnabled: Boolean
         get() = prefs.dailyReminderEnabled
-        set(value) { prefs.dailyReminderEnabled = value }
+        set(value) {
+            prefs.dailyReminderEnabled = value
+            refreshReminderState()
+        }
 
     fun isDailyPlayed(today: LocalDate = LocalDate.now()): Boolean = prefs.dailyPlayedDate == today.toString()
 
@@ -364,88 +450,95 @@ class QuizRepository(
 
     // --- PROGRESSION & GAMIFICATION STATS UPDATE ---
 
-    /** Saves the session, updates stats/streak/level and unlocks achievements. Returns XP earned. */
-    suspend fun recordQuizSession(summary: SessionSummary): Int = withContext(Dispatchers.IO) {
+    /**
+     * Saves the session, updates stats/streak/level and unlocks achievements. Returns XP earned.
+     *
+     * Everything is written in one transaction and runs [NonCancellable], so leaving the screen or
+     * starting a new quiz while this is running can't leave a half-saved session behind. Stats are
+     * changed with partial UPDATEs, so a settings or theme change made at the same moment survives.
+     */
+    suspend fun recordQuizSession(summary: SessionSummary): Int = withContext(Dispatchers.IO + NonCancellable) {
         if (summary.totalCount == 0) return@withContext 0
         val today = LocalDate.now()
-        val xpEarned = Scoring.sessionXp(summary.questions, summary.answers)
+        val xpEarned = Scoring.sessionXp(summary.questions, summary.answers, summary.type)
+        val counts = summary.countsTowardProgress
 
-        quizDao.insertHistory(
-            QuizHistory(
-                categoryName = summary.categoryLabel,
-                score = summary.correctCount,
-                totalQuestions = summary.totalCount,
-                difficulty = summary.selectedDifficulty,
-                timeTakenSeconds = summary.durationSeconds,
-                xpEarned = xpEarned,
-                quizType = summary.type.label
+        inTransaction {
+            quizDao.insertUserStatsIfMissing(UserStats())
+            quizDao.insertHistory(
+                QuizHistory(
+                    categoryName = summary.categoryLabel,
+                    score = summary.correctCount,
+                    totalQuestions = summary.totalCount,
+                    difficulty = summary.selectedDifficulty,
+                    timeTakenSeconds = summary.durationSeconds,
+                    xpEarned = xpEarned,
+                    quizType = summary.type.label
+                )
             )
-        )
 
-        val stats = quizDao.getUserStats() ?: UserStats()
-        val streak = Scoring.nextStreak(
-            currentStreak = stats.currentStreak,
-            lastPlayed = Scoring.parseDate(stats.lastQuizDateStr),
-            today = today,
-            freezesOwned = stats.hasStreakFreeze
-        )
-        val lifetimeXp = quizDao.getLifetimeXp()
-        val newLevel = Scoring.levelForLifetimeXp(lifetimeXp)
+            val stats = quizDao.getUserStats() ?: UserStats()
+            val lifetimeXp = quizDao.getLifetimeXp()
+            val newLevel = Scoring.levelForLifetimeXp(lifetimeXp)
+            quizDao.addSessionTotals(summary.totalCount, summary.correctCount, xpEarned, newLevel)
 
-        // Every 7 days in a row earns a streak freeze (up to MAX_STREAK_FREEZES), replacing the old shop item.
-        val earnedFreeze = streak.streak > stats.currentStreak && streak.streak % FREEZE_EVERY_DAYS == 0
-        val freezes = (stats.hasStreakFreeze - streak.freezesUsed + if (earnedFreeze) 1 else 0)
-            .coerceIn(0, MAX_STREAK_FREEZES)
+            var streakNow = stats.currentStreak
+            if (counts) {
+                val streak = Scoring.nextStreak(
+                    currentStreak = stats.currentStreak,
+                    lastPlayed = Scoring.parseDate(stats.lastQuizDateStr),
+                    today = today,
+                    freezesOwned = stats.hasStreakFreeze
+                )
+                // Every 7 days in a row earns a streak freeze (up to MAX_STREAK_FREEZES), replacing the old shop item.
+                val earnedFreeze = streak.streak > stats.currentStreak && streak.streak % FREEZE_EVERY_DAYS == 0
+                val freezes = (stats.hasStreakFreeze - streak.freezesUsed + if (earnedFreeze) 1 else 0)
+                    .coerceIn(0, MAX_STREAK_FREEZES)
+                quizDao.setStreak(streak.streak, freezes, today.toString())
+                streakNow = streak.streak
+            }
+            val updatedStats = quizDao.getUserStats() ?: stats
 
-        val updatedStats = stats.copy(
-            currentStreak = streak.streak,
-            hasStreakFreeze = freezes,
-            totalQuestionsAnswered = stats.totalQuestionsAnswered + summary.totalCount,
-            correctAnswersCount = stats.correctAnswersCount + summary.correctCount,
-            xpPoints = stats.xpPoints + xpEarned, // spendable balance
-            currentLevel = maxOf(stats.currentLevel, newLevel),
-            lastQuizDateStr = today.toString()
-        )
-        quizDao.insertOrUpdateUserStats(updatedStats)
+            // Per-topic counters (topic mastery panel + category achievements).
+            val correctByCategory = summary.questions
+                .filterIndexed { index, _ -> summary.answers.getOrNull(index) == true }
+                .groupingBy { statsTopicFor(it.category) }
+                .eachCount()
+            val answeredByCategory = summary.questions
+                .take(summary.answers.size)
+                .groupingBy { statsTopicFor(it.category) }
+                .eachCount()
+            prefs.addCategoryCorrect(correctByCategory)
+            prefs.addCategoryAnswered(answeredByCategory)
+            prefs.addLifelinesUsed(summary.lifelinesUsed)
+            // Filed under the day the Daily was started, even if it finished after midnight.
+            if (summary.type == SessionType.DAILY) markDailyPlayed(summary.dailyDate ?: today)
 
-        // Per-topic counters (topic mastery panel + category achievements).
-        val correctByCategory = summary.questions
-            .filterIndexed { index, _ -> summary.answers.getOrNull(index) == true }
-            .groupingBy { statsTopicFor(it.category) }
-            .eachCount()
-        val answeredByCategory = summary.questions
-            .take(summary.answers.size)
-            .groupingBy { statsTopicFor(it.category) }
-            .eachCount()
-        prefs.addCategoryCorrect(correctByCategory)
-        prefs.addCategoryAnswered(answeredByCategory)
-        prefs.addLifelinesUsed(summary.lifelinesUsed)
-        if (summary.type == SessionType.DAILY) markDailyPlayed(today)
-
-        val totalQuizzes = quizDao.getHistoryCount()
-        val unlocks = buildList {
-            add("first_quiz")
-            if (summary.isPerfect) add("first_perfect")
-            if (streak.streak >= 3) add("streak_3")
-            if (streak.streak >= 7) add("streak_7")
-            if (updatedStats.correctAnswersCount >= 100) add("questions_100")
-            if (prefs.categoryCorrect("Science & Nature") >= 50) add("science_master")
-            if (prefs.categoryCorrect("History") >= 50) add("history_master")
-            if (prefs.categoryCorrect("Sports & Recreation") >= 50) add("sports_master")
-            if (prefs.categoryCorrect("Technology & Computing") >= 50) add("tech_master")
-            if (prefs.categoryCorrect("Flags") >= 50) add("flag_master")
-            if (summary.bestSpeedStreak >= 10) add("speed_demon")
-            if (prefs.lifelinesUsedTotal >= 15) add("lifeline_lover")
-            if (summary.selectedDifficulty.equals("hard", ignoreCase = true)) add("hard_conqueror")
-            if (summary.type == SessionType.ENDLESS && summary.correctCount >= 30) add("endless_survivor")
-            if (lifetimeXp >= 1000) add("rich_student")
-            if (summary.isMixedTopics && summary.totalCount >= 30) add("mixed_master")
-            if (updatedStats.currentLevel >= 5) add("level_5s")
-            if (summary.type == SessionType.DAILY && summary.isPerfect) add("daily_champ")
-            if (totalQuizzes >= 50) add("half_hundred")
-            if (updatedStats.currentLevel >= 20) add("grand_master")
+            val totalQuizzes = quizDao.getCountedHistoryCount(Scoring.MIN_COUNTED_ANSWERS)
+            val unlocks = buildList {
+                if (counts) add("first_quiz")
+                if (summary.isPerfect) add("first_perfect")
+                if (counts && streakNow >= 3) add("streak_3")
+                if (counts && streakNow >= 7) add("streak_7")
+                if (updatedStats.correctAnswersCount >= 100) add("questions_100")
+                if (prefs.categoryCorrect("Science & Nature") >= 50) add("science_master")
+                if (prefs.categoryCorrect("History") >= 50) add("history_master")
+                if (prefs.categoryCorrect("Sports & Recreation") >= 50) add("sports_master")
+                if (prefs.categoryCorrect("Technology & Computing") >= 50) add("tech_master")
+                if (prefs.categoryCorrect("Flags") >= 50) add("flag_master")
+                if (summary.bestSpeedStreak >= 10) add("speed_demon")
+                if (prefs.lifelinesUsedTotal >= 15) add("lifeline_lover")
+                if (counts && summary.selectedDifficulty.equals("hard", ignoreCase = true)) add("hard_conqueror")
+                if (summary.type == SessionType.ENDLESS && summary.correctCount >= 30) add("endless_survivor")
+                if (lifetimeXp >= 1000) add("rich_student")
+                if (counts && summary.isMixedTopics && summary.totalCount >= 30) add("mixed_master")
+                if (updatedStats.currentLevel >= 5) add("level_5s")
+                if (summary.type == SessionType.DAILY && summary.isPerfect) add("daily_champ")
+                if (totalQuizzes >= 50) add("half_hundred")
+                if (updatedStats.currentLevel >= 20) add("grand_master")
+            }
+            unlocks.forEach { unlockAchievement(it) }
         }
-        unlocks.forEach { unlockAchievement(it) }
         xpEarned
     }
 
@@ -458,8 +551,8 @@ class QuizRepository(
     // --- THEMES & QUICK PLAY ---
 
     suspend fun selectTheme(themeId: String) = withContext(Dispatchers.IO) {
-        val stats = quizDao.getUserStats() ?: return@withContext
-        quizDao.insertOrUpdateUserStats(stats.copy(activeThemeId = themeId))
+        quizDao.insertUserStatsIfMissing(UserStats())
+        quizDao.setActiveTheme(themeId)
     }
 
     fun lastPracticeSettings(): PracticeSettings = PracticeSettings.parse(prefs.lastPractice) ?: PracticeSettings()
@@ -470,22 +563,32 @@ class QuizRepository(
 
     // --- SETTINGS ---
 
-    suspend fun updateConfig(sound: Boolean, haptic: Boolean, textLarge: Boolean, displayName: String, avatar: String) = withContext(Dispatchers.IO) {
-        val stats = quizDao.getUserStats() ?: return@withContext
-        val updated = stats.copy(
-            isSoundEffectsEnabled = sound,
-            isHapticFeedbackEnabled = haptic,
-            fontSizePreference = if (textLarge) "large" else "normal",
-            displayName = displayName.trim().takeIf { it.isNotBlank() }?.take(MAX_NAME_LENGTH) ?: stats.displayName,
-            avatarId = avatar
-        )
-        quizDao.insertOrUpdateUserStats(updated)
+    /** Writes only the three toggles, leaving the profile and everything else untouched. */
+    suspend fun updateToggles(sound: Boolean, haptic: Boolean, textLarge: Boolean) = withContext(Dispatchers.IO) {
+        quizDao.insertUserStatsIfMissing(UserStats())
+        quizDao.setToggles(sound, haptic, if (textLarge) "large" else "normal")
+    }
+
+    /** Writes only the name and avatar; a blank name keeps the current one. */
+    suspend fun updateProfile(displayName: String, avatar: String) = withContext(Dispatchers.IO) {
+        quizDao.insertUserStatsIfMissing(UserStats())
+        val name = displayName.trim().takeIf { it.isNotBlank() }?.take(MAX_NAME_LENGTH)
+        if (name != null) quizDao.setProfile(name, avatar) else quizDao.setAvatar(avatar)
+    }
+
+    suspend fun updateConfig(sound: Boolean, haptic: Boolean, textLarge: Boolean, displayName: String, avatar: String) {
+        inTransaction {
+            updateToggles(sound, haptic, textLarge)
+            updateProfile(displayName, avatar)
+        }
     }
 
     suspend fun resetAllProgress() = withContext(Dispatchers.IO) {
-        quizDao.clearHistory()
-        quizDao.resetAchievements()
-        quizDao.insertOrUpdateUserStats(UserStats())
+        inTransaction {
+            quizDao.clearHistory()
+            quizDao.resetAchievements()
+            quizDao.insertOrUpdateUserStats(UserStats())
+        }
         prefs.resetProgress()
         synchronized(mistakesLock) { mistakeBook = MistakeBook() }
         _mistakeCount.value = 0
@@ -501,7 +604,7 @@ class QuizRepository(
         private const val TAG = "QuizRepository"
 
         /** Bump when assets/questions.json changes so existing installs pick up the new questions. */
-        const val BUNDLED_SEED_VERSION = 4
+        const val BUNDLED_SEED_VERSION = 5
 
         const val ENDLESS_COUNT = 999
         const val ENDLESS_BATCH_SIZE = 20
@@ -510,6 +613,7 @@ class QuizRepository(
         private const val FREEZE_EVERY_DAYS = 7
         private const val MAX_STREAK_FREEZES = 2
         private const val MAX_NAME_LENGTH = 24
+        private const val DELETE_CHUNK = 500 // Android SQLite: at most 999 bound variables per statement
         private const val SAMPLE_FACTOR = 40
         private const val MIN_SAMPLE = 800
         private val DIFFICULTIES = setOf("easy", "medium", "hard")

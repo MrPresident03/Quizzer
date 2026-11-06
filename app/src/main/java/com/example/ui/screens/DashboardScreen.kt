@@ -150,7 +150,7 @@ fun DashboardScreen(
                             .padding(horizontal = 12.dp, vertical = 6.dp)
                     ) {
                         Text(
-                            text = "🔥 ${userStats.currentStreak} Days",
+                            text = "🔥 ${com.example.data.repository.Scoring.effectiveStreak(userStats, java.time.LocalDate.now())} Days",
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFEA580C) // text-orange-600
@@ -508,7 +508,7 @@ fun DashboardScreen(
                             )
                             Column {
                                 Text(
-                                    text = "${userStats.currentStreak}-Day Active Blitz!",
+                                    text = "${com.example.data.repository.Scoring.effectiveStreak(userStats, java.time.LocalDate.now())}-Day Active Blitz!",
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )

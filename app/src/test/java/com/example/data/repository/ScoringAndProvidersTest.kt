@@ -29,9 +29,12 @@ class ScoringAndProvidersTest {
 
     @Test
     fun xpWeightsEachQuestionsDifficultyAndOnlyRewardsRealPerfects() {
-        val questions = listOf(q("easy"), q("medium"), q("hard"))
-        assertEquals(10 + 12 + 15 + Scoring.PERFECT_BONUS, Scoring.sessionXp(questions, listOf(true, true, true)))
-        assertEquals(12, Scoring.sessionXp(questions, listOf(false, true, false)))
+        val questions = listOf(q("easy"), q("medium"), q("hard"), q("easy"), q("easy"))
+        assertEquals(10 + 12 + 15 + 10 + 10 + Scoring.PERFECT_BONUS, Scoring.sessionXp(questions, List(5) { true }))
+        assertEquals(12, Scoring.sessionXp(questions.take(3), listOf(false, true, false)))
+        // Too short to be a perfect session, and Endless / Review never are.
+        assertEquals(10 + 12 + 15, Scoring.sessionXp(questions.take(3), listOf(true, true, true)))
+        assertEquals(57, Scoring.sessionXp(questions, List(5) { true }, SessionType.ENDLESS))
         assertEquals(0, Scoring.sessionXp(emptyList(), emptyList())) // no free "perfect" bonus for an empty quiz
     }
 

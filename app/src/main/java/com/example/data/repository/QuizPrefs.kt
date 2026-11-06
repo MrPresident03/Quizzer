@@ -31,6 +31,16 @@ class QuizPrefs(context: Context) {
         }
     }
 
+    /** Forgets questions that were removed from the bank, so the log doesn't fill with dead keys. */
+    fun removeSeen(keys: Collection<String>) {
+        if (keys.isEmpty()) return
+        synchronized(lock) {
+            val log = seen()
+            keys.forEach { log.remove(it) }
+            prefs.edit().putString(KEY_SEEN, log.serialize()).apply()
+        }
+    }
+
     fun clearSeen() = synchronized(lock) {
         seen().clear()
         prefs.edit().remove(KEY_SEEN).apply()
