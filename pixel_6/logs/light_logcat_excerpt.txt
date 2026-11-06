@@ -1,0 +1,56 @@
+1---------- beginning of main
+2:11-06 18:11:30.915  5988  5988 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+3:11-06 18:11:30.919  5988  5988 I AndroidRuntime: Using default boot image
+4:11-06 18:11:30.919  5988  5988 I AndroidRuntime: Leaving lock profiling enabled
+5-11-06 18:11:30.927  5988  5988 I app_process: Core platform API reporting enabled, enforcing=false
+6-11-06 18:11:30.927  5988  5988 I app_process: Using CollectorTypeCC GC.
+7-11-06 18:11:30.931  5145  5145 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.chimera.container.moduleinstall.ModuleInstallService.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.GmsApiService }
+8-11-06 18:11:30.933  5093  5093 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.gmscompliance.service.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentBoundBrokerService }
+9-11-06 18:11:30.933  5145  5145 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.ocr.service.internal.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.GmsInternalApiService }
+10-11-06 18:11:31.039   833   833 D StatusBarIconController: ignoring old pipeline callbacks, because the new mobile icons are enabled
+11-11-06 18:11:31.065  5988  5988 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+12-11-06 18:11:31.109  5988  5988 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+13-11-06 18:11:31.109  5988  5988 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+14-11-06 18:11:31.121  5988  5988 W app_process: Unexpected CPU variant for x86: x86_64.
+15-11-06 18:11:31.121  5988  5988 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+16-11-06 18:11:31.121  5093  5093 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.icing.LIGHTWEIGHT_INDEX_SERVICE dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentApiService }
+17-11-06 18:11:31.138  5988  5988 W main    : type=1400 audit(0.0:52): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+18-11-06 18:11:31.145  5988  5988 W libc    : Access denied finding property "ro.product.name_for_attestation"
+19-11-06 18:11:31.148  5988  5988 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+20-11-06 18:11:31.148  5988  5988 W libc    : Access denied finding property "ro.product.model_for_attestation"
+21:11-06 18:11:31.149  5988  5988 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+22-11-06 18:11:31.142  5988  5988 W main    : type=1400 audit(0.0:53): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+23-11-06 18:11:31.146  5988  5988 W main    : type=1400 audit(0.0:54): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+24-11-06 18:11:31.155  5988  5988 D UiAutomationConnection: Created on user UserHandle{0}
+25---------- beginning of system
+26-11-06 18:11:31.156   522  2406 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+27-11-06 18:11:31.157   522  2406 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+28-11-06 18:11:31.158   522   552 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+29-11-06 18:11:31.162   336   336 D Zygote  : Forked child process 6003
+30-11-06 18:11:31.162   522   552 I ActivityManager: Start proc 6003:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+31-11-06 18:11:31.163   522   603 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+32-11-06 18:11:31.180  6003  6003 I s.quizzer.debug: Late-enabling -Xcheck:jni
+33-11-06 18:11:31.190  6003  6003 I s.quizzer.debug: Using CollectorTypeCC GC.
+34-11-06 18:11:31.191  6003  6003 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+35-11-06 18:11:31.191  6003  6003 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+36-11-06 18:11:31.206   412   428 I adbd    : jdwp connection from 6003
+--
+9641-11-06 18:14:48.809   522  2360 I ActivityManager: Killing 6003:nz.durbs.quizzer.debug/u0a192 (adj 0): stop nz.durbs.quizzer.debug due to finished inst
+9642-11-06 18:14:48.815   522  2377 I ImeTracker: com.google.android.apps.nexuslauncher:1065a35c: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+9643-11-06 18:14:48.822  5988  5988 I app_process: System.exit called, status: 0
+9644:11-06 18:14:48.822  5988  5988 I AndroidRuntime: VM exiting with result code 0.
+9645-11-06 18:14:48.824   522  2377 I ImeTracker: com.google.android.apps.nexuslauncher:1065a35c: onCancelled at PHASE_SERVER_SHOULD_HIDE
+9646-11-06 18:14:48.850  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227 
+9647-11-06 18:14:48.857   833   867 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#18)android.os.BinderProxy@ace40bf@0
+9648-11-06 18:14:48.857   522   540 D DisplayManagerService: Drop pending events for gone uid 10192
+9649-11-06 18:14:48.872   522   539 V WindowManager: Finish Transition #18: created at 11-06 18:14:47.859 collect-started=0.027ms request-sent=0.068ms started=6.818ms ready=10.41ms sent=452.452ms finished=1012.023ms
+9650-11-06 18:14:48.872  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+9651-11-06 18:14:48.873  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.google.android.apps.nexuslauncher fieldId=0 fieldName=null extras=null}, false)
+9652-11-06 18:14:48.878   833   867 V WindowManagerShell: Track 0 became idle
+9653-11-06 18:14:48.878   833   867 V WindowManagerShell: All active transition animations finished
+9654-11-06 18:14:48.878  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+9655-11-06 18:14:48.887  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+9656-11-06 18:14:48.928   522   522 W Looper  : Slow dispatch took 173ms main h=com.android.providers.settings.SettingsProvider$SettingsRegistry$MyHandler c=null m=1
+9657-11-06 18:14:48.928   522   522 W Looper  : Slow delivery took 211ms main h=com.android.providers.settings.SettingsProvider$SettingsRegistry$MyHandler c=null m=2
+9658-11-06 18:14:48.940  6360  6360 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@dc6e793
+9659-11-06 18:14:48.972  1746  2286 I NgaEntryPointEventSendr: setupConnection

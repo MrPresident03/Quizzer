@@ -1,0 +1,5 @@
+profile=small_nexus4
+sdk_gphone64_x86_64
+34
+Physical size: 768x1280
+Physical density: 320

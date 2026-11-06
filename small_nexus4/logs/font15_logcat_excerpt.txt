@@ -1,0 +1,52 @@
+1---------- beginning of main
+2-11-06 18:16:45.931  4996  6432 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 431 [CONTEXT service_id=218 ]
+3-11-06 18:16:45.935  4996  6554 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 8 uptime_millis: 8 exec_start_elapsed_seconds: 431 [CONTEXT service_id=218 ]
+4:11-06 18:16:45.961  6762  6762 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+5:11-06 18:16:45.964  6762  6762 I AndroidRuntime: Using default boot image
+6:11-06 18:16:45.964  6762  6762 I AndroidRuntime: Leaving lock profiling enabled
+7-11-06 18:16:45.966  6762  6762 I app_process: Core platform API reporting enabled, enforcing=false
+8-11-06 18:16:45.966  6762  6762 I app_process: Using CollectorTypeCC GC.
+9-11-06 18:16:46.008  6762  6762 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-11-06 18:16:46.015  6762  6762 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-11-06 18:16:46.015  6762  6762 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+12-11-06 18:16:46.019  6762  6762 W app_process: Unexpected CPU variant for x86: x86_64.
+13-11-06 18:16:46.019  6762  6762 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+14-11-06 18:16:46.030  6762  6762 W libc    : Access denied finding property "ro.product.name_for_attestation"
+15-11-06 18:16:46.030  6762  6762 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+16-11-06 18:16:46.031  6762  6762 W libc    : Access denied finding property "ro.product.model_for_attestation"
+17:11-06 18:16:46.031  6762  6762 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+18-11-06 18:16:46.033  6762  6762 D UiAutomationConnection: Created on user UserHandle{0}
+19---------- beginning of system
+20-11-06 18:16:46.034   518   899 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+21-11-06 18:16:46.034   518   899 D OomAdjuster: Not killing cached processes
+22-11-06 18:16:46.036   518   899 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+23-11-06 18:16:46.027  6762  6762 W main    : type=1400 audit(0.0:62): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+24-11-06 18:16:46.036   518   550 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+25-11-06 18:16:46.039   518   603 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+26-11-06 18:16:46.027  6762  6762 W main    : type=1400 audit(0.0:63): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+27-11-06 18:16:46.041   336   336 D Zygote  : Forked child process 6778
+28-11-06 18:16:46.042   518   550 I ActivityManager: Start proc 6778:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+29-11-06 18:16:46.027  6762  6762 W main    : type=1400 audit(0.0:64): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+30-11-06 18:16:46.061  6778  6778 I s.quizzer.debug: Late-enabling -Xcheck:jni
+31-11-06 18:16:46.070  6778  6778 I s.quizzer.debug: Using CollectorTypeCC GC.
+32-11-06 18:16:46.070  6778  6778 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+--
+2403-11-06 18:19:23.018  1631  2399 I A       : #onActiveStateChangeEvent, newState: IDLE, previousState: IDLE.
+2404-11-06 18:19:23.021  1631  2399 I NgaEntryPointEventSendr: setupConnection
+2405-11-06 18:19:23.021  6762  6762 I app_process: System.exit called, status: 0
+2406:11-06 18:19:23.021  6762  6762 I AndroidRuntime: VM exiting with result code 0.
+2407-11-06 18:19:23.025  1631  2399 I NgaEntryPointEventSendr: State changed: Disconnected => Connecting
+2408-11-06 18:19:23.027  1631  2399 I A       : on opa visibility changed false
+2409-11-06 18:19:23.027  1631  2399 I A       : on opa visibility changed false
+2410-11-06 18:19:23.027  1631  2399 I A       : stopListening(NGA_PAUSED_UNKNOWN_REASON, NGA_CREATE), idleOverride=NOT_LISTENING
+2411-11-06 18:19:23.028  1631  2388 I A       : Initialize
+2412-11-06 18:19:23.032  1709  1709 I A       : Creating pss binder().
+2413-11-06 18:19:23.044  1631  2399 I NgaEntryPointEventSendr: onServiceConnected
+2414-11-06 18:19:23.044  1709  3486 I A       : Calling beginBinderSession().
+2415-11-06 18:19:23.048  1709  3486 I A       : beginBinderSession(): calling binder
+2416-11-06 18:19:23.048  1631  2399 I NgaEntryPointEventSendr: State changed: Connecting => Ready
+2417-11-06 18:19:23.049  1631  2388 I A       : Successfully initialized all components
+2418-11-06 18:19:23.051  1709  3003 I PBSessionCacheImpl: Deleted sessionId[7518055476084761] from persistence.
+2419-11-06 18:19:23.059  1709  2738 I A       : Using proto config with mendel
+2420-11-06 18:19:23.064  1709  2738 I A       : Using proto config with mendel
+2421-11-06 18:19:23.269     0     0 I binder  : undelivered TRANSACTION_COMPLETE

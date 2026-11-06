@@ -1,0 +1,104 @@
+432655 START prefix='font15_' out=/storage/emulated/0/Android/media/nz.durbs.quizzer.debug
+434924 shot font15_00_splash.png
+434925 activity launched 2265ms
+434928 STEP 01_onboarding begin
+435743 shot font15_01_onboarding_1.png
+437678 shot font15_02_onboarding_2.png
+439434 shot font15_03_onboarding_3.png
+440402 STEP 01_onboarding ok
+440403 STEP 04_dashboard begin
+442769 shot font15_04_dashboard.png
+443901 shot font15_04_dashboard_s1.png
+444977 STEP 04_dashboard ok
+444978 STEP 05_daily_lobby begin
+448007 shot font15_05_daily_lobby.png
+449070 shot font15_05_daily_lobby_s1.png
+450994 STEP 05_daily_lobby ok
+450995 STEP 06_stats_empty begin
+453029 shot font15_06_stats_empty.png
+454141 shot font15_06_stats_empty_s1.png
+457211 shot font15_07_achievements_empty.png
+458076 shot font15_07_achievements_empty_s1.png
+458912 shot font15_07_achievements_empty_s2.png
+459714 shot font15_07_achievements_empty_s3.png
+460799 shot font15_07_achievements_empty_s4.png
+461797 STEP 06_stats_empty ok
+461798 STEP 08_practice begin
+463848 shot font15_08_practice_top.png
+464785 shot font15_09_practice_flags_selected.png
+465649 shot font15_10_practice_flags_options_and_start.png
+470005 shot font15_11_practice_options_and_start.png
+470888 shot font15_12_practice_topics_selected.png
+473308 STEP 08_practice ok
+473309 STEP 20_mc_quiz begin
+475912 shot font15_19_quiz_loading.png
+475912 saw loading spinner at 301ms
+476237 quiz ready after 626ms
+477161 shot font15_20_quiz_mc_question.png
+478517 shot font15_21_quiz_mc_5050.png
+480137 shot font15_22_quiz_mc_audience.png
+482377 shot font15_23_quiz_mc_lifelines_used.png
+483721 shot font15_25_quiz_mc_wrong.png
+493400 shot font15_24_quiz_mc_correct.png
+501573 shot font15_26_results.png
+502325 shot font15_26_results_s1.png
+503089 shot font15_26_results_s2.png
+505678 shot font15_27_review.png
+506423 shot font15_27_review_s1.png
+507179 shot font15_27_review_s2.png
+507999 shot font15_27_review_s3.png
+508767 shot font15_27_review_s4.png
+509534 shot font15_27_review_s5.png
+510290 shot font15_27_review_s6.png
+512022 STEP 20_mc_quiz ok
+512023 STEP 30_tf_quiz begin
+514308 quiz ready after 59ms
+515235 shot font15_30_quiz_tf_question.png
+516533 shot font15_31_quiz_tf_correct.png
+518650 shot font15_32_quiz_tf_wrong.png
+520700 STEP 30_tf_quiz ok
+520701 STEP 40_capitals_quiz begin
+523581 shot font15_39_practice_capitals_only.png
+524177 quiz ready after 2ms
+525107 shot font15_40_quiz_capitals_question.png
+526400 shot font15_42_quiz_capitals_wrong.png
+532034 shot font15_41_quiz_capitals_correct.png
+533949 STEP 40_capitals_quiz ok
+533950 STEP 50_flag_to_country begin
+537155 shot font15_49_practice_flags_flag_to_country_selected.png
+537727 quiz ready after 65ms
+538865 shot font15_50_quiz_flag_to_country_question.png
+540157 shot font15_52_quiz_flag_to_country_wrong.png
+547924 shot font15_51_quiz_flag_to_country_correct.png
+549932 STEP 50_flag_to_country ok
+549933 STEP 60_country_to_flag begin
+553590 quiz ready after 61ms
+554727 shot font15_60_quiz_country_to_flag_question.png
+556094 shot font15_61_quiz_country_to_flag_5050.png
+557644 shot font15_62_quiz_country_to_flag_correct.png
+559845 shot font15_63_quiz_country_to_flag_wrong.png
+561849 STEP 60_country_to_flag ok
+561849 STEP 70_stats begin
+564009 shot font15_70_stats.png
+566518 shot font15_71_achievements.png
+567504 STEP 70_stats ok
+567505 STEP 72_dashboard_after_play begin
+569498 shot font15_72_dashboard_after_play.png
+570535 shot font15_72_dashboard_after_play_s1.png
+571550 STEP 72_dashboard_after_play ok
+571551 STEP 80_settings begin
+573447 shot font15_80_settings.png
+574185 shot font15_80_settings_s1.png
+574903 shot font15_80_settings_s2.png
+575904 shot font15_80_settings_s3.png
+576911 STEP 80_settings ok
+576912 STEP 90_daily_quiz begin
+582274 quiz ready after 1560ms
+583181 shot font15_90_daily_quiz_question.png
+585122 STEP 90_daily_quiz ok
+585124 STEP 95_relaunch_skips_onboarding begin
+587966 shot font15_95_relaunch_dashboard.png
+587967 STEP 95_relaunch_skips_onboarding ok
+587967 STEP 96_back_from_home_leaves_app begin
+588018 STEP 96_back_from_home_leaves_app ok
+588020 DONE failures=0

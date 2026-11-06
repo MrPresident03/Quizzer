@@ -1,0 +1,61 @@
+7-11-06 18:14:54.203   335  6517 I resolv  : res_nmkquery: (QUERY, IN, A)
+8-11-06 18:14:54.203   335  6517 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x766d68a35030
+9-11-06 18:14:54.203   335  6517 I resolv  : doQuery: rcode=0, ancount=8, return value=173
+10:11-06 18:14:54.246  6509  6509 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11:11-06 18:14:54.250  6509  6509 I AndroidRuntime: Using default boot image
+12:11-06 18:14:54.250  6509  6509 I AndroidRuntime: Leaving lock profiling enabled
+13-11-06 18:14:54.252  6509  6509 I app_process: Core platform API reporting enabled, enforcing=false
+14-11-06 18:14:54.252  6509  6509 I app_process: Using CollectorTypeCC GC.
+15-11-06 18:14:54.263  5093  6292 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 332 [CONTEXT service_id=218 ]
+16-11-06 18:14:54.268  5093  6319 V NFC     : this device does not have NFC support
+17-11-06 18:14:54.269  5093  6319 W TapAndPay: NfcAdapter is null while obtaining CardEmulation instance. [CONTEXT service_id=79 ]
+18-11-06 18:14:54.269  5093  6319 W TapAndPay: java.lang.NullPointerException: NfcAdapter is null
+19-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at android.nfc.cardemulation.CardEmulation.getInstance(CardEmulation.java:152)
+20-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at cdoy.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+21-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at com.google.android.gms.tapandpay.hce.task.TapAndPayAidRegistrationTaskOperation.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):5)
+22-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at com.google.android.gms.tapandpay.gcmtask.TapAndPayGcmTaskChimeraService.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+23-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at avzs.call(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+24-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+25-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+26-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+27-11-06 18:14:54.269  5093  6319 W TapAndPay: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+--
+39-11-06 18:14:54.339  6509  6509 W libc    : Access denied finding property "ro.product.name_for_attestation"
+40-11-06 18:14:54.340  6509  6509 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+41-11-06 18:14:54.340  6509  6509 W libc    : Access denied finding property "ro.product.model_for_attestation"
+42:11-06 18:14:54.340  6509  6509 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+43-11-06 18:14:54.338  6509  6509 W main    : type=1400 audit(0.0:65): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+44-11-06 18:14:54.338  6509  6509 W main    : type=1400 audit(0.0:66): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+45-11-06 18:14:54.348  6509  6509 D UiAutomationConnection: Created on user UserHandle{0}
+46---------- beginning of system
+47-11-06 18:14:54.350   522  2411 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+48-11-06 18:14:54.338  6509  6509 W main    : type=1400 audit(0.0:67): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+49-11-06 18:14:54.353   522  2411 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+50-11-06 18:14:54.354   522   552 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+51-11-06 18:14:54.355   522   603 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+52-11-06 18:14:54.358   336   336 D Zygote  : Forked child process 6529
+53-11-06 18:14:54.358   522   552 I ActivityManager: Start proc 6529:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+54-11-06 18:14:54.380  6529  6529 I s.quizzer.debug: Late-enabling -Xcheck:jni
+55-11-06 18:14:54.389  6529  6529 I s.quizzer.debug: Using CollectorTypeCC GC.
+56-11-06 18:14:54.390  6529  6529 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+57-11-06 18:14:54.390  6529  6529 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+--
+3837-11-06 18:18:10.294   522   540 D DisplayManagerService: Drop pending events for gone uid 10192
+3838-11-06 18:18:10.306  1836  2385 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+3839-11-06 18:18:10.310  6509  6509 I app_process: System.exit called, status: 0
+3840:11-06 18:18:10.310  6509  6509 I AndroidRuntime: VM exiting with result code 0.
+3841-11-06 18:18:10.611     0     0 I binder  : undelivered transaction 805400, process died.
+3842-11-06 18:18:10.420  1746  1794 I A       : Initializing all components
+3843-11-06 18:18:10.420  1746  1794 I A       : APA or Classic session decision: SessionDecision(sessionVariance=CLASSIC, platformVariance=CLASSIC, justification=CURRENT_PLATFORM_VARIANCE).
+3844-11-06 18:18:10.465  1746  1794 I A       : [Memory] eligibility: StashEligibility{6}
+3845-11-06 18:18:10.478  1746  2286 I A       : onIsEnabledChanged, isEnabled: false
+3846-11-06 18:18:10.479  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3847-11-06 18:18:10.479  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3848-11-06 18:18:10.480  1746  2269 I A       : State changed: IDLE => IDLE by NGA_STATE_CHANGED and N/A with Optional.empty
+3849-11-06 18:18:10.480  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3850-11-06 18:18:10.480  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3851-11-06 18:18:10.480  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3852-11-06 18:18:10.480  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3853-11-06 18:18:10.480  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?
+3854-11-06 18:18:10.480  1746  2269 I A       : Recognizer choice: (recognizer_type: 1, recognizer_mode: 1, choice_reason: 4)
+3855-11-06 18:18:10.480  1746  2286 W A       : Disposing empty manager. Did you forgot to subscribe observables?

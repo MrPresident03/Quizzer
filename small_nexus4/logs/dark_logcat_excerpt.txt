@@ -1,0 +1,53 @@
+4-11-06 18:14:08.890   518  2390 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10084. pid: 6263
+5-11-06 18:14:08.940  4996  6139 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 274 [CONTEXT service_id=218 ]
+6-11-06 18:14:08.943  4996  5926 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 8 uptime_millis: 8 exec_start_elapsed_seconds: 274 [CONTEXT service_id=218 ]
+7:11-06 18:14:08.978  6299  6299 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+8:11-06 18:14:08.981  6299  6299 I AndroidRuntime: Using default boot image
+9:11-06 18:14:08.981  6299  6299 I AndroidRuntime: Leaving lock profiling enabled
+10-11-06 18:14:08.982  6299  6299 I app_process: Core platform API reporting enabled, enforcing=false
+11-11-06 18:14:08.983  6299  6299 I app_process: Using CollectorTypeCC GC.
+12-11-06 18:14:09.023  6299  6299 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+13-11-06 18:14:09.030  6299  6299 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+14-11-06 18:14:09.030  6299  6299 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+15-11-06 18:14:09.034  6299  6299 W app_process: Unexpected CPU variant for x86: x86_64.
+16-11-06 18:14:09.034  6299  6299 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+17-11-06 18:14:09.043  6299  6299 W libc    : Access denied finding property "ro.product.name_for_attestation"
+18-11-06 18:14:09.043  6299  6299 W main    : type=1400 audit(0.0:57): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+19-11-06 18:14:09.047  6299  6299 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+20-11-06 18:14:09.047  6299  6299 W libc    : Access denied finding property "ro.product.model_for_attestation"
+21:11-06 18:14:09.048  6299  6299 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+22-11-06 18:14:09.049  6299  6299 D UiAutomationConnection: Created on user UserHandle{0}
+23-11-06 18:14:09.050   518  2573 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+24-11-06 18:14:09.047  6299  6299 W main    : type=1400 audit(0.0:58): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+25-11-06 18:14:09.053   518  2573 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+26-11-06 18:14:09.053   518   550 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+27-11-06 18:14:09.054   518   603 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+28-11-06 18:14:09.047  6299  6299 W main    : type=1400 audit(0.0:59): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+29-11-06 18:14:09.059   336   336 D Zygote  : Forked child process 6315
+30-11-06 18:14:09.059   518   550 I ActivityManager: Start proc 6315:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+31-11-06 18:14:09.072  6315  6315 I s.quizzer.debug: Late-enabling -Xcheck:jni
+32-11-06 18:14:09.082  6315  6315 I s.quizzer.debug: Using CollectorTypeCC GC.
+33-11-06 18:14:09.082  6315  6315 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+34-11-06 18:14:09.082  6315  6315 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+35-11-06 18:14:09.103   409   427 I adbd    : jdwp connection from 6315
+36-11-06 18:14:09.109  6315  6315 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10192; state: ENABLED
+--
+5580-11-06 18:16:41.993  1631  2399 I NgaEntryPointEventSendr: onServiceConnected
+5581-11-06 18:16:41.993  1709  2445 I A       : Calling beginBinderSession().
+5582-11-06 18:16:41.998  6299  6299 I app_process: System.exit called, status: 0
+5583:11-06 18:16:41.998  6299  6299 I AndroidRuntime: VM exiting with result code 0.
+5584-11-06 18:16:42.009  1631  2388 I A       : Successfully initialized all components
+5585-11-06 18:16:42.021  1709  2445 I A       : beginBinderSession(): calling binder
+5586-11-06 18:16:42.021  1631  2399 I NgaEntryPointEventSendr: State changed: Connecting => Ready
+5587-11-06 18:16:42.031  1709  2782 I PBSessionCacheImpl: Deleted sessionId[7518055476084742] from persistence.
+5588-11-06 18:16:42.065  1709  2738 I A       : Using proto config with mendel
+5589-11-06 18:16:42.080  1709  2738 I A       : Using proto config with mendel
+5590-11-06 18:16:42.084   518   593 I ActivityManager: Force stopping nz.durbs.quizzer.debug.test appid=10193 user=0: from pid 6646
+5591-11-06 18:16:42.270     0     0 I binder  : undelivered TRANSACTION_COMPLETE
+5592-11-06 18:16:42.274     0     0 I binder  : undelivered transaction 837043, process died.
+5593-11-06 18:16:42.087   396  1815 D audioserver: FGS Logger Transaction failed
+5594-11-06 18:16:42.087   396  1815 D audioserver: -129
+5595-11-06 18:16:42.089   518   538 D DisplayManagerService: Drop pending events for gone uid 10193
+5596-11-06 18:16:42.090   518   593 I ActivityManager: Killing 6599:nz.durbs.quizzer.debug.test/u0a193 (adj 900): stop nz.durbs.quizzer.debug.test due to from pid 6646
+5597-11-06 18:16:42.103   336   336 I Zygote  : Process 6315 exited due to signal 9 (Killed)
+5598-11-06 18:16:42.110   518   896 V ActivityManager: Got obituary of 6315:nz.durbs.quizzer.debug

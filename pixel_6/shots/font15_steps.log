@@ -1,0 +1,95 @@
+534713 START prefix='font15_' out=/storage/emulated/0/Android/media/nz.durbs.quizzer.debug
+538585 shot font15_00_splash.png
+538586 activity launched 3869ms
+538587 STEP 01_onboarding begin
+539517 shot font15_01_onboarding_1.png
+541675 shot font15_02_onboarding_2.png
+544457 shot font15_03_onboarding_3.png
+547136 STEP 01_onboarding ok
+547137 STEP 04_dashboard begin
+549665 shot font15_04_dashboard.png
+550401 STEP 04_dashboard ok
+550402 STEP 05_daily_lobby begin
+552755 shot font15_05_daily_lobby.png
+554100 shot font15_05_daily_lobby_s1.png
+556610 STEP 05_daily_lobby ok
+556611 STEP 06_stats_empty begin
+560034 shot font15_06_stats_empty.png
+563819 shot font15_07_achievements_empty.png
+564886 shot font15_07_achievements_empty_s1.png
+566279 shot font15_07_achievements_empty_s2.png
+567455 STEP 06_stats_empty ok
+567456 STEP 08_practice begin
+570381 shot font15_08_practice_top.png
+571534 shot font15_09_practice_flags_selected.png
+572502 shot font15_10_practice_flags_options_and_start.png
+578773 shot font15_11_practice_options_and_start.png
+579740 shot font15_12_practice_topics_selected.png
+584194 STEP 08_practice ok
+584195 STEP 20_mc_quiz begin
+587899 shot font15_19_quiz_loading.png
+587900 saw loading spinner at 411ms
+588251 quiz ready after 762ms
+589247 shot font15_20_quiz_mc_question.png
+590904 shot font15_21_quiz_mc_5050.png
+592756 shot font15_22_quiz_mc_audience.png
+595884 shot font15_23_quiz_mc_lifelines_used.png
+597634 shot font15_24_quiz_mc_correct.png
+605357 shot font15_25_quiz_mc_wrong.png
+621142 shot font15_26_results.png
+624630 shot font15_27_review.png
+625602 shot font15_27_review_s1.png
+626534 shot font15_27_review_s2.png
+627457 shot font15_27_review_s3.png
+628378 shot font15_27_review_s4.png
+629727 shot font15_27_review_s5.png
+633404 STEP 20_mc_quiz ok
+633405 STEP 30_tf_quiz begin
+636698 quiz ready after 3ms
+637834 shot font15_30_quiz_tf_question.png
+639389 shot font15_31_quiz_tf_correct.png
+642060 shot font15_32_quiz_tf_wrong.png
+644852 STEP 30_tf_quiz ok
+644854 STEP 40_capitals_quiz begin
+649287 shot font15_39_practice_capitals_only.png
+650333 quiz ready after 92ms
+651328 shot font15_40_quiz_capitals_question.png
+652925 shot font15_42_quiz_capitals_wrong.png
+657767 shot font15_41_quiz_capitals_correct.png
+660459 STEP 40_capitals_quiz ok
+660460 STEP 50_flag_to_country begin
+665443 shot font15_49_practice_flags_flag_to_country_selected.png
+666177 quiz ready after 72ms
+667411 shot font15_50_quiz_flag_to_country_question.png
+669076 shot font15_52_quiz_flag_to_country_wrong.png
+678218 shot font15_51_quiz_flag_to_country_correct.png
+681392 STEP 50_flag_to_country ok
+681393 STEP 60_country_to_flag begin
+686267 quiz ready after 73ms
+687514 shot font15_60_quiz_country_to_flag_question.png
+689187 shot font15_61_quiz_country_to_flag_5050.png
+690869 shot font15_63_quiz_country_to_flag_wrong.png
+696303 shot font15_62_quiz_country_to_flag_correct.png
+699693 STEP 60_country_to_flag ok
+699695 STEP 70_stats begin
+702502 shot font15_70_stats.png
+705341 shot font15_71_achievements.png
+706520 STEP 70_stats ok
+706522 STEP 72_dashboard_after_play begin
+708936 shot font15_72_dashboard_after_play.png
+709628 STEP 72_dashboard_after_play ok
+709629 STEP 80_settings begin
+712025 shot font15_80_settings.png
+712888 shot font15_80_settings_s1.png
+714198 shot font15_80_settings_s2.png
+715431 STEP 80_settings ok
+715432 STEP 90_daily_quiz begin
+721219 quiz ready after 2602ms
+722222 shot font15_90_daily_quiz_question.png
+724715 STEP 90_daily_quiz ok
+724716 STEP 95_relaunch_skips_onboarding begin
+729707 shot font15_95_relaunch_dashboard.png
+729712 STEP 95_relaunch_skips_onboarding ok
+729713 STEP 96_back_from_home_leaves_app begin
+729807 STEP 96_back_from_home_leaves_app ok
+729813 DONE failures=0

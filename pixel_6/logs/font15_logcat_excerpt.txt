@@ -1,0 +1,52 @@
+1---------- beginning of main
+2-11-06 18:18:15.477  5093  6745 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 533 [CONTEXT service_id=218 ]
+3-11-06 18:18:15.488  5093  6745 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 10 uptime_millis: 10 exec_start_elapsed_seconds: 533 [CONTEXT service_id=218 ]
+4:11-06 18:18:15.533  6936  6936 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+5:11-06 18:18:15.536  6936  6936 I AndroidRuntime: Using default boot image
+6:11-06 18:18:15.536  6936  6936 I AndroidRuntime: Leaving lock profiling enabled
+7-11-06 18:18:15.538  6936  6936 I app_process: Core platform API reporting enabled, enforcing=false
+8-11-06 18:18:15.539  6936  6936 I app_process: Using CollectorTypeCC GC.
+9-11-06 18:18:15.587  6936  6936 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-11-06 18:18:15.595  6936  6936 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-11-06 18:18:15.595  6936  6936 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+12-11-06 18:18:15.599  6936  6936 W app_process: Unexpected CPU variant for x86: x86_64.
+13-11-06 18:18:15.599  6936  6936 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+14-11-06 18:18:15.611  6936  6936 W libc    : Access denied finding property "ro.product.name_for_attestation"
+15-11-06 18:18:15.612  6936  6936 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+16-11-06 18:18:15.612  6936  6936 W libc    : Access denied finding property "ro.product.model_for_attestation"
+17:11-06 18:18:15.613  6936  6936 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+18-11-06 18:18:15.610  6936  6936 W main    : type=1400 audit(0.0:68): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+19-11-06 18:18:15.619  6936  6936 D UiAutomationConnection: Created on user UserHandle{0}
+20---------- beginning of system
+21-11-06 18:18:15.620   522  2058 I ActivityManager: Force stopping nz.durbs.quizzer.debug appid=10192 user=0: start instr
+22-11-06 18:18:15.610  6936  6936 W main    : type=1400 audit(0.0:69): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+23-11-06 18:18:15.623   522  2058 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+24-11-06 18:18:15.623   522   552 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+25-11-06 18:18:15.629   522   603 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+26-11-06 18:18:15.610  6936  6936 W main    : type=1400 audit(0.0:70): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+27-11-06 18:18:15.630   336   336 D Zygote  : Forked child process 6951
+28-11-06 18:18:15.631   522   552 I ActivityManager: Start proc 6951:nz.durbs.quizzer.debug/u0a192 for added application nz.durbs.quizzer.debug
+29-11-06 18:18:15.652  6951  6951 I s.quizzer.debug: Late-enabling -Xcheck:jni
+30-11-06 18:18:15.661  6951  6951 I s.quizzer.debug: Using CollectorTypeCC GC.
+31-11-06 18:18:15.662  6951  6951 W s.quizzer.debug: Unexpected CPU variant for x86: x86_64.
+32-11-06 18:18:15.662  6951  6951 W s.quizzer.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+--
+2621-11-06 18:21:33.033   522  1094 I ActivityManager: Killing 6951:nz.durbs.quizzer.debug/u0a192 (adj 0): stop nz.durbs.quizzer.debug due to finished inst
+2622-11-06 18:21:33.034   522   540 D DisplayManagerService: Drop pending events for gone uid 10192
+2623-11-06 18:21:33.046  6936  6936 I app_process: System.exit called, status: 0
+2624:11-06 18:21:33.046  6936  6936 I AndroidRuntime: VM exiting with result code 0.
+2625-11-06 18:21:33.054  1836  2386 I A       : Nga state changed to NgaStateDetails{state=ENABLED, isSpecialExperience=false}
+2626-11-06 18:21:33.071   522  2356 I ImeTracker: com.google.android.apps.nexuslauncher:97f6faaf: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+2627-11-06 18:21:33.107   522  2356 I ImeTracker: com.google.android.apps.nexuslauncher:97f6faaf: onCancelled at PHASE_SERVER_SHOULD_HIDE
+2628-11-06 18:21:33.115  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227 
+2629-11-06 18:21:33.122   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+2630-11-06 18:21:33.143  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+2631-11-06 18:21:33.143  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.google.android.apps.nexuslauncher fieldId=0 fieldName=null extras=null}, false)
+2632-11-06 18:21:33.144  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+2633-11-06 18:21:33.384     0     0 W binder_debug: 137 callbacks suppressed
+2634-11-06 18:21:33.384     0     0 I binder  : undelivered TRANSACTION_COMPLETE
+2635-11-06 18:21:33.390     0     0 I binder  : undelivered transaction 875976, process died.
+2636-11-06 18:21:33.391     0     0 I binder  : undelivered transaction 876009, process died.
+2637-11-06 18:21:33.395     0     0 I binder  : undelivered transaction 876008, process died.
+2638-11-06 18:21:33.197   522  1861 V ActivityManager: Got obituary of 6951:nz.durbs.quizzer.debug
+2639-11-06 18:21:33.206   336   336 I Zygote  : Process 6951 exited due to signal 9 (Killed)

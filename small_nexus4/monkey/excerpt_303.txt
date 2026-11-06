@@ -1,0 +1,261 @@
+108-11-06 18:21:55.188  5056  5133 I Icing   : Usage reports ok 1, Failed Usage reports 0, indexed 0, rejected 0
+109-11-06 18:21:55.197  5056  5133 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+110-11-06 18:21:55.252   829   895 D EGL_emulation: app_time_stats: avg=149.21ms min=9.46ms max=2242.92ms count=19
+111:11-06 18:21:55.253  7464  7464 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+112:11-06 18:21:55.257  7464  7464 I AndroidRuntime: Using default boot image
+113:11-06 18:21:55.258  7464  7464 I AndroidRuntime: Leaving lock profiling enabled
+114-11-06 18:21:55.260  7464  7464 I app_process: Core platform API reporting enabled, enforcing=false
+115-11-06 18:21:55.263  7464  7464 I app_process: Using CollectorTypeCC GC.
+116-11-06 18:21:55.277   341  1661 D android.hardware.audio@7.1-impl.ranchu: threadLoop: entering standby, frames: 13685952
+117-11-06 18:21:55.375  7464  7464 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+118-11-06 18:21:55.392  7464  7464 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+119-11-06 18:21:55.393  7464  7464 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+120-11-06 18:21:55.394   829   861 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#91)android.os.BinderProxy@46075a3@0
+121-11-06 18:21:55.395   518  2349 W WindowManager: Exception thrown during dispatchAppVisibility Window{919c51a u0 nz.durbs.quizzer.debug/com.example.MainActivity EXITING}
+122-11-06 18:21:55.395   518  2349 W WindowManager: android.os.DeadObjectException
+123-11-06 18:21:55.395   518  2349 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+124-11-06 18:21:55.395   518  2349 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+125-11-06 18:21:55.395   518  2349 W WindowManager: 	at android.view.IWindow$Stub$Proxy.dispatchAppVisibility(IWindow.java:546)
+126-11-06 18:21:55.395   518  2349 W WindowManager: 	at com.android.server.wm.WindowState.sendAppVisibilityToClients(WindowState.java:3271)
+127-11-06 18:21:55.395   518  2349 W WindowManager: 	at com.android.server.wm.WindowContainer.sendAppVisibilityToClients(WindowContainer.java:1221)
+128-11-06 18:21:55.395   518  2349 W WindowManager: 	at com.android.server.wm.WindowToken.setClientVisible(WindowToken.java:409)
+--
+151-11-06 18:21:55.447  7464  7464 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+152-11-06 18:21:55.447  7464  7464 W libc    : Access denied finding property "ro.product.model_for_attestation"
+153-11-06 18:21:55.447  7464  7464 W main    : type=1400 audit(0.0:95): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+154:11-06 18:21:55.456  7464  7464 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+155-11-06 18:21:55.456  7464  7464 W Monkey  : args: [-p, nz.durbs.quizzer.debug, --pct-syskeys, 0, --throttle, 40, -s, 303, -v, 4000]
+156-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "-p"
+157-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "nz.durbs.quizzer.debug"
+158-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "--pct-syskeys"
+159-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "0"
+160-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "--throttle"
+161-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "40"
+162-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "-s"
+163-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "303"
+164-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "-v"
+165-11-06 18:21:55.457  7464  7464 W Monkey  :  arg: "4000"
+166-11-06 18:21:55.457  7464  7464 W Monkey  : data="nz.durbs.quizzer.debug"
+167-11-06 18:21:55.457  7464  7464 W Monkey  : arg="--pct-syskeys" mCurArgData="null" mNextArg=3 argwas="--pct-syskeys" nextarg="0"
+168-11-06 18:21:55.457  7464  7464 W Monkey  : data="0"
+169-11-06 18:21:55.457  7464  7464 W Monkey  : arg="--throttle" mCurArgData="null" mNextArg=5 argwas="--throttle" nextarg="40"
+--
+995-11-06 18:22:13.420  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=261.99023, y[0]=894.2324, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=759256, downTime=759253, deviceId=-1, source=0x1002, displayId=0, eventId=-525337285 }
+996-11-06 18:22:13.461  7464  7464 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(3.0,-2.0)
+997-11-06 18:22:13.467  7477  7499 D EGL_emulation: app_time_stats: avg=21.90ms min=7.62ms max=38.78ms count=41
+998:11-06 18:22:13.613  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+999-11-06 18:22:13.757   396   412 D audioserver: FGS Logger Transaction failed
+1000-11-06 18:22:13.757   396   412 D audioserver: -129
+1001-11-06 18:22:13.764  7464  7464 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-4.0,-2.0)
+1002-11-06 18:22:13.885  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(701.0,1220.0)
+1003-11-06 18:22:13.886  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(703.1299,1220.0088)
+1004-11-06 18:22:13.892  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=701.0, y[0]=1220.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=759721, downTime=759721, deviceId=-1, source=0x1002, displayId=0, eventId=-1056826811 }
+1005-11-06 18:22:13.899  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=703.1299, y[0]=1220.0088, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=759722, downTime=759721, deviceId=-1, source=0x1002, displayId=0, eventId=-422841077 }
+1006-11-06 18:22:13.899   829   861 V ShellRecents: RecentsTransitionHandler.startRecentsTransition
+1007-11-06 18:22:13.900   829   861 V WindowManagerShell: Directly starting a new transition type=3 wct=WindowContainerTransaction { changes = {} hops = [{PendingIntent: options=Bundle[mParcelledData.dataSize=332]}] errorCallbackToken=null taskFragmentOrganizer=null } handler=com.android.wm.shell.recents.RecentsTransitionHandler@d023b97
+1008-11-06 18:22:13.902   829   861 V ShellRecents: [149780148] RecentsController.setTransition: id=android.os.BinderProxy@a7e92dd
+1009-11-06 18:22:13.916   399   399 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+1010-11-06 18:22:13.920  1014  1276 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+1011-11-06 18:22:13.920  1014  1276 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+1012-11-06 18:22:13.920  1619  1884 I AiAiEcho: Predicting[0]: 
+1013-11-06 18:22:13.921  1619  1884 I AiAiEcho: EchoTargets: 
+--
+1425-11-06 18:22:25.237  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=568.0, y[0]=529.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771072, downTime=771072, deviceId=-1, source=0x1002, displayId=0, eventId=-883405891 }
+1426-11-06 18:22:25.237  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(566.3135,528.48047)
+1427-11-06 18:22:25.238  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=566.3135, y[0]=528.48047, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771073, downTime=771072, deviceId=-1, source=0x1002, displayId=0, eventId=-405473649 }
+1428:11-06 18:22:25.530  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+1429-11-06 18:22:25.531   396   412 D audioserver: FGS Logger Transaction failed
+1430-11-06 18:22:25.531   396   412 D audioserver: -129
+1431-11-06 18:22:25.596  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(70.0,577.0)
+1432-11-06 18:22:25.597  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=70.0, y[0]=577.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771432, downTime=771432, deviceId=-1, source=0x1002, displayId=0, eventId=-746509216 }
+1433-11-06 18:22:25.598  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(70.3418,590.2373)
+1434-11-06 18:22:25.599  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=70.3418, y[0]=590.2373, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771434, downTime=771432, deviceId=-1, source=0x1002, displayId=0, eventId=-808954414 }
+1435-11-06 18:22:25.640  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(110.0,708.0)
+1436-11-06 18:22:25.640  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=110.0, y[0]=708.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771476, downTime=771476, deviceId=-1, source=0x1002, displayId=0, eventId=-338721241 }
+1437-11-06 18:22:25.642  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(165.62012,728.3369)
+1438-11-06 18:22:25.642  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=165.62012, y[0]=728.3369, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771478, downTime=771476, deviceId=-1, source=0x1002, displayId=0, eventId=-679350976 }
+1439-11-06 18:22:25.674  7477  7499 D EGL_emulation: app_time_stats: avg=19.12ms min=5.42ms max=41.95ms count=45
+1440-11-06 18:22:25.683  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(702.0,1044.0)
+1441-11-06 18:22:25.683  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=702.0, y[0]=1044.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771519, downTime=771519, deviceId=-1, source=0x1002, displayId=0, eventId=-141622508 }
+1442-11-06 18:22:25.684  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(710.8008,1046.8467)
+1443-11-06 18:22:25.685  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=710.8008, y[0]=1046.8467, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=771520, downTime=771519, deviceId=-1, source=0x1002, displayId=0, eventId=-1022874355 }
+--
+1498-11-06 18:22:27.098  7464  7464 I Monkey  :     // Sending event #1600
+1499-11-06 18:22:27.275   396  3763 D audioserver: FGS Logger Transaction failed
+1500-11-06 18:22:27.276   396  3763 D audioserver: -129
+1501:11-06 18:22:27.282  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+1502-11-06 18:22:27.290  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 335716, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+1503-11-06 18:22:27.303  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(538.0,1064.0)
+1504-11-06 18:22:27.305  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=538.0, y[0]=1064.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=773139, downTime=773139, deviceId=-1, source=0x1002, displayId=0, eventId=-451331437 }
+1505-11-06 18:22:27.305  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(550.96387,1064.0498)
+1506-11-06 18:22:27.306  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=550.96387, y[0]=1064.0498, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=773141, downTime=773139, deviceId=-1, source=0x1002, displayId=0, eventId=-376818503 }
+1507-11-06 18:22:27.397  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(356.0,72.0)
+1508-11-06 18:22:27.419  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=356.0, y[0]=72.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=773233, downTime=773233, deviceId=-1, source=0x1002, displayId=0, eventId=-461898687 }
+1509-11-06 18:22:27.424  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(356.4629,67.853516)
+1510-11-06 18:22:27.426  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=356.4629, y[0]=67.853516, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=773260, downTime=773233, deviceId=-1, source=0x1002, displayId=0, eventId=-344271487 }
+1511-11-06 18:22:27.506   396   498 D audioserver: FGS Logger Transaction failed
+1512-11-06 18:22:27.506   396   498 D audioserver: -129
+1513-11-06 18:22:27.565   396  3763 D audioserver: FGS Logger Transaction failed
+1514-11-06 18:22:27.565   396  3763 D audioserver: -129
+1515-11-06 18:22:27.653  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(485.0,1025.0)
+1516-11-06 18:22:27.654  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=485.0, y[0]=1025.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=773489, downTime=773489, deviceId=-1, source=0x1002, displayId=0, eventId=-201030376 }
+--
+2855-11-06 18:22:38.967  1014  1014 D BluetoothAdapterService: onDestroy()
+2856-11-06 18:22:38.967  1014  1014 I BluetoothAdapterService: Force exit to cleanup internal state in Bluetooth stack
+2857-11-06 18:22:38.968  1014  1014 I droid.bluetooth: System.exit called, status: 0
+2858:11-06 18:22:38.968  1014  1014 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+2859-11-06 18:22:38.972  4996  5032 I NearbySharing: Can't stop advertising FastInitiation. Not advertising. [CONTEXT service_id=194 ]
+2860-11-06 18:22:38.972  4996  5032 I NearbySharing: Stopping Fast Init advertisement because Bluetooth is off. [CONTEXT service_id=194 ]
+2861-11-06 18:22:38.972  4996  5032 I NearbySharing: Stopping advertising because Bluetooth is disabled. [CONTEXT service_id=194 ]
+2862-11-06 18:22:38.973  4996  5032 I NearbySharing: Can't stop scanning for FastInitiation. Not scanning. [CONTEXT service_id=194 ]
+2863-11-06 18:22:38.973  4996  5032 I NearbySharing: Cancelling in use notification [CONTEXT service_id=194 ]
+2864-11-06 18:22:38.973  4996  5032 I NearbySharing: Fast Initiation Scanning has stopped [CONTEXT service_id=194 ]
+2865-11-06 18:22:38.973  4996  5032 I NearbySharing: Stopping FastInitiation scanning because Bluetooth is disabled. [CONTEXT service_id=194 ]
+2866-11-06 18:22:38.973  4996  5032 I NearbySharing: Dismissing HUN as there's no device nearby. [CONTEXT service_id=194 ]
+2867-11-06 18:22:38.973  4996  5032 I NearbySharing: Cancelling in use notification [CONTEXT service_id=194 ]
+2868-11-06 18:22:38.974   518   915 D CompatibilityChangeReporter: Compat change id reported: 161252188; UID 10131; state: DISABLED
+2869-11-06 18:22:38.976   379   379 E android.hardware.bluetooth.service.default: Bluetooth remote service has died
+2870-11-06 18:22:38.976   379   379 I android.hardware.bluetooth.service.default: close
+2871-11-06 18:22:38.976   379   379 I android.hardware.bluetooth.service.default: Already closed
+2872-11-06 18:22:38.976   518  1680 I ActivityManager: Process com.google.android.bluetooth (pid 1014) has died: fg  SVC 
+2873-11-06 18:22:38.976   379   379 E android.hardware.bluetooth-service.default: unlinkToDeath: removed reference to death recipient but unlink failed: DEAD_OBJECT
+--
+3141-11-06 18:22:43.164   829   829 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+3142-11-06 18:22:43.228  7477  7499 D EGL_emulation: app_time_stats: avg=26.01ms min=8.93ms max=88.69ms count=36
+3143-11-06 18:22:43.233  1631  1631 I A       : Receiving sys ui event of type com.google.android.apps.googlequicksearchbox.nga.ON_KEYBOARD_SHOWING_CHANGED.
+3144:11-06 18:22:43.256  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+3145-11-06 18:22:43.331  7477  7485 I s.quizzer.debug: Background young concurrent copying GC freed 837936(20MB) AllocSpace objects, 0(0B) LOS objects, 41% free, 22MB/39MB, paused 659us,70us total 261.584ms
+3146-11-06 18:22:43.403   829   895 D EGL_emulation: app_time_stats: avg=35.45ms min=0.91ms max=1096.97ms count=43
+3147-11-06 18:22:43.446  7477  7487 W System  : A resource failed to call release. 
+3148-11-06 18:22:43.461  7477  7477 I ImeTracker: nz.durbs.quizzer.debug:955eec5a: onShown
+3149-11-06 18:22:43.816     0     0 W healthd : battery l=100 v=5000 t=25.0 h=2 st=2 c=900000 fc=3000000 cc=10 chg=a
+3150-11-06 18:22:43.776  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(425.0,779.0)
+3151-11-06 18:22:43.777  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=425.0, y[0]=779.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=789612, downTime=789612, deviceId=-1, source=0x1002, displayId=0, eventId=-919328492 }
+3152-11-06 18:22:43.785  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(425.26465,783.14844)
+3153-11-06 18:22:43.786  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=425.26465, y[0]=783.14844, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=789621, downTime=789612, deviceId=-1, source=0x1002, displayId=0, eventId=-715802549 }
+3154-11-06 18:22:43.826  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(513.0,106.0)
+3155-11-06 18:22:43.827  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=513.0, y[0]=106.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=789662, downTime=789662, deviceId=-1, source=0x1002, displayId=0, eventId=-689499274 }
+3156-11-06 18:22:43.827  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(498.5879,100.19141)
+3157-11-06 18:22:43.828  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=498.5879, y[0]=100.19141, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=789663, downTime=789662, deviceId=-1, source=0x1002, displayId=0, eventId=-594437302 }
+3158-11-06 18:22:43.925  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(493.0,417.0)
+3159-11-06 18:22:43.927  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=493.0, y[0]=417.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=789761, downTime=789761, deviceId=-1, source=0x1002, displayId=0, eventId=-411277718 }
+--
+3181-11-06 18:22:45.012  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(68.331055,623.4619)
+3182-11-06 18:22:45.013  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=68.331055, y[0]=623.4619, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=790848, downTime=790847, deviceId=-1, source=0x1002, displayId=0, eventId=-283099508 }
+3183-11-06 18:22:45.057  7464  7464 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(3.0,-4.0)
+3184:11-06 18:22:45.059  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3185-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 349175, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3186-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 349205, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3187-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 66, 349242, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3188-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed App frame:UNKNOWN: 88, 349265, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3189-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 88, 349265, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3190-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 349280, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3191-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed App frame:UNKNOWN: 88, 349309, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3192-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 88, 349309, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3193-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 349324, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3194-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 66, 349331, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3195-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 349346, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3196-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed App frame:UNKNOWN: 88, 349368, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3197-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 88, 349368, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3198-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 66, 349376, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+3199-11-06 18:22:45.060  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 349413, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+--
+4375-11-06 18:22:53.722  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=590.0, y[0]=384.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=799549, downTime=799549, deviceId=-1, source=0x1002, displayId=0, eventId=-292246701 }
+4376-11-06 18:22:53.725  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(540.85547,484.61816)
+4377-11-06 18:22:53.725  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.85547, y[0]=484.61816, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=799561, downTime=799549, deviceId=-1, source=0x1002, displayId=0, eventId=-296259063 }
+4378:11-06 18:22:53.726  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+4379-11-06 18:22:53.735   518  2572 W ActivityManager: Unable to start service Intent { cmp=com.google.android.apps.tachyon/.clientapi.ClientApiService } U=0: not found
+4380-11-06 18:22:53.736  1709  2738 I FedAssSettingsBuildType: BuildType: Release
+4381-11-06 18:22:53.736  1709  2738 I A       : getFlSettingEnabledWithSettingsToggle: false
+4382-11-06 18:22:53.742  7477  7499 D EGL_emulation: app_time_stats: avg=54.62ms min=12.25ms max=159.47ms count=16
+4383-11-06 18:22:53.755  1709  7246 I PBSessionCacheImpl: Wrote sessionId[7518055476084789] to persistence.
+4384-11-06 18:22:53.767  1709  1841 I earchbox:search: JIT allocated 62KB for compiled code of java.lang.Object com.google.android.apps.gsa.binaries.velvet.app.ael.b()
+4385-11-06 18:22:53.781  1631  2399 I A       : onTouchOutside
+4386-11-06 18:22:53.785  1631  2399 I A       : Setting session to type: NO_SESSION
+4387-11-06 18:22:53.811  1709  2738 W A       : UiCallbackStub-onGenericEvent[ServiceEvent = 60] task was not run. Callback from Service received after client was disposed.
+4388-11-06 18:22:53.816  1709  2738 W SearchServiceCore: Abort, client detached.
+4389-11-06 18:22:53.818   518  2577 W ActivityManager: Unable to start service Intent { cmp=com.google.android.apps.tachyon/.clientapi.ClientApiService } U=0: not found
+4390-11-06 18:22:53.836  1631  2388 I NgaEntryPointEventSendr: State changed: Ready => Disconnected (onOpaDisconnected)
+4391-11-06 18:22:53.845  1709  2738 W A       : UiCallbackStub-onGenericEvent[ServiceEvent = 60] task was not run. Callback from Service received after client was disposed.
+4392-11-06 18:22:53.846  1631  2399 I NgaEntryPointEventSendr: setupConnection
+4393-11-06 18:22:53.847  1709  7246 I PBSessionCacheImpl: Deleted sessionId[7518055476084792] from persistence.
+--
+4617-11-06 18:22:59.098  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(65.456055,475.88086)
+4618-11-06 18:22:59.099  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=65.456055, y[0]=475.88086, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=804934, downTime=804933, deviceId=-1, source=0x1002, displayId=0, eventId=-633461191 }
+4619-11-06 18:22:59.216   518   622 W InputDispatcher: Waiting because no window has focus but ActivityRecord{c7b4b5 u0 nz.durbs.quizzer.debug/com.example.MainActivity t25} may eventually add a window when it finishes starting up. Will wait for 5000ms
+4620:11-06 18:22:59.371  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4621-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 357892, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4622-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 357914, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4623-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 357929, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4624-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 357944, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4625-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 357974, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4626-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:PREDICTION_ERROR, 358011, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4627-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 66, 358026, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4628-11-06 18:22:59.372  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 358166, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+4629-11-06 18:22:59.375  7477  7519 V PerfettoTrigger: Not triggering com.android.telemetry.interaction-jank-monitor-69 - not enough time since last trigger
+4630-11-06 18:22:59.459   829   895 D EGL_emulation: app_time_stats: avg=11.58ms min=0.60ms max=104.79ms count=46
+4631-11-06 18:22:59.872  7477  7499 D EGL_emulation: app_time_stats: avg=45.36ms min=7.53ms max=183.33ms count=17
+4632-11-06 18:22:59.882   518   628 I Choreographer: Skipped 46 frames!  The application may be doing too much work on its main thread.
+4633-11-06 18:22:59.886   518  1684 I OpenGLRenderer: Davey! duration=794ms; Flags=1, FrameTimelineVsyncId=365261, IntendedVsync=804918917947, Vsync=804918917947, InputEventId=0, HandleInputStart=804927355483, AnimationStart=804927355713, PerformTraversalsStart=804927355834, DrawStart=805045563058, FrameDeadline=804935584613, FrameInterval=804927352579, FrameStartTime=16666666, SyncQueued=805046195885, SyncStart=805046916513, IssueDrawCommandsStart=805046966297, SwapBuffers=805531984326, FrameCompleted=805714104474, DequeueBufferDuration=2674, QueueBufferDuration=15450907, GpuCompleted=805714055111, SwapBuffersCompleted=805714104474, DisplayPresentTime=0, CommandSubmissionCompleted=805531984326, 
+4634-11-06 18:22:59.907   518  1684 I OpenGLRenderer: Davey! duration=801ms; Flags=0, FrameTimelineVsyncId=365290, IntendedVsync=804935584613, Vsync=805702251249, InputEventId=0, HandleInputStart=805718515932, AnimationStart=805718516282, PerformTraversalsStart=805718606807, DrawStart=805719857931, FrameDeadline=805735584581, FrameInterval=805718245501, FrameStartTime=16666666, SyncQueued=805722000826, SyncStart=805722019504, IssueDrawCommandsStart=805723487499, SwapBuffers=805725764444, FrameCompleted=805737011972, DequeueBufferDuration=2123, QueueBufferDuration=99618, GpuCompleted=805737011972, SwapBuffersCompleted=805734633577, DisplayPresentTime=8242834581664657251, CommandSubmissionCompleted=805725764444, 
+4635-11-06 18:22:59.963   518   622 W InputDispatcher: Dispatching key to 46efee4 Select input method even though there are other unprocessed events
+--
+6393-11-06 18:23:07.206  7477  7499 D EGL_emulation: app_time_stats: avg=163.83ms min=30.34ms max=280.56ms count=8
+6394-11-06 18:23:07.212  7687  7738 D nativeloader: Configuring clns-8 for other apk /system/framework/com.android.media.remotedisplay.jar. target_sdk_version=33, uses_libraries=ALL, library_path=/product/priv-app/PrebuiltGmsCore/lib/x86_64:/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+6395-11-06 18:23:07.240   518  3318 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+6396:11-06 18:23:07.243  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+6397-11-06 18:23:07.246  7687  7738 D nativeloader: Configuring clns-9 for other apk /system/framework/com.android.location.provider.jar. target_sdk_version=33, uses_libraries=ALL, library_path=/product/priv-app/PrebuiltGmsCore/lib/x86_64:/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+6398-11-06 18:23:07.246  7687  7738 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+6399-11-06 18:23:07.246  7687  7738 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+6400-11-06 18:23:07.248  7687  7738 D nativeloader: Configuring product-clns-10 for unbundled product apk /product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk. target_sdk_version=33, uses_libraries=, library_path=/product/priv-app/PrebuiltGmsCore/lib/x86_64:/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/x86_64:/product/lib64:/system/product/lib64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms:/product/lib64:/system/product/lib64
+6401-11-06 18:23:07.253  7464  7464 I Monkey  : :Sending Trackball (ACTION_MOVE): 0:(-4.0,-5.0)
+6402-11-06 18:23:07.272  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(550.0,837.0)
+6403-11-06 18:23:07.272  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=550.0, y[0]=837.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=813108, downTime=813108, deviceId=-1, source=0x1002, displayId=0, eventId=-1026566345 }
+6404-11-06 18:23:07.273  7464  7464 I Monkey  : :Sending Touch (ACTION_UP): 0:(553.76855,833.79004)
+6405-11-06 18:23:07.273  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=553.76855, y[0]=833.79004, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=813109, downTime=813108, deviceId=-1, source=0x1002, displayId=0, eventId=-131134187 }
+6406-11-06 18:23:07.276  7687  7738 I DynamiteModule: Considering local module com.google.android.gms.ads.dynamite:0 and remote module com.google.android.gms.ads.dynamite:231004600
+6407-11-06 18:23:07.276  7687  7738 I DynamiteModule: Selected remote version of com.google.android.gms.ads.dynamite, version >= 231004600
+6408-11-06 18:23:07.326  7687  7738 W ziparchive: Unable to open '/data/user_de/0/com.google.android.gms/app_chimera/m/00000000/AdsDynamite.dm': No such file or directory
+6409-11-06 18:23:07.326  7687  7738 W ziparchive: Unable to open '/data/user_de/0/com.google.android.gms/app_chimera/m/00000000/AdsDynamite.dm': No such file or directory
+6410-11-06 18:23:07.350  4996  5169 I Nearby  : [MBleClient] Start ble scanning from NearbyDirect:BluetoothAdapterWrapper, context tag = nearby_messages [CONTEXT service_id=49 ]
+6411-11-06 18:23:07.350  4996  5169 I Nearby  : [MBleClient] M hardware scan: 1 clients, scanMode= OPPORTUNISTIC, filters size = 5 [CONTEXT service_id=49 ]
+--
+6646-11-06 18:23:08.314   336   336 D Zygote  : Forked child process 7844
+6647-11-06 18:23:08.325   518   518 W JobScheduler: Job didn't exist in JobStore: c42a6c7 #u0a156/8 com.google.android.apps.youtube.music/androidx.work.impl.background.systemjob.SystemJobService
+6648-11-06 18:23:08.327   518   550 I ActivityManager: Start proc 7844:com.google.android.gms.unstable/u0a131 for service {com.google.android.gms/com.google.android.gms.droidguard.DroidGuardService}
+6649:11-06 18:23:08.330  7477  7477 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6650-11-06 18:23:08.330  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 363637, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6651-11-06 18:23:08.330  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 363702, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6652-11-06 18:23:08.331  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 66, 363769, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6653-11-06 18:23:08.331  7477  7477 W FrameTracker: Missed App frame:UNKNOWN: 88, 363792, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6654-11-06 18:23:08.331  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 88, 363792, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6655-11-06 18:23:08.331  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 363822, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6656-11-06 18:23:08.331  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 80, 363866, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6657-11-06 18:23:08.331  7477  7477 W FrameTracker: Missed App frame:UNKNOWN: 88, 363889, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6658-11-06 18:23:08.331  7477  7477 W FrameTracker: Missed SF frame:UNKNOWN: 88, 363889, 0, CUJ=J<IME_INSETS_ANIMATION::1@1@nz.durbs.quizzer.debug>
+6659-11-06 18:23:08.332  7477  7519 V PerfettoTrigger: Not triggering com.android.telemetry.interaction-jank-monitor-69 - not enough time since last trigger
+6660-11-06 18:23:08.337  7464  7464 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(519.0,939.0)
+6661-11-06 18:23:08.339  7464  7464 I Monkey  :     //[calendar_time:2026-11-06 18:23:08.339  system_uptime:814175]
+6662-11-06 18:23:08.339  7464  7464 I Monkey  :     // Sending event #3600
+6663-11-06 18:23:08.359  1093  1093 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=519.0, y[0]=939.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=814173, downTime=814173, deviceId=-1, source=0x1002, displayId=0, eventId=-734653890 }
+6664-11-06 18:23:08.392  7687  7753 W GoogleTagManager: Failed to extract the container from the resource file. Resource is a UTF-8 encoded string but doesn't contain a JSON container
+--
+7377-11-06 18:23:15.768  7464  7464 I Monkey  : ## Network stats: elapsed time=80278ms (0ms mobile, 0ms wifi, 80278ms not connected)
+7378-11-06 18:23:15.768  7464  7464 I Monkey  : // Monkey finished
+7379-11-06 18:23:15.771  7464  7464 I app_process: System.exit called, status: 0
+7380:11-06 18:23:15.771  7464  7464 I AndroidRuntime: VM exiting with result code 0.
+7381-11-06 18:23:15.773   829   829 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@f7ddb79
+7382-11-06 18:23:15.773   518  2181 D CoreBackPreview: Window{13708e9 u0 VolumeDialogImpl}: Setting back callback null
+7383-11-06 18:23:15.782   829  1146 I vol.Events: writeEvent active_stream_changed UNKNOWN_STREAM_-1
+7384-11-06 18:23:15.792   518   915 W InputManager-JNI: Input channel object '13708e9 VolumeDialogImpl (client)' was disposed without first being removed with the input manager!
+7385-11-06 18:23:15.796  1619  4577 I AiAiEcho: Settings changed for uri: content://settings/secure/device_state_rotation_lock
+7386-11-06 18:23:15.797  1619  1884 I AiAiEcho: Predicting[0]: 
+7387-11-06 18:23:15.797  1619  1884 I AiAiEcho: EchoTargets: 
+7388-11-06 18:23:15.797  1619  1884 I AiAiEcho: Filtered by AiAi flag check: 
+7389-11-06 18:23:15.797  1619  1884 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+7390-11-06 18:23:15.797  1619  1884 I AiAiEcho: Predicting[0]: 
+7391-11-06 18:23:15.797  1619  1884 I AiAiEcho: EchoTargets: 
+7392-11-06 18:23:15.797  1619  1884 I AiAiEcho: Filtered by AiAi flag check: 
+7393-11-06 18:23:15.797  1619  1884 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+7394-11-06 18:23:15.797  1619  1884 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+7395-11-06 18:23:15.797  1619  1884 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])

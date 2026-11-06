@@ -1,0 +1,1 @@
+/sdcard/Android/media/nz.durbs.quizzer.debug/./: 56 files pulled, 0 skipped. 11.7 MB/s (4006674 bytes in 0.325s)

@@ -1,0 +1,79 @@
+3-11-06 18:23:37.517  1836  2546 I A       : Using proto config with mendel
+4-11-06 18:23:37.600   522  1744 W AppSearchIcing: icing-search-engine.cc:283: Error: 5, Message: Document (com.google.android.googlequicksearchbox$OneSearchZeroStateGoogleSuggestions/default, zp) not found.
+5-11-06 18:23:37.604  1096  2283 D OneSearchSuggestProvider: Created the binder channel successfully for end point service =com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService , mChannel=z1{delegate=s1{logId=69, target=directaddress:///AndroidComponentAddress%5BIntent%20%7B%20act=grpc.io.action.BIND%20cmp=com.google.android.googlequicksearchbox/com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService%20%7D%5D}} , mOneSearchConnection=X1.T@43c8aa1
+6:11-06 18:23:37.632  7511  7511 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+7---------- beginning of system
+8-11-06 18:23:37.655   522   539 V WindowManager: Sent Transition #59 createdAt=11-06 18:23:37.155 via request=TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=23 displayId=0 isRunning=false baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=nz.durbs.quizzer.debug/com.example.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{nz.durbs.quizzer.debug/com.example.MainActivity} numActivities=0 lastActiveTime=777360 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{1419968 Task{2b339e4 #23 type=standard A=10192:nz.durbs.quizzer.debug}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+9-11-06 18:23:37.661   522   539 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+10-11-06 18:23:37.661   522   539 V WindowManager:     info={id=59 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{1419968 Task{2b339e4 #23 type=standard A=10192:nz.durbs.quizzer.debug}}} m=CLOSE f=NONE leash=Surface(name=Task=23)/@0xb79e17c sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{RemoteToken{47aaee7 Task{1cc0da7 #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x5195f92 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{3395c6a token=android.os.Binder@e886a55})/@0x644ce42 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+11-11-06 18:23:37.671   833   867 V WindowManagerShell: onTransitionReady android.os.BinderProxy@7f77b9d: {id=59 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@ec4b33f} m=CLOSE f=NONE leash=Surface(name=Task=23)/@0xc143be3 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@a17b40c} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x36ed9e0 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{3395c6a token=android.os.Binder@e886a55})/@0xfd53499 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+12-11-06 18:23:37.671   833   867 V WindowManagerShell: Playing animation for (#59)android.os.BinderProxy@7f77b9d@0
+13-11-06 18:23:37.672   833   867 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@671b11f
+14-11-06 18:23:37.672   833   867 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@f5a0c6c
+15-11-06 18:23:37.672   833   867 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@a86235
+16-11-06 18:23:37.672   833   867 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@f9c26ca
+17-11-06 18:23:37.672   833   867 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+18-11-06 18:23:37.672   833   867 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@38a403b
+19-11-06 18:23:37.672   833   867 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@a118358
+20-11-06 18:23:37.672   833   867 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@d89ecb1
+21-11-06 18:23:37.672   833   867 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=59 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@ec4b33f} m=CLOSE f=NONE leash=Surface(name=Task=23)/@0xc143be3 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@a17b40c} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x36ed9e0 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{3395c6a token=android.os.Binder@e886a55})/@0xfd53499 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+--
+27-11-06 18:23:37.673   833   867 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@17c276a animAttr=0x10 type=CLOSE isEntrance=true
+28-11-06 18:23:37.673   833   867 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@f7fddd1 animAttr=0x11 type=CLOSE isEntrance=false
+29-11-06 18:23:37.683   833   867 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@bbde596
+30:11-06 18:23:37.684  7511  7511 I AndroidRuntime: Using default boot image
+31:11-06 18:23:37.687  7511  7511 I AndroidRuntime: Leaving lock profiling enabled
+32-11-06 18:23:37.694  7511  7511 I app_process: Core platform API reporting enabled, enforcing=false
+33-11-06 18:23:37.695  7511  7511 I app_process: Using CollectorTypeCC GC.
+34-11-06 18:23:37.702  1836  1926 I earchbox:search: JIT allocated 79KB for compiled code of java.lang.Object com.google.android.apps.gsa.binaries.velvet.app.akj.a()
+35-11-06 18:23:37.703  1836  1926 I earchbox:search: Compiler allocated 4258KB to compile java.lang.Object com.google.android.apps.gsa.binaries.velvet.app.akj.a()
+36-11-06 18:23:37.711  1698  1808 I AiAiEcho: Predicting[0]: 
+37-11-06 18:23:37.715  1698  1808 I AiAiEcho: EchoTargets: 
+38-11-06 18:23:37.715  1698  1808 I AiAiEcho: Filtered by AiAi flag check: 
+39-11-06 18:23:37.715  1698  1808 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+40-11-06 18:23:37.721  1698  1808 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+41-11-06 18:23:37.812   833   875 W Looper  : Slow delivery took 57ms wmshell.anim h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver@d4cbc25 m=0
+42-11-06 18:23:37.866  7511  7511 W main    : type=1400 audit(0.0:85): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+43-11-06 18:23:37.878  7511  7511 W main    : type=1400 audit(0.0:86): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=86 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+44-11-06 18:23:37.822   833   875 W Looper  : Drained
+45-11-06 18:23:37.829  7511  7511 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+46-11-06 18:23:37.843  7511  7511 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+--
+50-11-06 18:23:37.879  7511  7511 W libc    : Access denied finding property "ro.product.name_for_attestation"
+51-11-06 18:23:37.879  7511  7511 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+52-11-06 18:23:37.879  7511  7511 W libc    : Access denied finding property "ro.product.model_for_attestation"
+53:11-06 18:23:37.880  7511  7511 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+54-11-06 18:23:37.896  7511  7511 W Monkey  : args: [-p, nz.durbs.quizzer.debug, --pct-syskeys, 0, --throttle, 40, -s, 202, -v, 4000]
+55-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "-p"
+56-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "nz.durbs.quizzer.debug"
+57-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "--pct-syskeys"
+58-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "0"
+59-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "--throttle"
+60-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "40"
+61-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "-s"
+62-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "202"
+63-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "-v"
+64-11-06 18:23:37.896  7511  7511 W Monkey  :  arg: "4000"
+65-11-06 18:23:37.896  7511  7511 W Monkey  : data="nz.durbs.quizzer.debug"
+66-11-06 18:23:37.896  7511  7511 W Monkey  : arg="--pct-syskeys" mCurArgData="null" mNextArg=3 argwas="--pct-syskeys" nextarg="0"
+67-11-06 18:23:37.896  7511  7511 W Monkey  : data="0"
+68-11-06 18:23:37.896  7511  7511 W Monkey  : arg="--throttle" mCurArgData="null" mNextArg=5 argwas="--throttle" nextarg="40"
+--
+3118-11-06 18:25:54.412  7511  7511 I Monkey  : ## Network stats: elapsed time=136442ms (0ms mobile, 0ms wifi, 136442ms not connected)
+3119-11-06 18:25:54.412  7511  7511 I Monkey  : // Monkey finished
+3120-11-06 18:25:54.424  7511  7511 I app_process: System.exit called, status: 0
+3121:11-06 18:25:54.424  7511  7511 I AndroidRuntime: VM exiting with result code 0.
+3122-11-06 18:25:54.449  1698  2532 I AiAiEcho: Settings changed for uri: content://settings/secure/device_state_rotation_lock
+3123-11-06 18:25:54.450  1698  1808 I AiAiEcho: Predicting[0]: 
+3124-11-06 18:25:54.453  1698  1808 I AiAiEcho: EchoTargets: 
+3125-11-06 18:25:54.453  1698  1808 I AiAiEcho: Filtered by AiAi flag check: 
+3126-11-06 18:25:54.457  1698  1808 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+3127-11-06 18:25:54.457  1698  1808 I AiAiEcho: Predicting[0]: 
+3128-11-06 18:25:54.458  1698  1808 I AiAiEcho: EchoTargets: 
+3129-11-06 18:25:54.458  1698  1808 I AiAiEcho: Filtered by AiAi flag check: 
+3130-11-06 18:25:54.458  1698  1808 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+3131-11-06 18:25:54.458  1698  1808 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+3132-11-06 18:25:54.459  1698  1808 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+3133-11-06 18:25:54.469   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+3134-11-06 18:25:54.523  7527  7534 I s.quizzer.debug: Background young concurrent copying GC freed 138187(5489KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 5764KB/11MB, paused 27us,12us total 233.516ms
+3135-11-06 18:25:54.794     0     0 I logd    : logdr: UID=2000 GID=2000 PID=7594 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns

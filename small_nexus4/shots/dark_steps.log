@@ -1,0 +1,99 @@
+275656 START prefix='dark_' out=/storage/emulated/0/Android/media/nz.durbs.quizzer.debug
+277933 shot dark_00_splash.png
+277933 activity launched 2272ms
+277934 STEP 01_onboarding begin
+278740 shot dark_01_onboarding_1.png
+280509 shot dark_02_onboarding_2.png
+282190 shot dark_03_onboarding_3.png
+283437 STEP 01_onboarding ok
+283438 STEP 04_dashboard begin
+285802 shot dark_04_dashboard.png
+286492 STEP 04_dashboard ok
+286493 STEP 05_daily_lobby begin
+288127 shot dark_05_daily_lobby.png
+289232 shot dark_05_daily_lobby_s1.png
+291086 STEP 05_daily_lobby ok
+291086 STEP 06_stats_empty begin
+293234 shot dark_06_stats_empty.png
+295953 shot dark_07_achievements_empty.png
+297000 shot dark_07_achievements_empty_s1.png
+298024 shot dark_07_achievements_empty_s2.png
+299102 shot dark_07_achievements_empty_s3.png
+300101 STEP 06_stats_empty ok
+300102 STEP 08_practice begin
+302122 shot dark_08_practice_top.png
+302981 shot dark_09_practice_flags_selected.png
+303911 shot dark_10_practice_flags_options_and_start.png
+307915 shot dark_11_practice_options_and_start.png
+308767 shot dark_12_practice_topics_selected.png
+311292 STEP 08_practice ok
+311293 STEP 20_mc_quiz begin
+313929 shot dark_19_quiz_loading.png
+313929 saw loading spinner at 304ms
+314260 quiz ready after 635ms
+315185 shot dark_20_quiz_mc_question.png
+316534 shot dark_21_quiz_mc_5050.png
+318186 shot dark_22_quiz_mc_audience.png
+320483 shot dark_23_quiz_mc_lifelines_used.png
+321810 shot dark_25_quiz_mc_wrong.png
+323983 shot dark_24_quiz_mc_correct.png
+339666 shot dark_26_results.png
+340391 shot dark_26_results_s1.png
+341142 shot dark_26_results_s2.png
+343835 shot dark_27_review.png
+344597 shot dark_27_review_s1.png
+345419 shot dark_27_review_s2.png
+346172 shot dark_27_review_s3.png
+346972 shot dark_27_review_s4.png
+347723 shot dark_27_review_s5.png
+348741 shot dark_27_review_s6.png
+350541 STEP 20_mc_quiz ok
+350542 STEP 30_tf_quiz begin
+353044 quiz ready after 59ms
+353950 shot dark_30_quiz_tf_question.png
+355323 shot dark_32_quiz_tf_wrong.png
+359231 shot dark_31_quiz_tf_correct.png
+361292 STEP 30_tf_quiz ok
+361293 STEP 40_capitals_quiz begin
+363774 shot dark_39_practice_capitals_only.png
+364472 quiz ready after 3ms
+365396 shot dark_40_quiz_capitals_question.png
+366673 shot dark_41_quiz_capitals_correct.png
+372492 shot dark_42_quiz_capitals_wrong.png
+374474 STEP 40_capitals_quiz ok
+374475 STEP 50_flag_to_country begin
+377438 shot dark_49_practice_flags_flag_to_country_selected.png
+378138 quiz ready after 67ms
+379282 shot dark_50_quiz_flag_to_country_question.png
+380638 shot dark_52_quiz_flag_to_country_wrong.png
+394019 shot dark_51_quiz_flag_to_country_correct.png
+396066 STEP 50_flag_to_country ok
+396067 STEP 60_country_to_flag begin
+399484 quiz ready after 57ms
+400634 shot dark_60_quiz_country_to_flag_question.png
+402001 shot dark_61_quiz_country_to_flag_5050.png
+402003 NOT CAPTURED: 62_quiz_country_to_flag_correct (no correct answer in 8 questions)
+402003 NOT CAPTURED: 63_quiz_country_to_flag_wrong (no wrong answer in 8 questions)
+403737 STEP 60_country_to_flag ok
+403738 STEP 70_stats begin
+405763 shot dark_70_stats.png
+408290 shot dark_71_achievements.png
+409290 STEP 70_stats ok
+409291 STEP 72_dashboard_after_play begin
+411355 shot dark_72_dashboard_after_play.png
+412009 STEP 72_dashboard_after_play ok
+412010 STEP 80_settings begin
+413883 shot dark_80_settings.png
+414607 shot dark_80_settings_s1.png
+415655 shot dark_80_settings_s2.png
+416684 STEP 80_settings ok
+416685 STEP 90_daily_quiz begin
+420946 quiz ready after 1558ms
+421856 shot dark_90_daily_quiz_question.png
+423545 STEP 90_daily_quiz ok
+423545 STEP 95_relaunch_skips_onboarding begin
+426855 shot dark_95_relaunch_dashboard.png
+426856 STEP 95_relaunch_skips_onboarding ok
+426856 STEP 96_back_from_home_leaves_app begin
+426871 STEP 96_back_from_home_leaves_app ok
+426874 DONE failures=0

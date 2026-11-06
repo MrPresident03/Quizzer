@@ -1,0 +1,7 @@
+Starting: Intent { cmp=nz.durbs.quizzer.debug/com.example.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: nz.durbs.quizzer.debug/com.example.MainActivity
+TotalTime: 4074
+WaitTime: 4077
+Complete

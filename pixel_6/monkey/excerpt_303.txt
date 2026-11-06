@@ -1,0 +1,69 @@
+27-11-06 18:25:54.955   833   875 W Looper  : Drained
+28-11-06 18:25:54.991  1836  2546 I A       : Using proto config with mendel
+29-11-06 18:25:54.993  1836  2546 I A       : Using proto config with mendel
+30:11-06 18:25:55.042  7606  7606 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+31:11-06 18:25:55.047  7606  7606 I AndroidRuntime: Using default boot image
+32:11-06 18:25:55.048  7606  7606 I AndroidRuntime: Leaving lock profiling enabled
+33-11-06 18:25:55.050  7606  7606 I app_process: Core platform API reporting enabled, enforcing=false
+34-11-06 18:25:55.051  7606  7606 I app_process: Using CollectorTypeCC GC.
+35-11-06 18:25:55.215   833   875 W Looper  : Slow delivery took 39ms wmshell.anim h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver@d4cbc25 m=0
+36-11-06 18:25:55.215   833   875 W Looper  : Slow dispatch took 38ms wmshell.anim h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver@d4cbc25 m=0
+37-11-06 18:25:55.217  7606  7606 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+38-11-06 18:25:55.228  7606  7606 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+39-11-06 18:25:55.228  7606  7606 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+40-11-06 18:25:55.234  7606  7606 W app_process: Unexpected CPU variant for x86: x86_64.
+41-11-06 18:25:55.234  7606  7606 W app_process: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+42-11-06 18:25:55.248  7606  7606 W libc    : Access denied finding property "ro.product.name_for_attestation"
+43-11-06 18:25:55.251  7606  7606 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+44-11-06 18:25:55.251  7606  7606 W libc    : Access denied finding property "ro.product.model_for_attestation"
+45:11-06 18:25:55.252  7606  7606 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+46-11-06 18:25:55.253  7606  7606 W Monkey  : args: [-p, nz.durbs.quizzer.debug, --pct-syskeys, 0, --throttle, 40, -s, 303, -v, 4000]
+47-11-06 18:25:55.253  7606  7606 W Monkey  :  arg: "-p"
+48-11-06 18:25:55.253  7606  7606 W Monkey  :  arg: "nz.durbs.quizzer.debug"
+49-11-06 18:25:55.253  7606  7606 W Monkey  :  arg: "--pct-syskeys"
+50-11-06 18:25:55.253  7606  7606 W Monkey  :  arg: "0"
+51-11-06 18:25:55.253  7606  7606 W Monkey  :  arg: "--throttle"
+52-11-06 18:25:55.253  7606  7606 W Monkey  :  arg: "40"
+53-11-06 18:25:55.254  7606  7606 W Monkey  :  arg: "-s"
+54-11-06 18:25:55.254  7606  7606 W Monkey  :  arg: "303"
+55-11-06 18:25:55.254  7606  7606 W Monkey  :  arg: "-v"
+56-11-06 18:25:55.254  7606  7606 W Monkey  :  arg: "4000"
+57-11-06 18:25:55.254  7606  7606 W Monkey  : data="nz.durbs.quizzer.debug"
+58-11-06 18:25:55.254  7606  7606 W Monkey  : arg="--pct-syskeys" mCurArgData="null" mNextArg=3 argwas="--pct-syskeys" nextarg="0"
+59-11-06 18:25:55.254  7606  7606 W Monkey  : data="0"
+60-11-06 18:25:55.254  7606  7606 W Monkey  : arg="--throttle" mCurArgData="null" mNextArg=5 argwas="--throttle" nextarg="40"
+--
+5434-11-06 18:27:53.582   522   757 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=146, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10142 RequestorUid: 10142 RequestorPkg: com.google.android.inputmethod.latin UnderlyingNetworks: Null] ]
+5435-11-06 18:27:53.582   522   757 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=146, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10142 RequestorUid: 10142 RequestorPkg: com.google.android.inputmethod.latin UnderlyingNetworks: Null] ]
+5436-11-06 18:27:53.615  1564  7753 I Environment: Environment.isPackageInstalled():237 com.bitstrips.imoji is not installed
+5437:11-06 18:27:53.708  7619  7619 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@nz.durbs.quizzer.debug>
+5438-11-06 18:27:53.748  7606  7606 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(37.0,2073.0)
+5439-11-06 18:27:53.750  1096  1096 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=37.0, y[0]=2073.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1111924, downTime=1111924, deviceId=-1, source=0x1002, displayId=0, eventId=-599467703 }
+5440-11-06 18:27:53.752  7606  7606 I Monkey  : :Sending Touch (ACTION_UP): 0:(40.606445,2068.5205)
+5441-11-06 18:27:53.753  1096  1096 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=40.606445, y[0]=2068.5205, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1111928, downTime=1111924, deviceId=-1, source=0x1002, displayId=0, eventId=-406573193 }
+5442-11-06 18:27:53.883  7606  7606 I Monkey  : :Sending Touch (ACTION_DOWN): 0:(962.0,1552.0)
+5443-11-06 18:27:53.884  1096  1096 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=962.0, y[0]=1552.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1112059, downTime=1112059, deviceId=-1, source=0x1002, displayId=0, eventId=-992001376 }
+5444-11-06 18:27:53.892  7606  7606 I Monkey  : :Sending Touch (ACTION_UP): 0:(986.9375,1545.0928)
+5445-11-06 18:27:53.895  1096  1096 D TaplEvents: TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=986.9375, y[0]=1545.0928, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1112067, downTime=1112059, deviceId=-1, source=0x1002, displayId=0, eventId=-800930754 }
+5446-11-06 18:27:53.981   335  7756 I resolv  : GetAddrInfoHandler::run: {101 101 101 983141 10142 0}
+5447-11-06 18:27:53.981   335  7758 I resolv  : res_nmkquery: (QUERY, IN, A)
+5448-11-06 18:27:53.982   335  7757 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+5449-11-06 18:27:54.015   335  7757 I resolv  : res_nsend: used send_dg 288 terrno: 0
+5450-11-06 18:27:54.015   335  7757 I resolv  : doQuery: rcode=0, ancount=9, return value=288
+5451-11-06 18:27:54.060   335  7758 I resolv  : res_nsend: used send_dg 192 terrno: 0
+5452-11-06 18:27:54.060   335  7758 I resolv  : doQuery: rcode=0, ancount=9, return value=192
+--
+6146-11-06 18:28:12.746  1698  1808 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+6147-11-06 18:28:12.746  1698  1808 I AiAiEcho: Predicting[0]: 
+6148-11-06 18:28:12.747  7606  7606 I app_process: System.exit called, status: 0
+6149:11-06 18:28:12.747  7606  7606 I AndroidRuntime: VM exiting with result code 0.
+6150-11-06 18:28:12.747  1698  1808 I AiAiEcho: EchoTargets: 
+6151-11-06 18:28:12.747  1698  1808 I AiAiEcho: Filtered by AiAi flag check: 
+6152-11-06 18:28:12.747  1698  1808 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+6153-11-06 18:28:12.748  1698  1808 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+6154-11-06 18:28:12.748  1698  1808 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+6155-11-06 18:28:12.748   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+6156-11-06 18:28:12.996     0     0 I logd    : logdr: UID=2000 GID=2000 PID=7789 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns
+6157-11-06 18:28:12.847  1564  1564 W TooltipLifecycleManager: TooltipLifecycleManager.dismissTooltips():159 Tooltip with id spell_check_add_to_dictionary not found in tooltipManager.
+6158-11-06 18:28:12.870  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3483 setKeyboardViewShown() : type = HEADER, shownType = SHOW_MANDATORY_WITH_ANIMATION
+6159-11-06 18:28:12.872  1564  1564 I GoogleInputMethodService: GoogleInputMethodService.setKeyboardViewShown():3530 setKeyboardViewShown() : shouldShow = true
