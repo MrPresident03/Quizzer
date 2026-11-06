@@ -25,6 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.shape.CircleShape
 import com.example.BuildConfig
 import com.example.data.model.UserStats
@@ -133,7 +139,7 @@ fun SettingsScreen(
             PreferenceToggle(
                 title = "Daily Reminder",
                 description = if (reminderDenied) "Notifications are blocked — allow them for Quizzer in system settings"
-                else "A nudge at ${DailyReminder.REMINDER_HOUR - 12} pm if you haven't played the Daily Challenge",
+                else "A nudge at ${formatHour12(DailyReminder.REMINDER_HOUR)} if you haven't played the Daily Challenge",
                 icon = Icons.Default.NotificationsActive,
                 checked = reminderEnabled,
                 onCheckedChange = { enable ->
@@ -186,7 +192,7 @@ fun SettingsScreen(
                     Text("Quizzer", fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.bodyLarge)
                     Text("Version ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall)
                     Text("Credits", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodySmall)
-                    Text("Trivia questions include material from Open Trivia DB (opentdb.com), licensed CC BY-SA 4.0, and facts from Wikidata (CC0).", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                    Text("Trivia questions include material from Open Trivia DB (opentdb.com), licensed CC BY-SA 4.0, and facts from Wikidata (CC0).", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
@@ -243,6 +249,13 @@ fun SettingsScreen(
     }
 }
 
+/** 12-hour clock label for a whole hour: 0 -> "12 am", 12 -> "12 pm", 18 -> "6 pm". */
+internal fun formatHour12(hour: Int): String {
+    val h = ((hour % 24) + 24) % 24
+    val display = if (h % 12 == 0) 12 else h % 12
+    return "$display ${if (h < 12) "am" else "pm"}"
+}
+
 @Composable
 fun PreferenceToggle(
     title: String,
@@ -261,6 +274,10 @@ fun PreferenceToggle(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                // The whole row is the switch: one TalkBack stop, labelled by its title and description.
+                .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
+                .testTag(tag)
+                .heightIn(min = 48.dp)
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -270,16 +287,15 @@ fun PreferenceToggle(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Icon(imageVector = icon, contentDescription = title, tint = MaterialTheme.colorScheme.secondary)
+                Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
                 Column {
                     Text(title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
-                    Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                    Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
             Switch(
                 checked = checked,
-                onCheckedChange = onCheckedChange,
-                modifier = Modifier.testTag(tag)
+                onCheckedChange = null
             )
         }
     }
@@ -308,14 +324,14 @@ fun SettingsActionRow(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
-                Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Spacer(modifier = Modifier.width(8.dp))
             Button(
                 onClick = onClick,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer),
-                modifier = Modifier.testTag(tag)
+                modifier = Modifier.heightIn(min = 48.dp).testTag(tag)
             ) {
                 Text(buttonText, fontWeight = FontWeight.ExtraBold, fontSize = 11.sp, maxLines = 1)
             }
@@ -343,20 +359,21 @@ private fun ProfileEditor(userStats: UserStats, onSave: (name: String, avatarId:
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row(modifier = Modifier.fillMaxWidth().selectableGroup(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 avatarOptions.forEach { (id, icon) ->
                     val selected = avatar == id
                     Surface(
-                        onClick = { avatar = id },
                         shape = CircleShape,
-                        color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                        color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
                         border = if (selected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
                         modifier = Modifier
                             .size(52.dp)
                             .testTag("avatar_$id")
+                            .selectable(selected = selected, role = Role.RadioButton, onClick = { avatar = id })
+                            .semantics { contentDescription = avatarDescription(id) }
                     ) {
                         Box(contentAlignment = Alignment.Center) {
-                            Icon(imageVector = icon, contentDescription = id, modifier = Modifier.size(28.dp))
+                            Icon(imageVector = icon, contentDescription = null, modifier = Modifier.size(28.dp))
                         }
                     }
                 }
@@ -384,6 +401,9 @@ private fun ProfileEditor(userStats: UserStats, onSave: (name: String, avatarId:
     }
 }
 
+/** "avatar_1" -> "Avatar 1", so TalkBack never reads out an internal id. */
+internal fun avatarDescription(id: String): String = "Avatar ${id.substringAfterLast('_')}"
+
 private data class ThemeOption(val id: String, val name: String, val color: Color)
 
 private val themeOptions = listOf(
@@ -395,7 +415,7 @@ private val themeOptions = listOf(
 
 @Composable
 private fun ThemePicker(activeThemeId: String, onSelectTheme: (String) -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+    Row(modifier = Modifier.fillMaxWidth().selectableGroup(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         themeOptions.forEach { option ->
             val selected = option.id == activeThemeId
             Column(
@@ -404,17 +424,18 @@ private fun ThemePicker(activeThemeId: String, onSelectTheme: (String) -> Unit) 
                 modifier = Modifier.weight(1f)
             ) {
                 Surface(
-                    onClick = { onSelectTheme(option.id) },
                     shape = CircleShape,
                     color = option.color,
                     border = if (selected) BorderStroke(3.dp, MaterialTheme.colorScheme.onBackground) else null,
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(48.dp)
                         .testTag("select_theme_${option.id}")
+                        .selectable(selected = selected, role = Role.RadioButton, onClick = { onSelectTheme(option.id) })
+                        .semantics { contentDescription = "${option.name} theme" }
                 ) {
                     if (selected) {
                         Box(contentAlignment = Alignment.Center) {
-                            Icon(imageVector = Icons.Default.Check, contentDescription = "Selected", tint = Color.White)
+                            Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Color.White)
                         }
                     }
                 }

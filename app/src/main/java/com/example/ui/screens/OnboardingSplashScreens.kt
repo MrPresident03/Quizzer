@@ -117,7 +117,7 @@ fun SplashScreen(
             Text(
                 text = "Ignite Your Mind, Conquer Trivia",
                 style = MaterialTheme.typography.titleMedium.copy(
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     letterSpacing = 1.sp
                 ),
                 modifier = Modifier.graphicsLayer(alpha = opacity)
@@ -176,7 +176,7 @@ fun OnboardingScreen(
                     text = "Skip",
                     style = MaterialTheme.typography.labelLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
             }
@@ -231,7 +231,7 @@ fun OnboardingScreen(
                     text = slide.description,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         lineHeight = 26.sp,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 16.dp)

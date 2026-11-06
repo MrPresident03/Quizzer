@@ -49,7 +49,7 @@ class QuizScreensUiTest {
                     currentIndex = 0,
                     selectedOption = selected,
                     isRevealed = revealed,
-                    timeLeft = 60,
+                    timeLeft = { 60 },
                     hiddenOptions = emptySet(),
                     audiencePoll = null,
                     userStats = stats,
